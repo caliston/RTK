@@ -19,6 +19,13 @@
 namespace rtk {
 namespace desktop {
 
+/** Get border box for given icon border type.
+ * @param border true if the icon has a border, otherwise false
+ * @param border_type the icon border type (from its validation string)
+ * @return the border box
+ */
+static box make_border_box(bool border,unsigned int border_type);
+
 icon::icon():
 	_handle(0),
 	_itype(empty_icon),
@@ -130,54 +137,16 @@ box icon::auto_bbox() const
 		}
 		break;
 	}
-	// Handle borders
-	if (_border)
-	{
-		// Note: the following constants are based on
-		// the amount by which the Wimp moves the content
-		// of an icon when a given border is added.  If
-		// different behaviour is required (as it is to
-		// fully comply with the style guide) then it
-		// should be implemented in a subclass.
-		switch (border_type)
-		{
-		case 1:
-		case 2:
-		case 5:
-			prefxsize+=8;
-			prefysize+=8;
-			descent+=4;
-			break;
-		case 3:
-		case 4:
-			prefxsize+=16;
-			prefysize+=16;
-			descent+=8;
-			break;
-		case 6:
-			prefxsize+=24;
-			prefysize+=24;
-			descent+=12;
-			break;
-		case 7:
-			prefxsize+=20;
-			prefysize+=20;
-			descent+=10;
-			break;
-		default:
-			// Default is 2 pixels.
-			prefxsize+=2<<xeigfactor;
-			prefysize+=2<<yeigfactor;
-			descent+=1<<yeigfactor;
-			break;
-		}
-	}
+
 	// Round up to nearest pixel.
 	prefxsize=((prefxsize+(1<<xeigfactor)-1)>>xeigfactor)<<xeigfactor;
 	prefysize=((prefysize+(1<<yeigfactor)-1)>>yeigfactor)<<yeigfactor;
 
 	// Construct minimum bounding box with respect to alpha baselines.
 	box abbox(0,-descent,prefxsize,prefysize-descent);
+
+	// Add border.
+	abbox+=make_border_box(_border,border_type);
 
 	// Translate to external origin and return.
 	abbox-=external_origin(abbox,xbaseline_text,ybaseline_text);
@@ -654,6 +623,17 @@ void icon::set_state()
 	}
 }
 
+box icon::border_box() const
+{
+	unsigned int border_type=0;
+	if ((_itype==text_icon)&&_val)
+	{
+		char* p=_val;
+		parse_validation(p,&border_type,0,0);
+	}
+	return make_border_box(_border,border_type);
+}
+
 void icon::parse_spaces(char*& i)
 {
 	while (*i==' ') ++i;
@@ -686,15 +666,15 @@ void icon::parse_int(char*& i,unsigned int* value)
 
 void icon::parse_string(char*& i,char* buffer,size_type size)
 {
-	if (!buffer) size=0;
 	while ((*i!=0)&&(*i!=',')&&(*i!=';')&&size)
 	{
 		if (*i=='\\') ++i;
-		*buffer++=*i++;
+		char ch=*i++;
+		if (buffer) *buffer++=ch;
 		--size;
 	}
 	while ((*i!=0)&&(*i!=',')&&(*i!=';')) ++i;
-	*buffer=0;
+	if (buffer) *buffer=0;
 }
 
 void icon::parse_validation(char*& i,unsigned int* border_type,char* sprite0,
@@ -723,7 +703,10 @@ void icon::parse_validation(char*& i,unsigned int* border_type,char* sprite0,
 				++i;
 				parse_string(i,sprite1,12);
 			}
-			else sprite1[0]=0;
+			else
+			{
+				if (sprite1) sprite1[0]=0;
+			}
 			parse_semicolon(i);
 		default:
 			parse_semicolon(i);
@@ -770,6 +753,49 @@ void icon::sprite_size(os::sprite_area* area,os::sprite* sprite,
 	}
 	if (_xsize) *_xsize=xsize;
 	if (_ysize) *_ysize=ysize;
+}
+
+box make_border_box(bool border,unsigned int border_type)
+{
+	box bdrbox;
+	if (border)
+	{
+		// Note: the following constants are based on
+		// the amount by which the Wimp moves the content
+		// of an icon when a given border is added.  If
+		// different behaviour is required (as it is to
+		// fully comply with the style guide) then it
+		// should be implemented in a subclass.
+		switch (border_type)
+		{
+		case 1:
+		case 2:
+		case 5:
+			bdrbox=box(-4,-4,4,4);
+			break;
+		case 3:
+		case 4:
+			bdrbox=box(-8,-8,8,8);
+			break;
+		case 6:
+			bdrbox=box(-12,-12,12,12);
+			break;
+		case 7:
+			bdrbox=box(-10,-10,10,10);
+			break;
+		default:
+			// Default is 2 pixels.
+			int xeigfactor=0;
+			int yeigfactor=0;
+			os::OS_ReadModeVariable(swi::XEigFactor,&xeigfactor);
+			os::OS_ReadModeVariable(swi::YEigFactor,&yeigfactor);
+			unsigned int xpix=1<<xeigfactor;
+			unsigned int ypix=1<<yeigfactor;
+			bdrbox=box(-xpix,-ypix,xpix,ypix);
+			break;
+		}
+	}
+	return bdrbox;
 }
 
 }; /* namespace desktop */

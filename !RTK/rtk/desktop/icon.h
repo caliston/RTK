@@ -522,6 +522,13 @@ public:
 	 * @return icon data for use by the Wimp
 	 */
 	os::icon_data icon_data() const;
+
+	/** Get border box.
+	 * This is the difference between the bounding box of the icon and
+	 * the bounding box of its content.
+	 * @return the border box
+	 */
+	box border_box() const;
 private:
 	/** Change icon type.
 	 * See icon_type for a description of the allowed values.
