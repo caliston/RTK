@@ -140,7 +140,9 @@ void application::reformat(const point& origin,const box& pbbox)
 		if (!(*i)->layout_valid())
 		{
 			box mcbbox=(*i)->min_bbox();
-			(*i)->reformat(-mcbbox.xminymin(),mcbbox);
+			point cpos(-mcbbox.xminymin());
+			if (mcbbox.ysize()>68) cpos-=point(0,(mcbbox.ysize()-68)/2);
+			(*i)->reformat(cpos,mcbbox);
 		}
 	}
 	// Reformat menus.
