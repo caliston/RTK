@@ -11,6 +11,7 @@ include fixdeps:Rules/make
 OBJ = load.o \
  load_linelist.o \
  save.o \
+ save_lines.o \
  save_linelist.o
 
 all: timestamp
