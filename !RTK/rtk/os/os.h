@@ -24,6 +24,14 @@ struct sprite_area;
  */
 void OS_Byte161(int address,int* _value);
 
+/** Open file.
+ * @param code the reason code
+ * @param name the object name
+ * @param path the path (if any)
+ * @param _handle a buffer for the returned file handle
+ */
+void OS_Find(int code,const char* name,const char* path,int* _handle);
+
 /** Read sprite information (given pointer).
  * @param area the sprite area
  * @param sp the sprite pointer

@@ -21,6 +21,16 @@ void OS_Byte161(int address,int* _value)
 	if (_value) *_value=regs.r[2];
 }
 
+void OS_Find(int code,const char* name,const char* path,int* _handle)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=code;
+	regs.r[1]=(int)name;
+	regs.r[2]=(int)path;
+	call_swi(swi::OS_Find,&regs);
+	if (_handle) *_handle=regs.r[0];
+}
+
 void OS_SpriteOp40(sprite_area* area,sprite* sp,int* _xsize,int* _ysize,
 	int* _mask,int* _mode)
 {
