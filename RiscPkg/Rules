@@ -1,8 +1,7 @@
 VERSION = 0/5/0-1
 
 all:
-	make bin
-	make doc
+	make bin doc
 	mkdir -p Temp
 	Wipe Temp ~CFR~V
 	mkdir -p Temp/RiscPkg
