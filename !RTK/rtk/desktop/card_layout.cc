@@ -117,7 +117,7 @@ void card_layout::redraw(gcontext& context,const box& clip)
 	{
 		point origin=_component->origin();
 		context+=origin;
-		_component->redraw(context,clip+origin);
+		_component->redraw(context,clip-origin);
 		context-=origin;
 	}
 	inherited::redraw(context,clip);

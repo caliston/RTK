@@ -153,7 +153,7 @@ void absolute_layout::redraw(gcontext& context,const box& clip)
 		{
 			point cpos=c->origin();
 			context+=cpos;
-			c->redraw(context,clip+cpos);
+			c->redraw(context,clip-cpos);
 			context-=cpos;
 		}
 	}

@@ -178,7 +178,7 @@ void virtual_column_layout::redraw(gcontext& context,const box& clip)
 
 		// Redraw cell.
 		context+=cpos;
-		cell_redraw(y,context,clip+cpos);
+		cell_redraw(y,context,clip-cpos);
 		context-=cpos;
 	}
 	inherited::redraw(context,clip);
