@@ -18,6 +18,12 @@ using rtk::graphics::box;
 struct sprite;
 struct sprite_area;
 
+/** Read byte from CMOS RAM.
+ * @param address the address to read
+ * @param _value a buffer for the returned value
+ */
+void OS_Byte161(int address,int* _value);
+
 /** Read sprite information (given pointer).
  * @param area the sprite area
  * @param sp the sprite pointer
