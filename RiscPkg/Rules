@@ -7,6 +7,7 @@ all:
 	Wipe Temp ~CFR~V
 	mkdir -p Temp/RiscPkg
 	mkdir -p Temp/Apps/Library
+	Copy RiscPkg.Copyright Temp.RiscPkg.Copyright ~CFR~V
 	Copy !RTK Temp.Apps.Library.!RTK ~CFR~V
 	Access Temp.Apps.Library.!RTK.* LR/R
 	Access Temp.Apps.Library.!RTK.a.* LR/R

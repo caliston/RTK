@@ -1,0 +1,19 @@
+This is part of the RISC OS Packaging Project distribution of the
+RISC OS Toolkit (RTK).
+
+The RTK was written by Graham Shaw <gdshaw@sagitta.demon.co.uk>.
+
+The source package has been incorporated into the upstream sources.
+
+There is a homepage at the URL:
+
+http://www.sagitta.demon.co.uk/riscos/
+
+Distribution and use are subject to the GNU Lesser General Public License,
+a copy of which may be found in the file:
+
+<Common_Licences$Dir>.LGPL-2/1
+
+or downloaded from the URL:
+
+http://www.riscpkg.org/licences/LGPL-2.1.txt
