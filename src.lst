@@ -1,0 +1,15 @@
+*.!RTK.!Boot
+*.!RTK.!Help
+*.!RTK.!Run
+*.!RTK.!RunHelp
+*.!RTK.Copyright
+*.!RTK.Doxyfile
+*.!RTK.footer/html
+*.!RTK.README
+*.!RTK.Rules/make
+*.!RTK.a.README
+*.!RTK.html.!!RunHelp
+*.h.*
+*.cc.*
+*.Makefile
+*.*/lst
