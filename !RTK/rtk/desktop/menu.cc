@@ -39,6 +39,7 @@ menu::~menu()
 	{
 		if (menu_item* c=*i) c->remove();
 	}
+	remove();
 	uncreate();
 }
 

@@ -20,7 +20,9 @@ prog_info_dbox::prog_info_dbox()
 }
 
 prog_info_dbox::~prog_info_dbox()
-{}
+{
+	remove();
+}
 
 prog_info_dbox& prog_info_dbox::add(const string& name,const string& value)
 {

@@ -24,7 +24,9 @@ label::label(const string& text):
 }
 
 label::~label()
-{}
+{
+	remove();
+}
 
 box label::min_bbox() const
 {

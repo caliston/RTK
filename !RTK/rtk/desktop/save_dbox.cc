@@ -110,7 +110,9 @@ save_dbox::save_dbox():
 }
 
 save_dbox::~save_dbox()
-{}
+{
+	remove();
+}
 
 void save_dbox::handle_event(events::mouse_click& ev)
 {

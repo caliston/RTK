@@ -34,6 +34,7 @@ grid_layout::~grid_layout()
 	{
 		if (component* c=*i) c->remove();
 	}
+	remove();
 }
 
 box grid_layout::auto_bbox() const

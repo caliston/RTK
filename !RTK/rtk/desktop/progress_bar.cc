@@ -36,7 +36,9 @@ progress_bar::progress_bar():
 }
 
 progress_bar::~progress_bar()
-{}
+{
+	remove();
+}
 
 box progress_bar::auto_bbox() const
 {

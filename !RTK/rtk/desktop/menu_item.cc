@@ -29,7 +29,9 @@ menu_item::menu_item():
 }
 
 menu_item::~menu_item()
-{}
+{
+	remove();
+}
 
 menu* menu_item::submenu()
 {

@@ -28,6 +28,7 @@ row_layout::~row_layout()
 	{
 		if (component* c=*i) c->remove();
 	}
+	remove();
 }
 
 box row_layout::auto_bbox() const

@@ -21,6 +21,7 @@ absolute_layout::~absolute_layout()
 {
 	while (_components.size())
 		_components.back()->remove();
+	remove();
 }
 
 box absolute_layout::auto_bbox() const

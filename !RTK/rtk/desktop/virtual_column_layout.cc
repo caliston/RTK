@@ -22,7 +22,9 @@ virtual_column_layout::virtual_column_layout(size_type ycells):
 {}
 
 virtual_column_layout::~virtual_column_layout()
-{}
+{
+	remove();
+}
 
 box virtual_column_layout::auto_bbox() const
 {

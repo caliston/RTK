@@ -22,7 +22,9 @@ virtual_row_layout::virtual_row_layout(size_type xcells):
 {}
 
 virtual_row_layout::~virtual_row_layout()
-{}
+{
+	remove();
+}
 
 box virtual_row_layout::auto_bbox() const
 {

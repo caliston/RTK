@@ -19,6 +19,7 @@ card_layout::~card_layout()
 	{
 		_components.begin()->second->remove();
 	}
+	remove();
 }
 
 box card_layout::auto_bbox() const

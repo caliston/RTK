@@ -27,7 +27,9 @@ virtual_grid_layout::virtual_grid_layout(size_type xcells,size_type ycells):
 {}
 
 virtual_grid_layout::~virtual_grid_layout()
-{}
+{
+	remove();
+}
 
 box virtual_grid_layout::auto_bbox() const
 {

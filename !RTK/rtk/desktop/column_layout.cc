@@ -28,6 +28,7 @@ column_layout::~column_layout()
 	{
 		if (component* c=*i) c->remove();
 	}
+	remove();
 }
 
 box column_layout::auto_bbox() const
