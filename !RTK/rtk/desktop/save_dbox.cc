@@ -153,6 +153,7 @@ void save_dbox::handle_event(events::user_drag_box& ev)
 			app->add(*_saveop);
 		}
 		target=_saveop;
+		_saveop->filetype(_filetype);
 	}
 	events::save_to_app ev2(*target,leafname());
 	ev2.post();
