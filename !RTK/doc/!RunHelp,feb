@@ -3,4 +3,5 @@
 | Distribution and use are subject to the GNU Lesser General Public License,
 | a copy of which may be found in the file !RTK.Copyright.
 
-Filer_Run <Obey$Dir>.index/html
+Set RTK_Help$Dir <Obey$Dir>
+Filer_Run <RTK_Help$Dir>.index/html
