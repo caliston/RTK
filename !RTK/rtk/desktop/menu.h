@@ -28,7 +28,8 @@ class application;
 /** A component to represent a RISC OS menu.
  */
 class menu:
-	public component
+	public component,
+	public component::redirection
 {
 private:
 	/** The class from which this one is derived. */

@@ -25,7 +25,7 @@ bool event::post()
 	while (dest)
 	{
 		handled|=deliver(*dest);
-		dest=dest->parent();
+		dest=dest->redirected_parent();
 	}
 	return handled;
 }

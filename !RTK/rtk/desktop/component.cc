@@ -27,6 +27,7 @@ component::component(const point& origin):
 	_ybaseline(ybaseline_centre),
 	_size_valid(false),
 	_layout_valid(false),
+	_no_redirect(false),
 	_forced_redraw(true),
 	_xauto(true),
 	_yauto(true)
@@ -331,6 +332,20 @@ point component::external_origin(const box& bbox,xbaseline_type ixbaseline,
 	return offset;
 }
 
+component* component::_redirected_parent() const
+{
+	component* rp=_parent;
+	if (const redirection* r=dynamic_cast<const redirection*>(this))
+	{
+		if (r->redirect()) rp=r->redirect();
+	}
+	else
+	{
+		_no_redirect=true;
+	}
+	return rp;
+}
+
 component::xbaseline_set::xbaseline_set():
 	_xmin(0),
 	_xmax(0),
@@ -459,6 +474,14 @@ int component::ybaseline_set::offset(ybaseline_type src_ybaseline,
 int component::ybaseline_set::ysize() const
 {
 	return max(_ysize,_ymax-_ymin);
+}
+
+component::redirection::~redirection()
+{}
+
+void component::redirection::redirect(component* redirect)
+{
+	_redirect=redirect;
 }
 
 }; /* namespace desktop */

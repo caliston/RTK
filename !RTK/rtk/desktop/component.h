@@ -104,6 +104,7 @@ public:
 	};
 	class xbaseline_set;
 	class ybaseline_set;
+	class redirection;
 private:
 	/** The parent pointer. */
 	component* _parent;
@@ -130,6 +131,14 @@ private:
 	 * false.  (Must be false if _size_valid is false.)
 	 */
 	bool _layout_valid:1;
+
+	/** The no-redirect flag.
+	 * True if it has been determined that this object does not support
+	 * event redirection, otherwise false.
+	 * (This flag defaults to false.  It is changed to true if and when
+	 * a dynamic cast to component::redirect fails.)
+	 */
+	mutable bool _no_redirect:1;
 
 	/** The redraw-forced flag.
 	 * True if a redraw has been forced for the whole of this component
@@ -169,6 +178,13 @@ public:
 	 */
 	component* parent() const
 		{ return _parent; }
+
+	/** Get parent after redirection.
+	 * @return the parent of this component, after redirection and if it
+	 *  has one, otherwise 0
+	 */
+	inline component* redirected_parent() const
+		{ return (_no_redirect)?_parent:_redirected_parent(); }
 
 	/** Get the window that owns the work area for this component.
 	 * @return the window if there is one, otherwise 0
@@ -480,6 +496,12 @@ private:
 	 * @postcondition parent()==p
 	 */
 	void set_parent(component* p);
+
+	/** Get parent after redirection.
+	 * This is a non-optimised version of redirected_parent(), for use
+	 * by that function when _no_redirect is false.
+	 */
+	component* _redirected_parent() const;
 };
 
 /** A class for representing the relationship between a set of
@@ -552,6 +574,33 @@ public:
 	 * This is the minimum height required to accommodate the baseline set.
 	 */
 	int ysize() const;
+};
+
+/** A class for redirecting events.
+ * This is a mixin class which allow a component to redirect event delivery.
+ */
+class component::redirection
+{
+private:
+	/** The redirected parent, or 0 if redirection is disabled. */
+	component* _redirect;
+public:
+	/** Destroy redirection mixin.
+	 * Note that this class must have at least one virtual method
+	 * so that dynamic_cast<>() will work correctly.
+	 */
+	virtual ~redirection();
+
+	/** Get redirected parent.
+	 * @return the redirected parent, or 0 if redirection is disabled.
+	 */
+	component* redirect() const
+		{ return _redirect; }
+
+	/** Set redirected parent.
+	 * @param redirect the redirected parent, or 0 to disable redirection.
+	 */
+	void redirect(component* redirect);
 };
 
 }; /* namespace desktop */
