@@ -65,6 +65,20 @@ public:
 	unsigned int denominator() const
 		{ return _denominator; }
 
+	/** Get foreground colour.
+	 * This is one of the 16 standard Wimp colours.
+	 * @return the foreground colour.
+	 */
+	int fcolour() const
+		{ return _bar.fcolour(); }
+
+	/** Get background colour.
+	 * This is one of the 16 standard Wimp colours.
+	 * @return the background colour.
+	 */
+	int bcolour() const
+		{ return _background.bcolour(); }
+
 	/** Set numerator.
 	 * @param numerator the required numerator
 	 * @return a reference to this
@@ -76,6 +90,20 @@ public:
 	 * @return a reference to this
 	 */
 	progress_bar& denominator(unsigned int denominator);
+
+	/** Set foreground colour.
+	 * This is one of the 16 standard Wimp colours.
+	 * @param fcolour the required foreground colour
+	 * @return a reference to this
+	 */
+	progress_bar& fcolour(int fcolour);
+
+	/** Set background colour.
+	 * This is one of the 16 standard Wimp colours.
+	 * @param bcolour the required background colour
+	 * @return a reference to this
+	 */
+	progress_bar& bcolour(int bcolour);
 };
 
 }; /* namespace desktop */

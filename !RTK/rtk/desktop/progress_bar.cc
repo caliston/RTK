@@ -135,5 +135,18 @@ progress_bar& progress_bar::denominator(unsigned int denominator)
 	return *this;
 }
 
+progress_bar& progress_bar::fcolour(int fcolour)
+{
+	_bar.fcolour(fcolour);
+	_bar.bcolour(fcolour);
+	return *this;
+}
+
+progress_bar& progress_bar::bcolour(int bcolour)
+{
+	_background.bcolour(bcolour);
+	return *this;
+}
+
 }; /* namespace desktop */
 }; /* namespace rtk */
