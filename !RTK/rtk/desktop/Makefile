@@ -36,6 +36,7 @@ OBJ = component.o \
  info_dbox.o \
  save_dbox.o \
  dcs_dbox.o \
+ text_window.o \
  menu_item.o \
  menu.o \
  ibar_menu.o \
