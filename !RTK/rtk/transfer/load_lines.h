@@ -29,12 +29,15 @@ private:
 		 * It is an error if no lines have been appended.
 		 * @return the final line
 		 */
-		virtual std::string& back()=0;
+		virtual std::string back() const=0;
 
-		/** Append line.
-		 * @param line the line to be appended
+		/** Push line at back
+		 * @param line the line to be pushed
 		 */
 		virtual void push_back(const std::string& line)=0;
+
+		/** Pop line at back. */
+		virtual void pop_back()=0;
 
 		/** Erase all lines. */
 		virtual void clear()=0;
@@ -55,8 +58,9 @@ private:
 		 */
 		push_back_sink(container& lines);
 
-		virtual std::string& back();
+		virtual std::string back() const;
 		virtual void push_back(const std::string& line);
+		virtual void pop_back();
 		virtual void clear();
 	};
 
@@ -65,8 +69,9 @@ private:
 		public basic_sink
 	{
 	public:
-		virtual std::string& back();
+		virtual std::string back() const;
 		virtual void push_back(const std::string& line);
+		virtual void pop_back();
 		virtual void clear();
 	};
 
@@ -128,12 +133,12 @@ public:
 };
 
 template<class container>
-load_lines::push_back_sink<container>::push_back_sink(container& lines):
+load_lines::push_back_sink::push_back_sink(container& lines):
 	_lines(lines)
 {}
 
 template<class container>
-std::string& load_lines::push_back_sink<container>::back()
+std::string load_lines::push_back_sink<container>::back() const
 {
 	return _lines.back();
 }
@@ -145,9 +150,15 @@ void load_lines::push_back_sink<container>::push_back(const std::string& line)
 }
 
 template<class container>
+void load_lines::push_back_sink<container>::pop_back()
+{
+	_lines.pop_back();
+}
+
+template<class container>
 void load_lines::push_back_sink<container>::clear()
 {
-	_lines.clear();
+	_lines=container();
 }
 
 template<class container>

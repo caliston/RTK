@@ -18,13 +18,15 @@
 namespace rtk {
 namespace transfer {
 
-std::string& load_lines::null_sink::back()
+std::string load_lines::null_sink::back() const
 {
-	static std::string line;
-	return line=std::string();
+	return std::string();
 }
 
 void load_lines::null_sink::push_back(const std::string& line)
+{}
+
+void load_lines::null_sink::pop_back()
 {}
 
 void load_lines::null_sink::clear()
@@ -63,16 +65,28 @@ void load_lines::put_block(size_type count)
 	{
 		if (*p++=='\n')
 		{
-			if (_newline) _sink->push_back(std::string());
-			_sink->back()+=std::string(q,p-1);
+			std::string s;
+			if (!_newline)
+			{
+				s+=_sink->back();
+				_sink->pop_back();
+			}
+			s+=std::string(q,p-1);
+			_sink->push_back(s);
 			q=p;
 			_newline=true;
 		}
 	}
 	if (p!=q)
 	{
-		if (_newline) _sink->push_back(std::string());
-		_sink->back()+=std::string(q,p);
+		std::string s;
+		if (!_newline)
+		{
+			s+=_sink->back();
+			_sink->pop_back();
+		}
+		s+=std::string(q,p);
+		_sink->push_back(s);
 		q=p;
 		_newline=false;
 	}
