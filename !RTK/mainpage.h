@@ -108,6 +108,10 @@
  *
  * http://www.sagitta.demon.co.uk/rtk/
  *
+ * and the library itself downloaded from:
+ *
+ * http://www.sagitta.demon.co.uk/riscos/
+ *
  * There is also a mailing list.  To subscribe, send an empty message
  * to:
  *
