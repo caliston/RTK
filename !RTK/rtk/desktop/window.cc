@@ -241,6 +241,12 @@ window& window::adjust_icon(bool value)
 	return *this;
 }
 
+window& window::button(int value)
+{
+	_button=value;
+	return *this;
+}
+
 window& window::wb_colour(int colour)
 {
 	_wb_colour=colour;

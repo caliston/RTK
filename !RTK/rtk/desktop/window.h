@@ -245,6 +245,12 @@ public:
 	bool adjust_icon() const
 		{ return _adjust_icon; }
 
+	/** Get button type.
+	 * @return the work area button type
+	 */
+	int button() const
+		{ return _button; }
+
 	/** Get window background colour.
 	 * This is one of the 16 standard Wimp colours.
 	 * @return the window background colour
@@ -323,6 +329,13 @@ public:
 	 * @return a reference to this
 	 */
 	window& adjust_icon(bool value);
+
+	/** Set button type.
+	 * This must be set before the window is created by the Wimp.
+	 * @param value the required button type
+	 * @return a reference to this
+	 */
+	window& button(int value);
 
 	/** Set window background colour.
 	 * This is one of the 16 standard Wimp colours.
