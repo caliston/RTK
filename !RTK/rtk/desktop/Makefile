@@ -9,6 +9,7 @@ OBJ = component.o \
  sizeable_component.o \
  icon.o \
  window.o \
+ menu.o \
  application.o
 
 all: $(OBJ)
