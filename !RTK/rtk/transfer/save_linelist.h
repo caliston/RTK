@@ -14,7 +14,9 @@
 namespace rtk {
 namespace transfer {
 
-/** A class for saving lines of text. */
+/** A class for saving lines of text.
+ * @deprecated Use transfer::save_lines in preference to this class.
+ */
 class save_linelist:
 	public save
 {
