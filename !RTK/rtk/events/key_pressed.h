@@ -27,6 +27,11 @@ public:
 	 * If a class wishes to receive key_pressed events then it should
 	 * inherit from this mixin class and provide an implementation for
 	 * handle_event().
+	 *
+	 * The processed flag is initially false.  If it remains false after
+	 * all handlers have been called, Wimp_ProcessKey() will be called
+	 * so that the keypress can be seen by other tasks.  (This action is
+	 * performed automatically by the destructor.)
 	 */
 	class handler
 	{
@@ -39,6 +44,11 @@ public:
 private:
 	/** The character code. */
 	int _code;
+
+	/** The processed flag.
+	 * True if the keypress has been processed, otherwise false.
+	 */
+	bool _processed;
 public:
 	/** Construct key_pressed event.
 	 * @param target the target of the event
@@ -61,6 +71,17 @@ public:
 	 */
 	int code()
 		{ return _code; }
+
+	/** Get processed flag.
+	 * @return true if the keypress has been processed, otherwise false
+	 */
+	bool processed()
+		{ return _processed; }
+
+	/** Set processed flag.
+	 * @param value true if the keypress has been processed, otherwise false
+	 */
+	void processed(bool value);
 protected:
 	virtual bool deliver(desktop::component& dest);
 };
