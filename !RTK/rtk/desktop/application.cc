@@ -1,5 +1,5 @@
 // This file is part of the RISC OS Toolkit (RTK).
-// Copyright © 2003 Graham Shaw.
+// Copyright © 2003-2004 Graham Shaw.
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
@@ -12,7 +12,7 @@
 #include "rtk/os/wimp.h"
 #include "rtk/os/dragasprite.h"
 #include "rtk/desktop/icon.h"
-#include "rtk/desktop/window.h"
+#include "rtk/desktop/basic_window.h"
 #include "rtk/desktop/menu.h"
 #include "rtk/desktop/application.h"
 #include "rtk/events/wimp.h"
@@ -79,7 +79,7 @@ box application::min_bbox() const
 void application::resize() const
 {
 	// Resize child windows.
-	for (vector<window*>::const_iterator i=_windows.begin();
+	for (vector<basic_window*>::const_iterator i=_windows.begin();
 		i!=_windows.end();++i)
 	{
 		if (!(*i)->size_valid()) (*i)->resize();
@@ -107,7 +107,7 @@ void application::reformat(const point& origin,const box& pbbox)
 {
 	inherited::reformat(origin,pbbox);
 	// Reformat child windows.
-	for (vector<window*>::iterator i=_windows.begin();i!=_windows.end();++i)
+	for (vector<basic_window*>::iterator i=_windows.begin();i!=_windows.end();++i)
 	{
 		// If a window has an adjust icon or a scroll bar, the application
 		// object does not exercise any influence over its position or
@@ -172,10 +172,10 @@ void application::reformat(const point& origin,const box& pbbox)
 void application::remove_notify(component& c)
 {
 	// Dynamic casts are used here to avoid unnecessary searches.
-	if (window* w=dynamic_cast<window*>(&c))
+	if (basic_window* w=dynamic_cast<basic_window*>(&c))
 	{
 		// Remove if child window.
-		vector<window*>::iterator f=
+		vector<basic_window*>::iterator f=
 			std::find(_windows.begin(),_windows.end(),w);
 		if (f!=_windows.end())
 		{
@@ -221,7 +221,7 @@ void application::remove_notify(component& c)
 	}
 }
 
-application& application::add(window& w,const point& p)
+application& application::add(basic_window& w,const point& p)
 {
 	w.remove();
 	w.origin(p);
@@ -240,7 +240,7 @@ application& application::add(icon& ic)
 	return *this;
 }
 
-application& application::add(window& w,const point& p,size_type level)
+application& application::add(basic_window& w,const point& p,size_type level)
 {
 	// This statement is needed to prevent the menu tree being closed
 	// when an open dialogue box is re-opened.
@@ -387,7 +387,7 @@ void application::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 	case 10:
 	case 11:
 	case 12:
-		if (window* w=find_window(wimpblock.word[0]))
+		if (basic_window* w=find_window(wimpblock.word[0]))
 			w->deliver_wimp_block(wimpcode,wimpblock);
 		break;
 	case 6:
@@ -398,7 +398,7 @@ void application::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 		}
 		else
 		{
-			if (window* w=find_window(wimpblock.word[3]))
+			if (basic_window* w=find_window(wimpblock.word[3]))
 				w->deliver_wimp_block(wimpcode,wimpblock);
 		}
 		break;
@@ -480,7 +480,7 @@ void application::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 			if (icon* ic=find_icon(wimpblock.word[9]))
 				ic->deliver_wimp_block(wimpcode,wimpblock);
 		}
-		else if (window* w=find_window(wimpblock.word[8]))
+		else if (basic_window* w=find_window(wimpblock.word[8]))
 		{
 			w->deliver_wimp_block(wimpcode,wimpblock);
 		}
@@ -490,7 +490,7 @@ void application::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 			_menus[0]->deliver_wimp_block(wimpcode,wimpblock,0);
 		break;
 	case swi::Message_MenusDeleted:
-		if (window* w=find_window(wimpblock.word[5]))
+		if (basic_window* w=find_window(wimpblock.word[5]))
 		{
 			w->deliver_wimp_block(wimpcode,wimpblock);
 			w->remove();
@@ -625,7 +625,7 @@ void application::handle_event(events::reopen_menu &ev)
 	}
 }
 
-void application::register_window(window& w)
+void application::register_window(basic_window& w)
 {
 	_whandles[w.handle()]=&w;
 }
@@ -649,7 +649,7 @@ void application::register_drag(component& c,bool sprite)
 	_drag_sprite=sprite;
 }
 
-void application::deregister_window(window& w)
+void application::deregister_window(basic_window& w)
 {
 	if (&w==_dbox)
 	{
@@ -669,9 +669,9 @@ void application::deregister_drag(component& c)
 	_drag_sprite=false;
 }
 
-window* application::find_window(int handle) const
+basic_window* application::find_window(int handle) const
 {
-	map<int,window*>::const_iterator f=_whandles.find(handle);
+	map<int,basic_window*>::const_iterator f=_whandles.find(handle);
 	return (f!=_whandles.end())?(*f).second:0;
 }
 

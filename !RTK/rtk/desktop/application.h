@@ -1,5 +1,5 @@
 // This file is part of the RISC OS Toolkit (RTK).
-// Copyright © 2003 Graham Shaw.
+// Copyright © 2003-2004 Graham Shaw.
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
@@ -34,7 +34,7 @@ class load;
 
 namespace desktop {
 
-class window;
+class basic_window;
 class icon;
 class menu;
 
@@ -84,7 +84,7 @@ private:
 	 * All descendant windows that currently have a RISC OS window handle
 	 * are included.
 	 */
-	map<int,window*> _whandles;
+	map<int,basic_window*> _whandles;
 
 	/** A map from icon handles to icon components.
 	 * Descendant icons are included if they are not descended from a
@@ -96,7 +96,7 @@ private:
 	 * Windows are listed if they are an immediate child of this
 	 * application, but not if they are open as a dialogue box.
 	 */
-	vector<window*> _windows;
+	vector<basic_window*> _windows;
 
 	/** The list of child icons.
 	 * Icons are listed if they are an immediate child of this
@@ -124,7 +124,7 @@ private:
 
 	/** The current dialogue box.
 	 */
-	window* _dbox;
+	basic_window* _dbox;
 
 	/** The current dialogue box level.
 	 */
@@ -186,7 +186,7 @@ public:
 	 * @param w the window to be added
 	 * @param p the required initial origin
 	 */
-	application& add(window& w,const point& p);
+	application& add(basic_window& w,const point& p);
 
 	/** Add window as dialogue box.
 	 * @param w the window to be added as a dialogue box
@@ -194,7 +194,7 @@ public:
 	 * @param level the level within the menu heirarchy (0=top level,
 	    add 1 for each level down)
 	 */
-	application& add(window& w,const point& p,size_type level);
+	application& add(basic_window& w,const point& p,size_type level);
 
 	/** Add menu.
 	 * @param m the menu to be added
@@ -327,7 +327,7 @@ public:
 	 * another window).
 	 * @param w the window to be registered
 	 */
-	void register_window(window& w);
+	void register_window(basic_window& w);
 
 	/** Register icon.
 	 * An icon should be registered while it has a Wimp icon handle in
@@ -364,7 +364,7 @@ public:
 	 * when the window was registered.
 	 * @param w the window to be deregistered.
 	 */
-	void deregister_window(window& w);
+	void deregister_window(basic_window& w);
 
 	/** Deregister icon.
 	 * This must be done while ic->handle() returns the same value as
@@ -382,7 +382,7 @@ public:
 	 * @param handle the window handle
 	 * @return the window, or 0 if not found
 	 */
-	window* find_window(int handle) const;
+	basic_window* find_window(int handle) const;
 
 	/** Find icon.
 	 * @param handle the icon handle

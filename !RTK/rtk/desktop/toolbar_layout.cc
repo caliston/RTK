@@ -5,7 +5,7 @@
 
 #include "rtk/graphics/gcontext.h"
 #include "rtk/desktop/toolbar_layout.h"
-#include "rtk/desktop/window.h"
+#include "rtk/desktop/basic_window.h"
 
 namespace rtk {
 namespace desktop {
@@ -20,7 +20,7 @@ toolbar_layout::~toolbar_layout()
 	for (vector<toolbar_type>::iterator i=_toolbars.begin();
 		i!=_toolbars.end();++i)
 	{
-		if (window* w=i->w) w->remove();
+		if (basic_window* w=i->w) w->remove();
 	}
 
 	// Remove work area.
@@ -38,7 +38,7 @@ toolbar_layout& toolbar_layout::add(component& c)
 	return *this;
 }
 
-toolbar_layout& toolbar_layout::add_toolbar(window& w,align_type align,
+toolbar_layout& toolbar_layout::add_toolbar(basic_window& w,align_type align,
 	size_type index)
 {
 	if (index==npos) index=_toolbars.size();
@@ -59,7 +59,7 @@ component* toolbar_layout::find(const point& p) const
 	vector<toolbar_type>::const_iterator i=_toolbars.begin();
 	while (!f&&i!=_toolbars.end())
 	{
-		window* w=i->w;
+		basic_window* w=i->w;
 		if (w&&((p-w->origin())<=w->bbox()))
 		{
 			f=w;
@@ -90,7 +90,7 @@ box toolbar_layout::auto_bbox() const
 	for (vector<toolbar_type>::const_reverse_iterator i=_toolbars.rbegin();
 		i!=_toolbars.rend();++i)
 	{
-		if (window* w=i->w)
+		if (basic_window* w=i->w)
 		{
 			box mcbbox=w->min_bbox();
 			switch (i->align)
@@ -147,7 +147,7 @@ void toolbar_layout::reformat(const point& origin,const box& pbbox)
 	for (vector<toolbar_type>::iterator i=_toolbars.begin();
 		i!=_toolbars.end();++i)
 	{
-		if (window* w=i->w)
+		if (basic_window* w=i->w)
 		{
 			box mcbbox(w->min_bbox());
 
@@ -243,7 +243,7 @@ void toolbar_layout::unformat()
 	for (vector<toolbar_type>::iterator i=_toolbars.begin();
 		i!=_toolbars.end();++i)
 	{
-		if (window* w=i->w) w->unformat();
+		if (basic_window* w=i->w) w->unformat();
 	}
 }
 
@@ -262,7 +262,7 @@ void toolbar_layout::redraw(gcontext& context,const box& clip)
 	for (vector<toolbar_type>::iterator i=_toolbars.begin();
 		i!=_toolbars.end();++i)
 	{
-		if (window* w=i->w)
+		if (basic_window* w=i->w)
 		{
 			point cpos=w->origin();
 			context+=cpos;

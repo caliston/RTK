@@ -1,5 +1,5 @@
 // This file is part of the RISC OS Toolkit (RTK).
-// Copyright © 2003 Graham Shaw.
+// Copyright © 2003-2004 Graham Shaw.
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
@@ -32,7 +32,7 @@ class mouse_click;
 
 namespace desktop {
 
-class window;
+class basic_window;
 class application;
 class menu;
 
@@ -208,7 +208,7 @@ public:
 	/** Get the window that owns the work area for this component.
 	 * @return the window if there is one, otherwise 0
 	 */
-	window* parent_work_area() const;
+	basic_window* parent_work_area() const;
 
 	/** Get the window that owns the work area for this component.
 	 * Additionally, translate the point p from the coordinate space
@@ -217,7 +217,7 @@ public:
 	 * @param p the point to be translated
 	 * @return the window if there is one, otherwise 0
 	 */
-	window* parent_work_area(point& p) const;
+	basic_window* parent_work_area(point& p) const;
 
 	/** Get the application from which this component is descended.
 	 * If this component is an application then return this.
@@ -239,7 +239,7 @@ public:
 	 * much faster to execute.
 	 * @return this if component is a window, otherwise 0
 	 */
-	virtual window* as_window();
+	virtual basic_window* as_window();
 
 	/** Determine whether this component is an application.
 	 * This function is equivalent to dynamic_cast<application*>, but

@@ -51,7 +51,7 @@ private:
 	{
 	public:
 		/** The window which acts as the toolbar. */
-		window* w;
+		basic_window* w;
 		/** The alignment of the toolbar. */
 		align_type align;
 		/** Construct toolbar structure. */
@@ -99,7 +99,7 @@ public:
 	 * @param align the required alignment of the toolbar
 	 * @param index the required index of the toolbar
 	 */
-	toolbar_layout& add_toolbar(window& w,align_type align=align_top,
+	toolbar_layout& add_toolbar(basic_window& w,align_type align=align_top,
 		size_type index=npos);
 };
 

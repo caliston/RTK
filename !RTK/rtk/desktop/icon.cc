@@ -1,5 +1,5 @@
 // This file is part of the RISC OS Toolkit (RTK).
-// Copyright © 2003 Graham Shaw.
+// Copyright © 2003-2004 Graham Shaw.
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
@@ -8,7 +8,7 @@
 #include "rtk/os/os.h"
 #include "rtk/os/wimp.h"
 #include "rtk/desktop/icon.h"
-#include "rtk/desktop/window.h"
+#include "rtk/desktop/basic_window.h"
 #include "rtk/desktop/application.h"
 #include "rtk/events/wimp.h"
 #include "rtk/events/mouse_click.h"
@@ -426,7 +426,7 @@ void icon::reformat(const point& origin,const box& pbbox)
 	// Calculate offset from origin of work area to origin of this
 	// component.
 	point offset;
-	window *w=parent_work_area(offset);
+	basic_window* w=parent_work_area(offset);
 	int whandle=(w)?w->handle():-1;
 
 	if (!_created)
@@ -472,7 +472,7 @@ void icon::unformat()
 {
 	if (_created)
 	{
-		window *w=parent_work_area();
+		basic_window* w=parent_work_area();
 		if (w)
 		{
 			w->deregister_icon(*this);
@@ -695,7 +695,7 @@ bool icon::selected() const
 	bool selected=_selected;
 	if (_created)
 	{
-		window *w=parent_work_area();
+		basic_window* w=parent_work_area();
 		int whandle=(w)?w->handle():-1;
 		os::icon_state_get block;
 		block.whandle=whandle;
@@ -867,7 +867,7 @@ void icon::set_state()
 {
 	if (_created)
 	{
-		window *w=parent_work_area();
+		basic_window* w=parent_work_area();
 		int _whandle=(w)?w->handle():-1;
 		os::icon_state_set block;
 		block.whandle=_whandle;

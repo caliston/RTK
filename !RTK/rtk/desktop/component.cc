@@ -1,5 +1,5 @@
 // This file is part of the RISC OS Toolkit (RTK).
-// Copyright © 2003 Graham Shaw.
+// Copyright © 2003-2004 Graham Shaw.
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
@@ -9,7 +9,7 @@
 #include "rtk/os/wimp.h"
 #include "rtk/os/dragasprite.h"
 #include "rtk/desktop/component.h"
-#include "rtk/desktop/window.h"
+#include "rtk/desktop/basic_window.h"
 #include "rtk/desktop/application.h"
 #include "rtk/events/redirection.h"
 
@@ -70,24 +70,24 @@ void component::set_parent(component* c)
 	}
 }
 
-window* component::parent_work_area() const
+basic_window* component::parent_work_area() const
 {
 	component* pc=_parent;
 	while (pc)
 	{
-		if (window* pw=pc->as_window()) return pw;
+		if (basic_window* pw=pc->as_window()) return pw;
 		pc=pc->_parent;
 	}
 	return 0;
 }
 
-window* component::parent_work_area(point& p) const
+basic_window* component::parent_work_area(point& p) const
 {
 	const component* c=this;
 	component* pc=c->_parent;
 	while (pc)
 	{
-		if (window* pw=pc->as_window()) return pw;
+		if (basic_window* pw=pc->as_window()) return pw;
 		p+=c->_origin;
 		c=pc;
 		pc=c->_parent;
@@ -124,7 +124,7 @@ application* component::parent_application(point& p)
 	return 0;
 }
 
-window* component::as_window()
+basic_window* component::as_window()
 {
 	return 0;
 }
@@ -244,7 +244,7 @@ void component::force_redraw(bool suppress_window)
 	if (!_forced_redraw&&!suppress_window)
 	{
 		point offset;
-		window* w=as_window();
+		basic_window* w=as_window();
 		if (!w) w=parent_work_area(offset);
 		box b=bbox()+offset;
 		int h=(w)?w->handle():-1;
@@ -255,7 +255,7 @@ void component::force_redraw(bool suppress_window)
 
 void component::set_caret_position(point p,int height,int index)
 {
-	window* w=as_window();
+	basic_window* w=as_window();
 	if (!w) w=parent_work_area(p);
 	if (w)
 	{

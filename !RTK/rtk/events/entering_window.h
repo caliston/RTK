@@ -1,5 +1,5 @@
 // This file is part of the RISC OS Toolkit (RTK).
-// Copyright © 2003 Graham Shaw.
+// Copyright © 2003-2004 Graham Shaw.
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
@@ -11,7 +11,7 @@
 namespace rtk {
 namespace desktop {
 
-class window;
+class basic_window;
 
 }; /* namespace desktop */
 
@@ -40,7 +40,7 @@ public:
 	/** Construct entering_window event.
 	 * @param target the target of the event (the window entered)
 	 */
-	entering_window(desktop::window& target);
+	entering_window(desktop::basic_window& target);
 
 	/** Destroy entering_window event.
 	 */
@@ -49,8 +49,8 @@ public:
 	/** Get target.
 	 * @return the target of the event (the window entered)
 	 */
-	desktop::window* target() const
-		{ return (desktop::window*)target(); }
+	desktop::basic_window* target() const
+		{ return (desktop::basic_window*)target(); }
 protected:
 	virtual bool deliver(desktop::component& dest);
 };
