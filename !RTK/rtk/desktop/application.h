@@ -140,7 +140,7 @@ public:
 	virtual application* as_application();
 	virtual box min_bbox() const;
 	virtual void resize() const;
-	virtual void reformat(const point& origin,const box& bbox);
+	virtual void reformat(const point& origin,const box& pbbox);
 protected:
 	virtual void remove_notify(component& c);
 public:

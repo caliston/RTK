@@ -91,21 +91,21 @@ void window::resize() const
 	inherited::resize();
 }
 
-void window::reformat(const point& origin,const box& bbox)
+void window::reformat(const point& origin,const box& pbbox)
 {
-	_reformat(origin,bbox,behind());
+	_reformat(origin,pbbox,behind());
 }
 
-void window::reformat(const point& origin,const box& bbox,size_type level)
+void window::reformat(const point& origin,const box& pbbox,size_type level)
 {
 	if (!_dbox_opened)
 	{
 		// Reformat in usual manner.  (This does cause the window to be opened
 		// in the usual manner, but doing so does not appear to cause any
 		// significant harm.)
-		_reformat(origin,bbox,behind());
+		_reformat(origin,pbbox,behind());
 		// Calculate required top left-hand corner, with respect to screen.
-		point p=bbox.xminymax();
+		point p=pbbox.xminymax();
 		parent_application(p);
 		// Open as dialogue box.
 		if (!level) os::Wimp_CreateMenu(_handle,p);
@@ -518,8 +518,11 @@ icon* window::find_icon(int handle) const
 	return (f!=_ihandles.end())?(*f).second:0;
 }
 
-void window::_reformat(const point& origin,const box& bbox,int behind)
+void window::_reformat(const point& origin,const box& pbbox,int behind)
 {
+	// Fit bounding box to parent.
+	box bbox=fit(pbbox);
+
 	// Update origin and bounding box of this component.
 	_bbox=bbox;
 	inherited::reformat(origin,bbox);

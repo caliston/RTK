@@ -239,7 +239,7 @@ public:
 
 	virtual box auto_bbox() const;
 	virtual box bbox() const;
-	virtual void reformat(const point& origin,const box &bbox);
+	virtual void reformat(const point& origin,const box& pbbox);
 	virtual void unformat();
 
 	/** Get icon text.

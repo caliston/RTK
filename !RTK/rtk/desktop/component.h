@@ -145,7 +145,19 @@ private:
 	 */
 	bool _forced_redraw:1;
 
-	/** The horizontal auto-fit flag.
+	/** The horizontal fit-to-parent flag.
+	 * If true, and if the component is capable of doing so, the bounding
+	 * box should expand horizontally to fill the space available.
+	 */
+	bool _xfit:1;
+
+	/** The vertical fit-to-parent flag.
+	 * If true, and if the component is capable of doing so, the bounding
+	 * box should expand vertically to fill the space available.
+	 */
+	bool _yfit:1;
+
+	/** The horizontal fit-to-content flag.
 	 * This flag is provided for use by sizeable_component.  It is
 	 * declared here so that it can be stored as part of a larger
 	 * set of bitfields, thereby reducing memory usage.
@@ -154,7 +166,7 @@ private:
 	 */
 	bool _xauto:1;
 
-	/** The vertical auto-fit flag.
+	/** The vertical fit-to-content flag.
 	 * This flag is provided for use by sizeable_component.  It is
 	 * declared here so that it can be stored as part of a larger
 	 * set of bitfields, thereby reducing memory usage.
@@ -270,6 +282,36 @@ public:
 	 */
 	void ybaseline(ybaseline_type ybaseline);
 
+	/** Get horizontal fit-to-parent flag.
+	 * If true, and if the component is capable of doing so, the bounding
+	 * box should expand horizontally to fill the space available.
+	 * @return the horizontal fit-to-parent flag
+	 */
+	bool xfit() const
+		{ return _xfit; }
+
+	/** Get vertical fit-to-parent flag.
+	 * If true, and if the component is capable of doing so, the bounding
+	 * box should expand vertically to fill the space available.
+	 * @return the vertical fit-to-parent flag
+	 */
+	bool yfit() const
+		{ return _yfit; }
+
+	/** Set horizontal fit-to-parent flag.
+	 * If true, and if the component is capable of doing so, the bounding
+	 * box should expand horizontally to fill the space available.
+	 * @param xfit the required horizontal fit-to-parent flag
+	 */
+	void xfit(bool xfit);
+
+	/** Set vertical fit-to-parent flag.
+	 * If true, and if the component is capable of doing so, the bounding
+	 * box should expand vertically to fill the space available.
+	 * @param yfit the required vertical fit-to-parent flag
+	 */
+	void yfit(bool yfit);
+
 	/** Get origin.
 	 * @return the origin of this component, with respect to the origin
 	 *  of its parent
@@ -367,10 +409,10 @@ public:
 	 * function should be no smaller than the minimum bounding box.
 	 * @param origin the new origin of this component, with respect to
 	 *  its parent
-	 * @param bbox the proposed bounding box for this component, with
+	 * @param pbbox the proposed bounding box for this component, with
 	 *  respect to its own origin
 	 */
-	virtual void reformat(const point& origin,const box& bbox);
+	virtual void reformat(const point& origin,const box& pbbox);
 
 	/** Unformat component.
 	 * This function should be called when a component ceases to be
@@ -485,6 +527,8 @@ protected:
 	 */
 	point external_origin(const box& bbox,xbaseline_type ixbaseline,
 		ybaseline_type iybaseline) const;
+
+	box fit(const box& pbbox) const;
 private:
 	/** Set the parent of this component.
 	 * This function is called when one component takes owenership of

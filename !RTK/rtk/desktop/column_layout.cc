@@ -99,8 +99,11 @@ void column_layout::resize() const
 	inherited::resize();
 }
 
-void column_layout::reformat(const point& origin,const box &bbox)
+void column_layout::reformat(const point& origin,const box& pbbox)
 {
+	// Fit bounding box to parent.
+	box bbox=fit(pbbox);
+
 	// Determine number of cells.
 	size_type ycells=_components.size();
 

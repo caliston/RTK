@@ -81,7 +81,7 @@ public:
 
 	virtual box auto_bbox() const;
 	virtual box bbox() const;
-	virtual void reformat(const point& origin,const box& bbox);
+	virtual void reformat(const point& origin,const box& pbbox);
 	virtual void redraw(gcontext& context,const box& clip);
 public:
 	/** Get number of columns.

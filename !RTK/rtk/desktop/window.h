@@ -167,7 +167,7 @@ public:
 	virtual box bbox() const;
 	virtual box min_bbox() const;
 	virtual void resize() const;
-	virtual void reformat(const point& origin,const box& bbox);
+	virtual void reformat(const point& origin,const box& pbbox);
 	virtual void unformat();
 	virtual void redraw(gcontext& context,const box& clip);
 protected:
@@ -185,12 +185,12 @@ public:
 	 * the window is to be opened as a dialogue box.
 	 * @param origin the new origin of this component, with respect to
 	 *  its parent
-	 * @param bbox the proposed bounding box for this component, with
+	 * @param pbbox the proposed bounding box for this component, with
 	 *  respect to its own origin
 	 * @param level the level within the menu heirarchy (0=top level,
 	 *  add 1 for each level down)
 	 */
-	void reformat(const point& origin,const box& bbox,size_type level);
+	void reformat(const point& origin,const box& pbbox,size_type level);
 
 	/** Get window title.
 	 * @return the window title
@@ -437,12 +437,12 @@ private:
 	 * be specified.
 	 * @param origin the new origin of this component, with respect to
 	 *  its parent
-	 * @param bbox the proposed bounding box for this component, with
+	 * @param pbbox the proposed bounding box for this component, with
 	 *  respect to its own origin
 	 * @param behind the window behind which this one should be opened,
 	 *  or -1 to open at the top of the window stack
 	 */
-	void _reformat(const point& origin,const box& bbox,int behind);
+	void _reformat(const point& origin,const box& pbbox,int behind);
 
 	/** Calculate extent.
 	 * @internal

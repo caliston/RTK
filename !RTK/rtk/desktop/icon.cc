@@ -188,8 +188,11 @@ box icon::bbox() const
 	return _bbox;
 }
 
-void icon::reformat(const point& origin,const box &bbox)
+void icon::reformat(const point& origin,const box& pbbox)
 {
+	// Fit bounding box to parent.
+	box bbox=fit(pbbox);
+
 	// Update origin and bounding box of this component, force
 	// redraw if necessary.
 	bool moved=(origin!=this->origin())||(bbox!=this->bbox());

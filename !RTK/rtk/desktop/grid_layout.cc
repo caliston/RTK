@@ -115,8 +115,11 @@ void grid_layout::resize() const
 	inherited::resize();
 }
 
-void grid_layout::reformat(const point& origin,const box &bbox)
+void grid_layout::reformat(const point& origin,const box& pbbox)
 {
+	// Fit bounding box to parent.
+	box bbox=fit(pbbox);
+
 	// Update origin and bounding box of this component, force redraw
 	// if necessary.  (This must happen before reformat() is called for
 	// any children.)

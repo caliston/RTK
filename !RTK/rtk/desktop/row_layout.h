@@ -69,7 +69,7 @@ public:
 	virtual component* find(const point& p) const;
 	virtual box bbox() const;
 	virtual void resize() const;
-	virtual void reformat(const point& origin,const box &bbox);
+	virtual void reformat(const point& origin,const box& pbbox);
 	virtual void unformat();
 	virtual void redraw(gcontext& context,const box& clip);
 protected:

@@ -126,8 +126,8 @@ public:
 
 	virtual box min_bbox() const;
 	virtual void resize() const;
-	virtual void reformat(const point& origin,const box& bbox);
-	void reformat(const point& origin,const box& bbox,size_type level);
+	virtual void reformat(const point& origin,const box& pbbox);
+	void reformat(const point& origin,const box& pbbox,size_type level);
 	virtual void unformat();
 protected:
 	virtual void remove_notify(component& c);

@@ -91,9 +91,9 @@ void application::resize() const
 	inherited::resize();
 }
 
-void application::reformat(const point& origin,const box& bbox)
+void application::reformat(const point& origin,const box& pbbox)
 {
-	inherited::reformat(origin,bbox);
+	inherited::reformat(origin,pbbox);
 	// Reformat child windows.
 	for (vector<window*>::iterator i=_windows.begin();i!=_windows.end();++i)
 	{

@@ -30,6 +30,8 @@ component::component(const point& origin):
 	_layout_valid(false),
 	_no_redirect(false),
 	_forced_redraw(true),
+	_xfit(true),
+	_yfit(true),
 	_xauto(true),
 	_yauto(true)
 {}
@@ -174,6 +176,18 @@ void component::ybaseline(ybaseline_type ybaseline)
 	baseline_notify(offset);
 }
 
+void component::xfit(bool xfit)
+{
+	_xfit=xfit;
+	invalidate();
+}
+
+void component::yfit(bool yfit)
+{
+	_yfit=yfit;
+	invalidate();
+}
+
 box component::bbox() const
 {
 	return min_bbox();
@@ -195,7 +209,7 @@ void component::resize() const
 	_size_valid=true;
 }
 
-void component::reformat(const point& origin,const box& bbox)
+void component::reformat(const point& origin,const box& pbbox)
 {
 	// Move origin.
 	_origin=origin;
@@ -336,6 +350,26 @@ point component::external_origin(const box& bbox,xbaseline_type ixbaseline,
 		}
 	}
 	return offset;
+}
+
+box component::fit(const box& pbbox) const
+{
+	box bbox=pbbox;
+	if ((!_xfit)||(!_yfit))
+	{
+		box mbbox=min_bbox();
+		if (!_xfit)
+		{
+			bbox.xmin(mbbox.xmin());
+			bbox.xmax(mbbox.xmax());
+		}
+		if (!_yfit)
+		{
+			bbox.ymin(mbbox.ymin());
+			bbox.ymax(mbbox.ymax());
+		}
+	}
+	return bbox;
 }
 
 component* component::_redirected_parent() const

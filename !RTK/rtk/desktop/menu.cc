@@ -75,18 +75,18 @@ void menu::resize() const
 	inherited::resize();
 }
 
-void menu::reformat(const point& origin,const box& bbox)
+void menu::reformat(const point& origin,const box& pbbox)
 {
-	inherited::reformat(origin,bbox);
+	inherited::reformat(origin,pbbox);
 }
 
-void menu::reformat(const point& origin,const box& bbox,size_type level)
+void menu::reformat(const point& origin,const box& pbbox,size_type level)
 {
-	inherited::reformat(origin,bbox);
+	inherited::reformat(origin,pbbox);
 	if (!_opened)
 	{
 		create();
-		point p=bbox.xminymax();
+		point p=pbbox.xminymax();
 		application* app=parent_application(p);
 		if (!level) os::Wimp_CreateMenu(&**_mdata,p);
 		else os::Wimp_CreateSubMenu(&**_mdata,p);
