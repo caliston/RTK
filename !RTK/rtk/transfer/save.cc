@@ -142,6 +142,17 @@ void save::handle_event(events::save_to_file& ev)
 	ev2.post();
 }
 
+void save::handle_event(events::datarequest& ev)
+{
+	ev.reply(filetype(),estsize());
+	start();
+	_ldata=0;
+	_lsize=0;
+	_pathname=string();
+	_secure=false;
+	_state=state_datasave;
+}
+
 save& save::filetype(unsigned int filetype)
 {
 	_filetype=filetype;

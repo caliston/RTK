@@ -12,6 +12,7 @@
 #include "rtk/events/ramfetch.h"
 #include "rtk/events/save_to_app.h"
 #include "rtk/events/save_to_file.h"
+#include "rtk/events/datarequest.h"
 #include "rtk/events/redirection.h"
 
 namespace rtk {
@@ -35,6 +36,7 @@ class save:
 	public events::ramfetch::handler,
 	public events::save_to_app::handler,
 	public events::save_to_file::handler,
+	public events::datarequest::handler,
 	public events::redirection
 {
 public:
@@ -101,6 +103,7 @@ public:
 	virtual void handle_event(events::ramfetch& ev);
 	virtual void handle_event(events::save_to_app& ev);
 	virtual void handle_event(events::save_to_file& ev);
+	virtual void handle_event(events::datarequest& ev);
 
 	/** Get filetype.
 	 * @return the filetype of the data to be saved
