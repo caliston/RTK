@@ -43,6 +43,15 @@ void OS_Find(int code,const char* name,const char* path,int* _handle);
  */
 void OS_Find0(int handle);
 
+/** Write bytes to file.
+ * @param handle the file handle
+ * @param buffer the data to be written
+ * @param count the number of bytes to be written
+ * @param _fp a buffer for the returned file pointer
+ */
+void OS_GBPB2(int handle,const void* buffer,unsigned int count,
+	unsigned int* _fp);
+
 /** Read sprite information (given pointer).
  * @param area the sprite area
  * @param sp the sprite pointer

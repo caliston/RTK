@@ -48,6 +48,18 @@ void OS_Find0(int handle)
 	call_swi(swi::OS_Find,&regs);
 }
 
+void OS_GBPB2(int handle,const void* buffer,unsigned int count,
+	unsigned int* _fp)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=2;
+	regs.r[1]=handle;
+	regs.r[2]=(int)buffer;
+	regs.r[3]=count;
+	call_swi(swi::OS_GBPB,&regs);
+	if (_fp) *_fp=regs.r[4];
+}
+
 void OS_SpriteOp40(sprite_area* area,sprite* sp,int* _xsize,int* _ysize,
 	int* _mask,int* _mode)
 {
