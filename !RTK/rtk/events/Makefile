@@ -34,6 +34,9 @@ OBJ = event.o \
  saved.o \
  redirection.o
 
-all: $(OBJ)
+all: timestamp
+
+timestamp: $(OBJ)
+	touch timestamp
 
 include $(OBJ:.o=.d)

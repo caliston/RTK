@@ -34,6 +34,9 @@ OBJ = component.o \
  menu.o \
  application.o
 
-all: $(OBJ)
+all: timestamp
+
+timestamp: $(OBJ)
+	touch timestamp
 
 include $(OBJ:.o=.d)
