@@ -465,6 +465,13 @@ public:
 	 */
 	void force_redraw(bool suppress_window=false);
 
+	/** Force redraw of given area.
+	 * Instruct the Wimp to redraw a given area within this component.
+	 * @param rbox the bounding box of the region to be redrawn,
+	 *  with respect to the origin of this component
+	 */
+	void force_redraw(const box& clip);
+
 	/** Set caret position.
 	 * @param p the required position of the caret
 	 * @param height the required height of the caret

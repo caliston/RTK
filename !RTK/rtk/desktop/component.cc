@@ -238,7 +238,6 @@ void component::redraw(gcontext& context,const box& clip)
 
 void component::force_redraw(bool suppress_window)
 {
-	component* p=parent();
 	suppress_window&=bool(as_window());
 
 	if (!_forced_redraw&&!suppress_window)
@@ -246,10 +245,25 @@ void component::force_redraw(bool suppress_window)
 		point offset;
 		basic_window* w=as_window();
 		if (!w) w=parent_work_area(offset);
-		box b=bbox()+offset;
-		int h=(w)?w->handle():-1;
-		if (h) os::Wimp_ForceRedraw(h,b);
+		if (int h=(w)?w->handle():-1)
+		{
+			os::Wimp_ForceRedraw(h,bbox()+offset);
+		}
 		_forced_redraw=true;
+	}
+}
+
+void component::force_redraw(const box& clip)
+{
+	if (!_forced_redraw)
+	{
+		point offset;
+		basic_window* w=as_window();
+		if (!w) w=parent_work_area(offset);
+		if (int h=(w)?w->handle():-1)
+		{
+			os::Wimp_ForceRedraw(h,clip+offset);
+		}
 	}
 }
 
