@@ -76,7 +76,7 @@ void card_layout::reformat(const point& origin,const box& pbbox)
 	// Update origin and bounding box of this component, force redraw
 	// if necessary.  (This must happen before reformat() is called for
 	// any children.)
-	bool moved=(origin!=this->origin())||(bbox!=this->bbox());
+	bool moved=origin!=this->origin();
 	if (moved) force_redraw(true);
 	_bbox=bbox;
 	inherited::reformat(origin,bbox);
