@@ -336,8 +336,10 @@ public:
 	 * position of a child.)
 	 * @param origin the required origin of this component, with
 	 *  respect to the origin of its parent
+	 * @param suppress_redraw true to prevent this function from
+	 *  causing a redraw, otherwise false
 	 */
-	component& origin(const point& origin);
+	component& origin(const point& origin,bool suppress_redraw=false);
 
 	/** Get current bounding box.
 	 * If this function is not overridden then it will return the
@@ -458,8 +460,10 @@ public:
 	 * This function should be called both before and after any
 	 * change to either the origin or the bounding box of the
 	 * component.
+	 * @param suppress_window true to suppress redraw if this component
+	 *  is a window, otherwise false
 	 */
-	void force_redraw(bool supress_window=false);
+	void force_redraw(bool suppress_window=false);
 
 	/** Set caret position.
 	 * @param p the required position of the caret

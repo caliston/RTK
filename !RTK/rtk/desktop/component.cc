@@ -144,15 +144,15 @@ void component::remove()
 	set_parent(0);
 }
 
-component& component::origin(const point& origin)
+component& component::origin(const point& origin,bool suppress_redraw)
 {
 	// Don't do anything unless a change is required.
 	if (origin!=_origin)
 	{
 		// Component will not be able to detect that it has moved when
 		// reformat() is called, so it must force a redraw now - but not
-		// if it is a window or a work area.
-		force_redraw(true);
+		// if it is a window, and not if redraws have been suppressed.
+		if (!suppress_redraw) force_redraw(true);
 		// Move component to specified location.
 		_origin=origin;
 		// Invalidate component, so that the parent (if there is one) can
@@ -236,14 +236,12 @@ void component::redraw(gcontext& context,const box& clip)
 	_forced_redraw=false;
 }
 
-void component::force_redraw(bool supress_window)
+void component::force_redraw(bool suppress_window)
 {
 	component* p=parent();
-	bool is_window=as_window();
-	bool is_work_area=p&&p->as_window();
-	supress_window&=is_window||is_work_area;
+	suppress_window&=bool(as_window());
 
-	if (!_forced_redraw&&!supress_window)
+	if (!_forced_redraw&&!suppress_window)
 	{
 		point offset;
 		window* w=as_window();

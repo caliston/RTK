@@ -313,11 +313,12 @@ void window::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 			// Calculate origin required to match bbox to block.bbox.
 			point origin=block.bbox.xminymax()-bbox.xminymax()-parent_origin;
 
-			// Set child origin if there is a child.
+			// Set child origin if there is a child
+			// (but do not force redraw).
 			if (_child)
 			{
 				point corigin=bbox.xminymax()-block.scroll;
-				_child->origin(corigin);
+				_child->origin(corigin,true);
 			}
 
 			// Reformat this component.
@@ -598,6 +599,11 @@ void window::_reformat(const point& origin,const box& pbbox,int behind)
 	{
 		// Calculate child origin.
 		point corigin=_bbox.xminymax()-block1.scroll;
+
+		// Set child origin, without forcing redraw.  This makes it less
+		// likely that _child->reformat() will cause an unnecessary redraw.
+		_child->origin(corigin,true);
+
 		// Reformat child.
 		_child->reformat(corigin,extent);
 	}
