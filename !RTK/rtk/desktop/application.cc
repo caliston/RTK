@@ -242,6 +242,10 @@ application& application::add(icon& ic)
 
 application& application::add(window& w,const point& p,size_type level)
 {
+	// This statement is needed to prevent the menu tree being closed
+	// when an open dialogue box is re-opened.
+	if (_dbox==&w) _dbox=0;
+
 	// Remove existing menus at or below this level.
 	remove_menus(level);
 	remove_menu_data(level);
