@@ -8,6 +8,7 @@ include ../../Rules.make
 OBJ = component.o \
  sizeable_component.o \
  icon.o \
+ action_button.o \
  window.o \
  menu_item.o \
  menu.o \
