@@ -7,9 +7,10 @@
 *.!RTK.footer/html
 *.!RTK.README
 *.!RTK.Rules/make
+*.!RTK.build-32
+*.!RTK.include/*
 *.!RTK.a.README
 *.!RTK.html.!!RunHelp
 *.h.*
 *.cc.*
 *.Makefile
-*.*/lst
