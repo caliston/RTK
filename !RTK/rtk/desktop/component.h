@@ -408,7 +408,7 @@ public:
 	 * change to either the origin or the bounding box of the
 	 * component.
 	 */
-	void force_redraw();
+	void force_redraw(bool supress_window=false);
 
 	/** Set caret position.
 	 * @param p the required position of the caret
