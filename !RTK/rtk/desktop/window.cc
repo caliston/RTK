@@ -111,46 +111,58 @@ void window::reformat(const point& origin,const box& bbox)
 	point parent_origin(-this->origin());
 	parent_application(parent_origin);
 
-	// Calculate visible area with respect to origin of screen.
-	box vabox=bbox+origin+parent_origin;
-
-	// Calculate required scroll offsets.
-	// Note that this is done after the window has been resized
-	// (therefore the scroll bars can move when the window size changes
-	// even if the child origin does not).
-	point scroll=(_child)?_bbox.xminymax()-_child->origin():point();
-
-	// Obtain parent window handle (-1 if top-level).
-	window* p=parent_work_area();
-	int phandle=(p)?p->handle():-1;
-
-	// Get window state (to preserve position in window stack).
+	// The Wimp can override the requested size of a window.  When this
+	// happens, the child will be placed incorrectly.  To correct this,
+	// the bounding box and extent are recalculated after the window has
+	// been opered.  If the extent has changed then the process of
+	// opening the window is repeated.  (For safety, only one repeat is
+	// allowed.  This should be sufficient, and if it isn't then there
+	// is a significant risk of an infinite loop.)
 	static os::window_state_get block1;
-	block1.handle=_handle;
-	os::Wimp_GetWindowState(block1);
-
-	// Open window.
 	static os::window_open block2;
-	block2.handle=_handle;
-	block2.bbox=vabox;
-	block2.scroll=scroll;
-	block2.behind=block1.behind;
-	os::Wimp_OpenWindow(block2,phandle,0);
-
-	// Get window state (which may be different from what was requested
-	// when the window was opened).
-	block1.handle=_handle;
-	os::Wimp_GetWindowState(block1);
-
-	// Update bounding box
-	_bbox=block1.bbox-origin-parent_origin;
-
-	// Recalculate extent
-	extent=calculate_extent(_bbox);
-	if (_extent!=extent)
+	int attempts=2;
+	while (attempts--)
 	{
-		os::Wimp_SetExtent(_handle,extent);
-		_extent=extent;
+		// Calculate visible area with respect to origin of screen.
+		box vabox=bbox+origin+parent_origin;
+
+		// Calculate required scroll offsets.
+		// Note that this is done after the window has been resized
+		// (therefore the scroll bars can move when the window size changes
+		// even if the child origin does not).
+		point scroll=(_child)?_bbox.xminymax()-_child->origin():point();
+
+		// Obtain parent window handle (-1 if top-level).
+		window* p=parent_work_area();
+		int phandle=(p)?p->handle():-1;
+
+		// Get window state (to preserve position in window stack).
+		block1.handle=_handle;
+		os::Wimp_GetWindowState(block1);
+
+		// Open window.
+		block2.handle=_handle;
+		block2.bbox=vabox;
+		block2.scroll=scroll;
+		block2.behind=block1.behind;
+		os::Wimp_OpenWindow(block2,phandle,0);
+
+		// Get window state (which may be different from what was requested
+		// when the window was opened).
+		block1.handle=_handle;
+		os::Wimp_GetWindowState(block1);
+
+		// Update bounding box.
+		_bbox=block1.bbox-origin-parent_origin;
+
+		// Recalculate extent.  If unchanged then terminate loop.
+		extent=calculate_extent(_bbox);
+		if (_extent!=extent)
+		{
+			os::Wimp_SetExtent(_handle,extent);
+			_extent=extent;
+		}
+		else attempts=0;
 	}
 
 	// Reformat child, if there is one.
