@@ -10,7 +10,8 @@ include fixdeps:Rules/make
 
 OBJ = version.o \
  refcount.o \
- divider.o
+ divider.o \
+ message_file.o
 
 all: timestamp
 

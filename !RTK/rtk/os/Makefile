@@ -13,6 +13,7 @@ OBJ = exception.o \
  font.o \
  wimp.o \
  colourtrans.o \
+ messagetrans.o \
  dragasprite.o
 
 all: timestamp
