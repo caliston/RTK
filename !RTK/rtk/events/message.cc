@@ -30,6 +30,19 @@ int message::msgcode() const
 	return _wimpblock->word[4];
 }
 
+void message::prepare_reply(os::wimp_block& reply,int msgcode,
+	size_type size) const
+{
+	if (size==npos) size=data().word[0];
+	unsigned int words=(size+3)>>2;
+	for (unsigned int i=5;i<words;++i) reply.word[i]=data().word[i];
+	reply.word[0]=size;
+	reply.word[1]=0;
+	reply.word[2]=0;
+	reply.word[3]=data().word[2];
+	reply.word[4]=msgcode;
+}
+
 bool message::deliver(component& dest)
 {
 	handler* h=dynamic_cast<handler*>(&dest);

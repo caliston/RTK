@@ -23,6 +23,12 @@ namespace events {
 class message:
 	public event
 {
+public:
+	/** A type for representing byte counts. */
+	typedef unsigned int size_type;
+
+	/** A null value for use in place of a byte count. */
+	static const size_type npos=static_cast<size_type>(-1);
 private:
 	/** The Wimp event block. */
 	os::wimp_block* _wimpblock;
@@ -74,6 +80,13 @@ public:
 	 */
 	const os::wimp_block& data() const
 		{ return *_wimpblock; }
+
+	/** Prepare reply to message.
+	 * @param reply the wimp block that will contain the reply
+	 * @param msgcode the required message action code
+	 * @param size the required reply length in bytes, or npos to preserve
+	 */
+	void prepare_reply(os::wimp_block& reply,int msgcode,size_type size) const;
 protected:
 	virtual bool deliver(desktop::component& dest);
 };
