@@ -9,6 +9,7 @@ OBJ = component.o \
  sizeable_component.o \
  icon.o \
  window.o \
+ menu_item.o \
  menu.o \
  application.o
 
