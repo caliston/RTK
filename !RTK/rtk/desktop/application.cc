@@ -579,6 +579,19 @@ void application::handle_event(events::dataload &ev)
 	}
 }
 
+void application::handle_event(events::dataopen &ev)
+{
+	if (ev.target()==this)
+	{
+		if (transfer::load* loadop=auto_load(ev.filetype()))
+		{
+			add(*loadop);
+			ev.target(*loadop);
+			ev.post();
+		}
+	}
+}
+
 void application::handle_event(events::reopen_menu &ev)
 {
 	if (_menus.size()&&_menus[0])

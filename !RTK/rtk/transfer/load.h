@@ -10,6 +10,7 @@
 #include "rtk/desktop/component.h"
 #include "rtk/events/datasave.h"
 #include "rtk/events/dataload.h"
+#include "rtk/events/dataopen.h"
 #include "rtk/events/ramfetch.h"
 #include "rtk/events/ramtransmit.h"
 #include "rtk/events/redirection.h"
@@ -26,6 +27,7 @@ class load:
 	public desktop::component,
 	public events::datasave::handler,
 	public events::dataload::handler,
+	public events::dataopen::handler,
 	public events::ramfetch::handler,
 	public events::ramtransmit::handler,
 	public events::redirection
@@ -88,6 +90,7 @@ public:
 
 	virtual void handle_event(events::datasave& ev);
 	virtual void handle_event(events::dataload& ev);
+	virtual void handle_event(events::dataopen& ev);
 	virtual void handle_event(events::ramfetch& ev);
 	virtual void handle_event(events::ramtransmit& ev);
 

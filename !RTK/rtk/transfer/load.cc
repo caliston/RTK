@@ -73,6 +73,18 @@ void load::handle_event(events::dataload& ev)
 	remove();
 }
 
+void load::handle_event(events::dataopen& ev)
+{
+	// A Message_DataOpen is acted upon at any time.
+	// Unlike Message_DataLoad, the reply is sent before the file is loaded.
+	ev.reply();
+	put_file(ev.pathname(),0);
+	_state=state_idle;
+	events::loaded ev2(*this,*this);
+	ev2.post();
+	remove();
+}
+
 void load::handle_event(events::ramfetch& ev)
 {
 	// A Message_RAMFetch will be a User_Message_Acknowledge if it has

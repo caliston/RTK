@@ -47,6 +47,7 @@ class application:
 	public events::quit::handler,
 	public events::datasave::handler,
 	public events::dataload::handler,
+	public events::dataopen::handler,
 	public events::reopen_menu::handler
 {
 private:
@@ -252,6 +253,11 @@ public:
 	 * @param ev the dataload event
 	 */
 	virtual void handle_event(events::dataload& ev);
+
+	/** Default handler for dataopen events.
+	 * @param ev the dataopen event
+	 */
+	virtual void handle_event(events::dataopen& ev);
 
 	/** Default handler for reopen-menu events.
 	 * If this handler remains registered then the application
