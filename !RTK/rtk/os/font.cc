@@ -49,7 +49,7 @@ void Font_Paint(int handle,const char* s,int plot,const point& p,void* coord,
 }
 
 void Font_ScanString(int handle,const char* s,int plot,const point& p,
-	void* coord,void* trans,int length,int* _split,point* _p,int* _length)
+	void* coord,void* trans,int length,char** _split,point* _p,int* _length)
 {
 	_kernel_swi_regs regs;
 	regs.r[0]=handle;
@@ -61,7 +61,7 @@ void Font_ScanString(int handle,const char* s,int plot,const point& p,
 	regs.r[6]=(int)trans;
 	regs.r[7]=length;
 	call_swi(swi::Font_ScanString,&regs);
-	if (_split) *_split=regs.r[1];
+	if (_split) *_split=(char*)regs.r[1];
 	if (_p) *_p=point(regs.r[3],regs.r[4]);
 	if (_length) *_length=regs.r[7];
 }

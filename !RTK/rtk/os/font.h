@@ -6,16 +6,29 @@
 #ifndef _RTK_OS_FONT
 #define _RTK_OS_FONT
 
+#include "rtk/graphics/point.h"
+#include "rtk/graphics/box.h"
+
 namespace rtk {
-namespace graphics {
-
-class point;
-
-}; /* namespace graphics */
-
 namespace os {
 
 using rtk::graphics::point;
+using rtk::graphics::box;
+
+struct coord_block_paint
+{
+	point space_offset;
+	point letter_offset;
+	box rubout;
+};
+
+struct coord_block_scanstring
+{
+	point space_offset;
+	point letter_offset;
+	int split_char;
+	box bbox;
+};
 
 /** Obtain handle for font.
  * @param id the font identifier (null terminated)
@@ -70,7 +83,7 @@ void Font_Paint(int handle,const char* s,int plot,const point& p,void* coord,
  *  bit 20 set), else length of string
  */
 void Font_ScanString(int handle,const char* s,int plot,const point& p,
-	void* coord,void* trans,int length,int* _split,point* _p,int* _length);
+	void* coord,void* trans,int length,char** _split,point* _p,int* _length);
 
 }; /* namespace os */
 }; /* namespace rtk */
