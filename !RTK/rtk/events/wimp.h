@@ -57,7 +57,7 @@ public:
 	virtual ~wimp();
 
 	/** Get event code.
-	 * @param the event code
+	 * @return the event code
 	 */
 	int event_code();
 
