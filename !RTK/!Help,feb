@@ -3,5 +3,5 @@
 | Distribution and use are subject to the GNU Lesser General Public License,
 | a copy of which may be found in the file !RTK.Copyright.
 
-Set RTK_Help$Path <Obey$Dir>.doc.,<Obey$Dir>.
+Set RTK_Help$Path <Obey$Dir>.html.,<Obey$Dir>.
 If "<Alias$@RunType_FAF>" <> "" Then Run RTK_Help:!RunHelp Else Filer_Run <Obey$Dir>.README
