@@ -97,11 +97,30 @@ void application::reformat(const point& origin,const box& bbox)
 	// Reformat child windows.
 	for (vector<window*>::iterator i=_windows.begin();i!=_windows.end();++i)
 	{
-		// The application object does not exercise any influence over
-		// window locations, so they are reformatted to their last known
-		// position and size.
+		// If a window has an adjust icon or a scroll bar, the application
+		// object does not exercise any influence over its position or
+		// size.  (The values passed to reformat() are those returned by
+		// origin() and bbox().)
+
+		// If a window does not have an adjust icon or a scroll bar (for
+		// a given direction), its size is forced to match the minimum
+		// bounding box.
 		if (!(*i)->layout_valid())
-			(*i)->reformat((*i)->origin(),(*i)->bbox());
+		{
+			box cbbox=(*i)->bbox();
+			box mcbbox=(*i)->min_bbox();
+			if (!(*i)->x_scroll_bar()&&!(*i)->adjust_icon())
+			{
+				cbbox.xmin(mcbbox.xmin());
+				cbbox.xmax(mcbbox.xmax());
+			}
+			if (!(*i)->y_scroll_bar()&&!(*i)->adjust_icon())
+			{
+				cbbox.ymin(mcbbox.ymin());
+				cbbox.ymax(mcbbox.ymax());
+			}
+			(*i)->reformat((*i)->origin(),cbbox);
+		}
 	}
 	// Reformat child icons.
 	for (vector<icon*>::iterator i=_icons.begin();i!=_icons.end();++i)
