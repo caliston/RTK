@@ -130,6 +130,9 @@ private:
 	 */
 	size_type _dbox_level;
 
+	/** A list of components which need to receive null events. */
+	vector<component*> _null;
+
 	/** The owner of the current drag action. */
 	component* _current_drag;
 
@@ -352,6 +355,11 @@ public:
 	 */
 	void register_menu_data(util::refcount* mdata,unsigned int level);
 
+	/** Register null action.
+	 * @param c the component to be registered to receive null events.
+	 */
+	void register_null(component& c);
+
 	/** Register drag action.
 	 * @param c the component to be registered as the owner of the
 	 *  current drag action.
@@ -372,6 +380,11 @@ public:
 	 * @param ic the icon to be deregistered.
 	 */
 	void deregister_icon(icon& ic);
+
+	/** Deregister null action.
+	 * @param c the component to be reregistered.
+	 */
+	void deregister_null(component& c);
 
 	/** Deregister drag action.
 	 * @param c the component to be deregistered.

@@ -373,8 +373,13 @@ void application::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 	{
 	case 0:
 		{
-			events::null_reason ev(*this);
-			bool found=ev.post();
+			bool found=false;
+			for (vector<component*>::iterator i=_null.begin();
+				i!=_null.end();++i)
+			{
+				events::null_reason ev(**i);
+				found|=ev.post();
+			}
 			if (!found) _wimp_mask|=1;
 		}
 		break;
@@ -653,6 +658,13 @@ void application::register_menu_data(util::refcount* mdata,unsigned int level)
 	_mdata[level]=mdata;
 }
 
+void application::register_null(component& c)
+{
+	vector<component*>::iterator f=std::find(_null.begin(),_null.end(),&c);
+	if (f==_null.end()) _null.push_back(&c);
+	_wimp_mask&=~1;
+}
+
 void application::register_drag(component& c,bool sprite)
 {
 	_current_drag=&c;
@@ -671,6 +683,12 @@ void application::deregister_window(basic_window& w)
 void application::deregister_icon(icon& ic)
 {
 	_ihandles.erase(ic.handle());
+}
+
+void application::deregister_null(component& c)
+{
+	vector<component*>::iterator f=std::find(_null.begin(),_null.end(),&c);
+	if (f!=_null.end()) _null.erase(f);
 }
 
 void application::deregister_drag(component& c)
