@@ -5,3 +5,4 @@
 
 all:
 	$(MAKE) -C graphics
+	$(MAKE) -C os
