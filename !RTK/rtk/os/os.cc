@@ -21,6 +21,15 @@ void OS_Byte161(int address,int* _value)
 	if (_value) *_value=regs.r[2];
 }
 
+void OS_Args5(int handle,bool* _eof)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=5;
+	regs.r[1]=handle;
+	call_swi(swi::OS_Args,&regs);
+	if (_eof) *_eof=regs.r[2]!=0;
+}
+
 void OS_Find(int code,const char* name,const char* path,int* _handle)
 {
 	_kernel_swi_regs regs;

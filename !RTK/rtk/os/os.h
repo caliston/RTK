@@ -24,6 +24,12 @@ struct sprite_area;
  */
 void OS_Byte161(int address,int* _value);
 
+/** Read EOF status.
+ * @param handle the file handle
+ * @param _eof a buffer for the returned EOF status (true=EOF)
+ */
+void OS_Args5(int handle,bool* _eof);
+
 /** Open file.
  * @param code the reason code
  * @param name the object name
