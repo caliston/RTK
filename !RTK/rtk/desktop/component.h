@@ -491,7 +491,6 @@ protected:
 	 * set_parent().  It should be called by a container component
 	 * whenever a child is added.
 	 * @param c the child for which this is the new parent
-	 * @postcondition c.parent()==this
 	 */
 	void link_child(component& c);
 
@@ -503,7 +502,7 @@ protected:
 	 * track its children.  It does not normally need to do anything to
 	 * the child, because the required actions should already be in hand.
 	 * The default behavior is to do nothing.
-	 * @parent c the child about to be removed
+	 * @param c the child about to be removed
 	 */
 	virtual void remove_notify(component& c);
 

@@ -139,7 +139,7 @@ protected:
 	/** Get block.
 	 * The callee is free to offer any size of block, and may offer
 	 * a different size each time it is called.
-	 * @param block a buffer for the returned block pointer
+	 * @param data a buffer for the returned block pointer
 	 * @param size a buffer for the returned block size in bytes
 	 */
 	virtual void get_block(void** data,size_type* size)=0;

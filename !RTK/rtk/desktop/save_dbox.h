@@ -153,7 +153,7 @@ public:
 	/** Attach save operation.
 	 * If a save operation is attached, it will be used to save the data
 	 * when requested by the user.
-	 * @param sa the required save action
+	 * @param saveop the required save action
 	 */
 	save_dbox& attach_save(transfer::save& saveop);
 
