@@ -295,7 +295,7 @@ void application::run()
 				message msg=_message_queue.front();
 				_message_queue.pop();
 				os::Wimp_SendMessage(msg.wimpcode,*msg.wimpblock,
-					msg.handle,0,0);
+					msg.whandle,msg.ihandle,0);
 				delete msg.wimpblock;
 			}
 		}
@@ -434,12 +434,13 @@ void application::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 }
 
 void application::send_message(int wimpcode,os::wimp_block& wimpblock,
-	int handle)
+	int whandle,int ihandle)
 {
 	message msg;
 	msg.wimpcode=wimpcode;
 	msg.wimpblock=&wimpblock;
-	msg.handle=handle;
+	msg.whandle=whandle;
+	msg.ihandle=ihandle;
 	_message_queue.push(msg);
 }
 

@@ -55,8 +55,10 @@ private:
 		int wimpcode;
 		/** A pointer to the Wimp event block containing the message. */
 		os::wimp_block* wimpblock;
-		/** The task handle to which the message is to be sent. */
-		int handle;
+		/** The window or task handle to which the message should be sent. */
+		int whandle;
+		/** The icon handle to which the message should be sent. */
+		int ihandle;
 	};
 
 	/** The RISC OS task handle. */
@@ -246,9 +248,13 @@ public:
 	 * It is automatically deleted once the message has been sent.
 	 * @param wimpcode the Wimp event code
 	 * @param wimpblock the Wimp event block
-	 * @param handle the task handle to which the message is to be sent
+	 * @param whandle the window or task handle to which the message
+	 *  should be sent (-2 for icon bar)
+	 * @param ihandle the icon handle to which the message should be
+	 *  send (if whandle==-2)
 	 */
-	void send_message(int wimpcode,os::wimp_block& wimpblock,int handle);
+	void send_message(int wimpcode,os::wimp_block& wimpblock,int whandle,
+		int ihandle=0);
 
 	/** Register window.
 	 * A window should be registered while it has a Wimp window handle
