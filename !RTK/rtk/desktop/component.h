@@ -460,6 +460,9 @@ public:
 	 */
 	void set_caret_position(point p,int height,int index);
 
+	/** Begin drag action.
+	 * @param dbox the box to be dragged
+	 */
 	void drag_box(const box& dbox);
 protected:
 	/** Link parent pointer of child to this component.
