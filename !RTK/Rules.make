@@ -4,7 +4,7 @@
 # a copy of which may be found in the file !RTK.Copyright.
 
 CXX = gcc
-FIXDEPS = fix-deps
+FIXDEPS = fixdeps
 
 CPPFLAGS = -Irtk:
 CXXFLAGS = -mthrowback -munixlib -mpoke-function-name -Wall -W -Wno-unused -O2
