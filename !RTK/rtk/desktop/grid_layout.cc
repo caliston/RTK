@@ -226,7 +226,7 @@ void grid_layout::redraw(gcontext& context,const box& clip)
 	vector<int>::iterator xf1=lower_bound(
 		_xmin.begin(),_xmin.end(),clip.xmax(),less<int>());
 	size_type x1=xf1-_xmin.begin();
-	if (x1>_components.size()) x1=_components.size();
+	if (x1>_xcells) x1=_xcells;
 
 	// Look for the first row with a lower edge which overlaps (or is
 	// below) the clip box: _ymax[y0+1] + _ygap < clip.ymax().
@@ -240,7 +240,7 @@ void grid_layout::redraw(gcontext& context,const box& clip)
 	vector<int>::iterator yf1=lower_bound(
 		_ymax.begin(),_ymax.end(),clip.ymin(),greater<int>());
 	size_type y1=yf1-_ymax.begin();
-	if (y1>_components.size()) y1=_components.size();
+	if (y1>_xcells) y1=_xcells;
 
 	// Redraw children.
 	// For safety, use inequalities in the for-loops.
