@@ -158,9 +158,9 @@ component& component::origin(const point& origin,bool suppress_redraw)
 		if (!suppress_redraw) force_redraw(true);
 		// Move component to specified location.
 		_origin=origin;
-		// Invalidate component, so that the parent (if there is one) can
-		// either accept the new location or override it.
-		invalidate();
+		// Invalidate parent (if there is one) so that it can either
+		// accept the new location or override it.
+		if (_parent) _parent->invalidate();
 	}
 	return *this;
 }
