@@ -14,9 +14,11 @@ make -C rtk/os
 make -C rtk/graphics
 make -C rtk/desktop
 make -C rtk/events
+make -C rtk/transfer
 mkdir -p a
 libfile -c a.rtk rtk.util.o.*
 libfile -i a.rtk rtk.graphics.o.*
 libfile -i a.rtk rtk.os.o.*
 libfile -i a.rtk rtk.events.o.*
 libfile -i a.rtk rtk.desktop.o.*
+libfile -i a.rtk rtk.transfer.o.*

@@ -13,3 +13,4 @@ all:
 	$(AR) -i a.rtk rtk.os.o.*
 	$(AR) -i a.rtk rtk.desktop.o.*
 	$(AR) -i a.rtk rtk.events.o.*
+	$(AR) -i a.rtk rtk.transfer.o.*

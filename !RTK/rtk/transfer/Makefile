@@ -3,10 +3,10 @@
 # Distribution and use are subject to the GNU Lesser General Public License,
 # a copy of which may be found in the file !RTK.Copyright.
 
-all:
-	$(MAKE) -C util
-	$(MAKE) -C graphics
-	$(MAKE) -C os
-	$(MAKE) -C desktop
-	$(MAKE) -C events
-	$(MAKE) -C transfer
+include ../../Rules.make
+
+OBJ = load.o
+
+all: $(OBJ)
+
+include $(OBJ:.o=.d)
