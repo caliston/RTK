@@ -220,17 +220,19 @@ public:
 	window* parent_work_area(point& p) const;
 
 	/** Get the application from which this component is descended.
+	 * If this component is an application then return this.
 	 * @return the application if there is one, otherwise 0
 	 */
-	application* parent_application() const;
+	application* parent_application();
 
 	/** Get the application from which this component is descended.
 	 * Additionally, translate the point p from the coordinate space
 	 * of this component to that of the desktop.
+	 * If this component is an application then return this.
 	 * @param p the point to be translated
 	 * @return the application if there is one, otherwise 0
 	 */
-	application* parent_application(point& p) const;
+	application* parent_application(point& p);
 
 	/** Determine whether this component is a window.
 	 * This function is equivalent to dynamic_cast<window*>, but probably

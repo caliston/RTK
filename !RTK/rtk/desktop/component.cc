@@ -96,8 +96,9 @@ window* component::parent_work_area(point& p) const
 	return 0;
 }
 
-application* component::parent_application() const
+application* component::parent_application()
 {
+	if (application* app=as_application()) return app;
 	component* pc=_parent;
 	while (pc)
 	{
@@ -107,8 +108,9 @@ application* component::parent_application() const
 	return 0;
 }
 
-application* component::parent_application(point& p) const
+application* component::parent_application(point& p)
 {
+	if (application* app=as_application()) return app;
 	const component* c=this;
 	component* pc=c->_parent;
 	while (pc)
