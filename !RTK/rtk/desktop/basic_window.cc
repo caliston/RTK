@@ -444,6 +444,11 @@ void basic_window::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 			{
 				ic->deliver_wimp_block(wimpcode,wimpblock);
 			}
+			else if (component* target=find_focus_target())
+			{
+				events::key_pressed ev(*target,wimpblock);
+				ev.post();
+			}
 			else
 			{
 				component* target=this;
@@ -631,6 +636,22 @@ component* basic_window::find_target(const point& pos)
 	{
 		target=child;
 		lpos-=child->origin();
+	}
+	return target;
+}
+
+component* basic_window::find_focus_target()
+{
+	component* target=0;
+	if (application* app=parent_application())
+	{
+		if (component* focus=app->current_selection())
+		{
+			if (focus->parent_work_area()==this)
+			{
+				target=focus;
+			}
+		}
 	}
 	return target;
 }

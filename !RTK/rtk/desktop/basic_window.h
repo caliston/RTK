@@ -524,8 +524,14 @@ public:
 private:
 	/** Find target of event.
 	 * @param pos the coordinates of the event, with respect to the screen
+	 * @return the corresponding event target
 	 */
 	component* find_target(const point& pos);
+
+	/** Find target for current focus.
+	 * @return the corresponding event target
+	 */
+	component* find_focus_target();
 
 	/** Reformat window.
 	 * @internal
