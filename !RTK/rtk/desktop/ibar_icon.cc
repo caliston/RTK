@@ -5,7 +5,7 @@
 
 #include "rtk/desktop/menu.h"
 #include "rtk/desktop/ibar_icon.h"
-#include "rtk/desktop/window.h"
+#include "rtk/desktop/basic_window.h"
 #include "rtk/desktop/application.h"
 
 namespace rtk {
@@ -55,13 +55,13 @@ void ibar_icon::handle_event(rtk::events::mouse_click& ev)
 	}
 }
 
-ibar_icon& ibar_icon::attach_select_window(window& w)
+ibar_icon& ibar_icon::attach_select_window(basic_window& w)
 {
 	_select_window=&w;
 	return *this;
 }
 
-ibar_icon& ibar_icon::attach_adjust_window(window& w)
+ibar_icon& ibar_icon::attach_adjust_window(basic_window& w)
 {
 	_adjust_window=&w;
 	return *this;

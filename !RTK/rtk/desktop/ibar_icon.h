@@ -14,7 +14,7 @@ namespace rtk {
 namespace desktop {
 
 class menu;
-class window;
+class basic_window;
 
 class ibar_icon:
 	public rtk::desktop::icon,
@@ -25,10 +25,10 @@ private:
 	typedef icon inherited;
 
 	/** The attached window (select button), or 0 if there is none. */
-	window* _select_window;
+	basic_window* _select_window;
 
 	/** The attached window (adjust button), or 0 if there is none. */
-	window* _adjust_window;
+	basic_window* _adjust_window;
 
 	/** The attached menu, or 0 if there is none. */
 	rtk::desktop::menu* _menu;
@@ -46,13 +46,13 @@ public:
 	/** Get window attached to this icon (select button).
 	 * @return the attached window, or 0 if there is none
 	 */
-	window* select_window() const
+	basic_window* select_window() const
 		{ return _select_window; }
 
 	/** Get window attached to this icon (adjust button).
 	 * @return the attached window, or 0 if there is none
 	 */
-	window* adjust_window() const
+	basic_window* adjust_window() const
 		{ return _adjust_window; }
 
 	/** Get menu attached to this icon.
@@ -65,13 +65,13 @@ public:
 	 * This window is opened when the user clicks select over the icon.
 	 * @param w the window to be attached
 	 */
-	ibar_icon& attach_select_window(window& w);
+	ibar_icon& attach_select_window(basic_window& w);
 
 	/** Attach window (adjust button).
 	 * This window is opened when the user clicks adjust over the icon.
 	 * @param w the window to be attached
 	 */
-	ibar_icon& attach_adjust_window(window& w);
+	ibar_icon& attach_adjust_window(basic_window& w);
 
 	/** Attach menu.
 	 * This menu is opened when the user clicks menu over the icon.
