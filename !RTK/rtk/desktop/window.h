@@ -428,7 +428,7 @@ public:
 	 * @return the handle of the window in front of this one, or -1 if
 	 *  this window is at the top of the window stack
 	 */
-	int window::behind() const;
+	int behind() const;
 private:
 	/** Reformat window.
 	 * @internal
