@@ -214,12 +214,43 @@ void grid_layout::unformat()
 
 void grid_layout::redraw(gcontext& context,const box& clip)
 {
-	vector<component*>::iterator i=_components.begin();
-	for (size_type y=0;y!=_ycells;++y)
+	// Look for the first column with a right edge which overlaps (or is to
+	// the right of) the clip box: _xmin[x0+1] -_xgap > clip.xmin().
+	vector<int>::iterator xf0=upper_bound(
+		_xmin.begin(),_xmin.end(),clip.xmin()+_xgap,less<int>());
+	size_type x0=xf0-_xmin.begin();
+	if (x0) --x0;
+
+	// Look for the first column with a left edge which is to the right of
+	// the clip box: _xmin[x1] >= clip.xmax().
+	vector<int>::iterator xf1=lower_bound(
+		_xmin.begin(),_xmin.end(),clip.xmax(),less<int>());
+	size_type x1=xf1-_xmin.begin();
+	if (x1>_components.size()) x1=_components.size();
+
+	// Look for the first row with a lower edge which overlaps (or is
+	// below) the clip box: _ymax[y0+1] + _ygap < clip.ymax().
+	vector<int>::iterator yf0=upper_bound(
+		_ymax.begin(),_ymax.end(),clip.ymax()-_ygap,greater<int>());
+	size_type y0=yf0-_ymax.begin();
+	if (y0) --y0;
+
+	// Look for the first row with an upper edge which is below the
+	// clip box: _ymax[y1] <= clip.ymin().
+	vector<int>::iterator yf1=lower_bound(
+		_ymax.begin(),_ymax.end(),clip.ymin(),greater<int>());
+	size_type y1=yf1-_ymax.begin();
+	if (y1>_components.size()) y1=_components.size();
+
+	// Redraw children.
+	// For safety, use inequalities in the for-loops.
+	vector<component*>::iterator i=_components.begin()+y0*_xcells;
+	for (size_type y=y0;y<y1;++y)
 	{
-		for (size_type x=0;x!=_xcells;++x)
+		vector<component*>::iterator j=i+x0;
+		for (size_type x=x0;x<x1;++x)
 		{
-			if (component* c=*i++)
+			if (component* c=*j++)
 			{
 				point cpos(c->origin());
 				context+=cpos;
@@ -227,6 +258,7 @@ void grid_layout::redraw(gcontext& context,const box& clip)
 				context-=cpos;
 			}
 		}
+		i+=_xcells;
 	}
 	inherited::redraw(context,clip);
 }
