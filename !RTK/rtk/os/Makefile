@@ -9,7 +9,8 @@ OBJ = exception.o \
  os.o \
  font.o \
  wimp.o \
- colourtrans.o
+ colourtrans.o \
+ dragasprite.o
 
 all: $(OBJ)
 
