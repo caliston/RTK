@@ -4,20 +4,12 @@
 # a copy of which may be found in the file !RTK.Copyright.
 
 CXX = gcc
-AS = objasm
 FIXDEPS = fix-deps
 
 CPPFLAGS = -Irtk:
 CXXFLAGS = -mthrowback -munixlib -mpoke-function-name -Wall -W -Wno-unused -O2
-ASFLAGS = -throwback
 
-.SUFFIXES: .o .s .cc .d .dd
-
-.s.o:
-	$(AS) $(ASFLAGS) $<
-
-.s.d:
-	$(FIXDEPS) $* < /dev/null > $@
+.SUFFIXES: .o .cc .d .dd
 
 .cc.o:
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) -o $@ $<
