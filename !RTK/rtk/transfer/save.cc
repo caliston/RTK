@@ -244,6 +244,7 @@ void save::get_file(const string& pathname)
 		get_block(&_ldata,&_lsize);
 	}
 	os::OS_Find0(fhandle);
+	os::OS_File18(pathname.c_str(),filetype());
 	finish();
 }
 
