@@ -5,8 +5,8 @@ all:
 	make doc
 	mkdir -p Temp
 	Wipe Temp ~CFR~V
-	mkdir -p Temp.RiscPkg
-	mkdir -p Temp.Apps.Library
+	mkdir -p Temp/RiscPkg
+	mkdir -p Temp/Apps/Library
 	Copy !RTK Temp.Apps.Library.!RTK ~CFR~V
 	Access Temp.Apps.Library.!RTK.* LR/R
 	Access Temp.Apps.Library.!RTK.a.* LR/R
