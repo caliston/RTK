@@ -26,11 +26,14 @@ void event::target(component& target)
 bool event::post()
 {
 	bool handled=false;
-	component *dest=_target;
+	component* dest=_target;
 	while (dest)
 	{
+		// Request parent before delivering event, in case component
+		// does not exist after event has been handled.
+		component* parent=dest->redirected_parent();
 		handled|=deliver(*dest);
-		dest=dest->redirected_parent();
+		dest=parent;
 	}
 	return handled;
 }
