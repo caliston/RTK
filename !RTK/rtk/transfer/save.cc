@@ -138,6 +138,8 @@ void save::handle_event(events::save_to_file& ev)
 	_pathname=ev.pathname();
 	_secure=true;
 	_state=state_idle;
+	events::saved ev2(*this,*this);
+	ev2.post();
 }
 
 save& save::filetype(unsigned int filetype)
