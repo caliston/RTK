@@ -42,14 +42,13 @@ bool help_request::deliver(component& dest)
 
 void help_request::reply(const string& text) const
 {
-	os::wimp_block& block=*new os::wimp_block;
+	os::wimp_block block;
 	block.word[3]=_msg_ref;
 	block.word[4]=swi::Message_HelpReply;
 	unsigned int i=text.copy(block.byte+20,223);
 	block.byte[20+i]=0;
 	block.word[0]=20+((i+4)&~3);
-	if (desktop::application* app=target()->parent_application())
-		app->send_message(swi::User_Message,block,_help_task);
+	os::Wimp_SendMessage(swi::User_Message,block,_help_task,0,0);
 }
 
 }; /* namespace events */
