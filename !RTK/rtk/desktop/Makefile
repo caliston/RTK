@@ -23,6 +23,7 @@ OBJ = component.o \
  radio_button.o \
  display_field.o \
  writable_field.o \
+ progress_bar.o \
  window.o \
  info_dbox.o \
  save_dbox.o \
