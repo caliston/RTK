@@ -17,6 +17,9 @@ writable_field::writable_field()
 	fcolour(7).bcolour(0);
 	button(14);
 	yfit(false);
+	xbaseline(xbaseline_text);
+	ybaseline(ybaseline_text);
+	min_bbox(box(0,0,16,0));
 }
 
 }; /* namespace desktop */
