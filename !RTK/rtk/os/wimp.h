@@ -546,6 +546,13 @@ void Wimp_TextColour(int colour);
 void Wimp_TransferBlock(int src_thandle,void* src_buffer,
 	int dst_thandle,void* dst_buffer,unsigned int count);
 
+/** Read system information.
+ * @param index an index to select the required information
+ * @param _r0 a buffer for the value returned in R0
+ * @param _r1 a buffer for the value returned in R1 (if any)
+ */
+void Wimp_ReadSysInfo(int index,int* _r0,int* _r1);
+
 /** Set colours for use by Wimp_TextOp2.
  * @param fcolour the foreground palette entry
  * @param bcolour the background palette entry

@@ -321,6 +321,15 @@ void Wimp_TransferBlock(int src_thandle,void* src_buffer,
 	call_swi(swi::Wimp_TransferBlock,&regs);
 }
 
+void Wimp_ReadSysInfo(int index,int* _r0,int* _r1)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=index;
+	call_swi(swi::Wimp_ReadSysInfo,&regs);
+	if (_r0) *_r0=regs.r[0];
+	if (_r1) *_r1=regs.r[1];
+}
+
 void Wimp_TextOp0(int fcolour,int bcolour)
 {
 	_kernel_swi_regs regs;
