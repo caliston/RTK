@@ -184,10 +184,25 @@ void row_layout::unformat()
 
 void row_layout::redraw(gcontext& context,const box& clip)
 {
-	for (vector<component*>::iterator i=_components.begin();
-		i!=_components.end();++i)
+	// Look for the first column with a right edge which overlaps (or is to
+	// the right of) the clip box: _xmin[x0+1] -_xgap > clip.xmin().
+	vector<int>::iterator xf0=upper_bound(
+		_xmin.begin(),_xmin.end(),clip.xmin()+_xgap,less<int>());
+	size_type x0=xf0-_xmin.begin();
+	if (x0) --x0;
+
+	// Look for the first column with a left edge which is to the right of
+	// the clip box: _xmin[x1] >= clip.xmax().
+	vector<int>::iterator xf1=lower_bound(
+		_xmin.begin(),_xmin.end(),clip.xmax(),less<int>());
+	size_type x1=xf1-_xmin.begin();
+	if (x1>_components.size()) x1=_components.size();
+
+	// Redraw children.
+	// For safety, use an inequality in the for-loop.
+	for (size_type x=x0;x<x1;++x)
 	{
-		if (component* c=*i)
+		if (component* c=_components[x])
 		{
 			point cpos=c->origin();
 			context+=cpos;
