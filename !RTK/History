@@ -1,0 +1,14 @@
+Version 0.1.0 (12 Sep 2003)
+
+  Added class desktop::absolute_layout.
+  Added class desktop::virtual_row_layout.
+  Added class desktop::virtual_column_layout.
+  Added class desktop::virtual_grid_layout.
+  Implemented event redirection.
+  Implemented help protocol.
+  Reduced unnecessary redraws.
+  Miscellaneous bug fixes.
+
+Version 0.0.0 (01 Sep 2003)
+
+  Initial revision
