@@ -240,7 +240,7 @@ void grid_layout::redraw(gcontext& context,const box& clip)
 	vector<int>::iterator yf1=lower_bound(
 		_ymax.begin(),_ymax.end(),clip.ymin(),greater<int>());
 	size_type y1=yf1-_ymax.begin();
-	if (y1>_xcells) y1=_xcells;
+	if (y1>_ycells) y1=_ycells;
 
 	// Redraw children.
 	// For safety, use inequalities in the for-loops.
