@@ -567,6 +567,7 @@ icon& icon::hcentre(bool value)
 	_hcentre=value;
 	set_state();
 	force_redraw();
+	invalidate();
 	return *this;
 }
 
@@ -575,6 +576,7 @@ icon& icon::vcentre(bool value)
 	_vcentre=value;
 	set_state();
 	force_redraw();
+	invalidate();
 	return *this;
 }
 
@@ -591,6 +593,7 @@ icon& icon::rjustify(bool value)
 	_rjustify=value;
 	set_state();
 	force_redraw();
+	invalidate();
 	return *this;
 }
 
