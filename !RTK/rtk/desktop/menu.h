@@ -265,8 +265,10 @@ public:
 	 * specified mouse click event.  A suitable offset is applied
 	 * to the coordinates to comply with the style guide.
 	 * @param ev the mouse click event
+	 * @param redirect true to redirect events to target of mouse click,
+	 *  otherwise false
 	 */
-	void show(const events::mouse_click& ev);
+	void show(const events::mouse_click& ev,bool redirect=true);
 
 	/** Re-open menu.
 	 * This function may be called on receipt of a menu selection

@@ -269,7 +269,7 @@ void menu::reopen()
 	invalidate();
 }
 
-void menu::show(const events::mouse_click& ev)
+void menu::show(const events::mouse_click& ev,bool redirect)
 {
 	// Translate pointer location from coordinate space of target
 	// to coordinate space of screen.
@@ -297,6 +297,9 @@ void menu::show(const events::mouse_click& ev)
 		if (app)
 			app->add(*this,point(p.x()-64,p.y())-offset);
 	}
+
+	// Redirect events to target of mouse click.
+	if (redirect) this->redirect(target);
 }
 
 void menu::deliver_wimp_block(int wimpcode,os::wimp_block &wimpblock,
