@@ -4,6 +4,7 @@
 # a copy of which may be found in the file !RTK.Copyright.
 
 all:
+	$(MAKE) -C util
 	$(MAKE) -C graphics
 	$(MAKE) -C os
 	$(MAKE) -C desktop
