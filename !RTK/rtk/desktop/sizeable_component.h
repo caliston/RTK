@@ -49,6 +49,11 @@ public:
 	 */
 	sizeable_component& min_bbox(const box& min_bbox);
 
+	/** Set size of minimum bounding box.
+	 * The position of the bounding box is chosen to suit the baselines.
+	 */
+	sizeable_component& min_size(const point& min_size);
+
 	/** Get bounding box needed to fit content.
 	 * @return the bounding box needed to fit the content of this component
 	 */

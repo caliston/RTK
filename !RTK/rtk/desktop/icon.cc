@@ -291,114 +291,8 @@ icon::~icon()
 
 box icon::auto_bbox() const
 {
-	int xeigfactor=0;
-	int yeigfactor=0;
-	os::OS_ReadModeVariable(swi::XEigFactor,&xeigfactor);
-	os::OS_ReadModeVariable(swi::YEigFactor,&yeigfactor);
-
-	// Initialise dimensions and border type.
-	int prefxsize=0;
-	int prefysize=0;
-	int descent=0;
-	unsigned int border_type=0;
-
-	switch (_itype)
-	{
-	case empty_icon:
-		prefxsize=0;
-		prefysize=0;
-		break;
-	case text_icon:
-		char sprite0[16];
-		char sprite1[16];
-		*sprite0=0;
-		*sprite1=0;
-		if (_val)
-		{
-			char* p=_val;
-			parse_validation(p,&border_type,sprite0,sprite1);
-		}
-		if (_text) os::Wimp_TextOp1(_text,0,&prefxsize);
-		prefxsize+=16;
-		prefysize=44;
-		descent=4;
-		if (_text_and_sprite==1)
-		{
-			int spxsize=0;
-			int spysize=0;
-			if (*sprite0!=0) sprite_size(0,sprite0,&spxsize,&spysize);
-			else if (_text) sprite_size(0,_text,&spxsize,&spysize);
-			spxsize<<=xeigfactor;
-			spysize<<=yeigfactor;
-			if (_half_size)
-			{
-				spxsize=(spxsize+1)>>1;
-				spysize=(spysize+1)>>1;
-			}
-			switch ((_hcentre<<2)+(_vcentre<<1)+_rjustify)
-			{
-			case 0:
-			case 1:
-			case 4:
-			case 5:
-			case 6:
-				if (spxsize>prefxsize) prefxsize=spxsize;
-				break;
-			case 2:
-				prefxsize+=12+spxsize;
-				break;
-			case 3:
-			case 7:
-				prefxsize+=spxsize;
-				break;
-			}
-			if (_vcentre) { if (spysize>prefysize) prefysize=spysize; }
-			else prefysize+=spysize;
-		}
-		break;
-	case named_sprite_icon:
-		{
-			int spxsize=0;
-			int spysize=0;
-			sprite_size(_area,_name,&spxsize,&spysize);
-			spxsize<<=xeigfactor;
-			spysize<<=yeigfactor;
-			if (_half_size)
-			{
-				spxsize=(spxsize+1)>>1;
-				spysize=(spysize+1)>>1;
-			}
-			prefxsize=spxsize;
-			prefysize=spysize;
-		}
-		break;
-	case sprite_icon:
-		{
-			int spxsize=0;
-			int spysize=0;
-			sprite_size(_area,_sprite,&spxsize,&spysize);
-			spxsize<<=xeigfactor;
-			spysize<<=yeigfactor;
-			if (_half_size)
-			{
-				spxsize=(spxsize+1)>>1;
-				spysize=(spysize+1)>>1;
-			}
-			prefxsize=spxsize;
-			prefysize=spysize;
-		}
-		break;
-	}
-
-	// Round up to nearest pixel.
-	prefxsize=((prefxsize+(1<<xeigfactor)-1)>>xeigfactor)<<xeigfactor;
-	prefysize=((prefysize+(1<<yeigfactor)-1)>>yeigfactor)<<yeigfactor;
-
-	// Construct minimum bounding box with respect to alpha baselines.
-	box abbox(0,-descent,prefxsize,prefysize-descent);
-
-	// Add border.
-	abbox+=make_border_box(_border,border_type);
+	// Auto bounding box = content + border.
+	box abbox=content_box()+border_box();
 
 	// Translate to external origin and return.
 	abbox-=external_origin(abbox,xbaseline_text,ybaseline_text);
@@ -876,6 +770,115 @@ void icon::set_state()
 		block.bic=-1;
 		os::Wimp_SetIconState(block);
 	}
+}
+
+box icon::content_box() const
+{
+	int xeigfactor=0;
+	int yeigfactor=0;
+	os::OS_ReadModeVariable(swi::XEigFactor,&xeigfactor);
+	os::OS_ReadModeVariable(swi::YEigFactor,&yeigfactor);
+
+	// Initialise dimensions and border type.
+	int prefxsize=0;
+	int prefysize=0;
+	int descent=0;
+	unsigned int border_type=0;
+
+	switch (_itype)
+	{
+	case empty_icon:
+		prefxsize=0;
+		prefysize=0;
+		break;
+	case text_icon:
+		char sprite0[16];
+		char sprite1[16];
+		*sprite0=0;
+		*sprite1=0;
+		if (_val)
+		{
+			char* p=_val;
+			parse_validation(p,&border_type,sprite0,sprite1);
+		}
+		if (_text) os::Wimp_TextOp1(_text,0,&prefxsize);
+		prefxsize+=16;
+		prefysize=44;
+		descent=4;
+		if (_text_and_sprite==1)
+		{
+			int spxsize=0;
+			int spysize=0;
+			if (*sprite0!=0) sprite_size(0,sprite0,&spxsize,&spysize);
+			else if (_text) sprite_size(0,_text,&spxsize,&spysize);
+			spxsize<<=xeigfactor;
+			spysize<<=yeigfactor;
+			if (_half_size)
+			{
+				spxsize=(spxsize+1)>>1;
+				spysize=(spysize+1)>>1;
+			}
+			switch ((_hcentre<<2)+(_vcentre<<1)+_rjustify)
+			{
+			case 0:
+			case 1:
+			case 4:
+			case 5:
+			case 6:
+				if (spxsize>prefxsize) prefxsize=spxsize;
+				break;
+			case 2:
+				prefxsize+=12+spxsize;
+				break;
+			case 3:
+			case 7:
+				prefxsize+=spxsize;
+				break;
+			}
+			if (_vcentre) { if (spysize>prefysize) prefysize=spysize; }
+			else prefysize+=spysize;
+		}
+		break;
+	case named_sprite_icon:
+		{
+			int spxsize=0;
+			int spysize=0;
+			sprite_size(_area,_name,&spxsize,&spysize);
+			spxsize<<=xeigfactor;
+			spysize<<=yeigfactor;
+			if (_half_size)
+			{
+				spxsize=(spxsize+1)>>1;
+				spysize=(spysize+1)>>1;
+			}
+			prefxsize=spxsize;
+			prefysize=spysize;
+		}
+		break;
+	case sprite_icon:
+		{
+			int spxsize=0;
+			int spysize=0;
+			sprite_size(_area,_sprite,&spxsize,&spysize);
+			spxsize<<=xeigfactor;
+			spysize<<=yeigfactor;
+			if (_half_size)
+			{
+				spxsize=(spxsize+1)>>1;
+				spysize=(spysize+1)>>1;
+			}
+			prefxsize=spxsize;
+			prefysize=spysize;
+		}
+		break;
+	}
+
+	// Round up to nearest pixel.
+	prefxsize=((prefxsize+(1<<xeigfactor)-1)>>xeigfactor)<<xeigfactor;
+	prefysize=((prefysize+(1<<yeigfactor)-1)>>yeigfactor)<<yeigfactor;
+
+	// Return bounding box with respect to alpha baselines.
+	return box(0,-descent,prefxsize,prefysize-descent);
 }
 
 box icon::border_box() const

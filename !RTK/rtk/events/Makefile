@@ -33,6 +33,8 @@ OBJ = event.o \
  reopen_menu.o \
  save_to_file.o \
  save_to_app.o \
+ discard.o \
+ save.o \
  loaded.o \
  saved.o \
  redirection.o

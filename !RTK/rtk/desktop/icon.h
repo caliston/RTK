@@ -523,6 +523,14 @@ public:
 	 */
 	os::icon_data icon_data() const;
 
+	/** Get content box.
+	 * This is the preferred bounding box for the content of the icon
+	 * (excluding the border if there is one).  It is returned with
+	 * respect to xbaseline_alpha and ybaseline_alpha.
+	 * @return the content box
+	 */
+	box content_box() const;
+
 	/** Get border box.
 	 * This is the difference between the bounding box of the icon and
 	 * the bounding box of its content.
