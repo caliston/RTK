@@ -10,6 +10,7 @@ OBJ = component.o \
  grid_layout.o \
  row_layout.o \
  column_layout.o \
+ label.o \
  icon.o \
  action_button.o \
  default_button.o \
