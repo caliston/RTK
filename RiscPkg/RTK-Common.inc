@@ -1,0 +1,11 @@
+RiscPkg.*
+SysVars.RTK=24Dir
+SysVars.RTK=24Path
+Apps.Library.!RTK.!Boot
+Apps.Library.!RTK.!Help
+Apps.Library.!RTK.!Run
+Apps.Library.!RTK.!RunHelp
+Apps.Library.!RTK.!Sprites
+Apps.Library.!RTK.Copyright
+Apps.Library.!RTK.History
+Apps.Library.!RTK.README

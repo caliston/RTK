@@ -1,0 +1,31 @@
+VERSION = 0/4/0-0
+
+all:
+	CDir Temp
+	Wipe Temp ~CFR~V
+	CDir Temp
+	CDir Temp.RiscPkg
+	CDir Temp.Apps
+	CDir Temp.Apps.Library
+	Copy !RTK Temp.Apps.Library.!RTK ~CFR~V
+	Access Temp.Apps.Library.!RTK.* LR/R
+	Access Temp.Apps.Library.!RTK.a.* LR/R
+	Access Temp.Apps.Library.!RTK.html.* LR/R
+	Access Temp.Apps.Library.!RTK.rtk.desktop.h.* LR/R
+	Access Temp.Apps.Library.!RTK.rtk.events.h.* LR/R
+	Access Temp.Apps.Library.!RTK.rtk.graphics.h.* LR/R
+	Access Temp.Apps.Library.!RTK.rtk.os.h.* LR/R
+	Access Temp.Apps.Library.!RTK.rtk.swi.h.* LR/R
+	Access Temp.Apps.Library.!RTK.rtk.transfer.h.* LR/R
+	Access Temp.Apps.Library.!RTK.rtk.util.h.* LR/R
+	Copy SysVars Temp.SysVars ~CFR~V
+
+	Dir Temp
+	RiscPkg-GenControl RTK-Common < ../RiscPkg/Control > RiscPkg/Control
+	zip -r ^.RTK-Common_$(VERSION) * -i@^.RiscPkg.RTK-Common/inc
+	RiscPkg-GenControl RTK < ../RiscPkg/Control > RiscPkg/Control
+	zip -r ^.RTK_$(VERSION) * -i@^.RiscPkg.RTK/inc
+	RiscPkg-GenControl RTK-Doc < ../RiscPkg/Control > RiscPkg/Control
+	zip -r ^.RTK-Doc_$(VERSION) * -i@^.RiscPkg.RTK-Doc/inc
+	Dir ^
+	Wipe Temp ~CFR~V

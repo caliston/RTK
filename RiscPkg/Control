@@ -1,0 +1,22 @@
+Source: RTK
+Priority: Optional
+Section: Library
+Maintainer: Graham Shaw <gdshaw@sagitta.demon.co.uk>
+Version: 0.4.0-0
+Description: The RISC OS Toolkit (a C++ application framework)
+ The most distinctive feature of the RTK is its support for automatic
+ layout.  This is achieved by specifying the relationship between
+ visual components (for example, the fact that they are arranged in
+ a grid or a column) instead of their coordinates.  Doing so
+ eliminates the need for a template editor and allows the layout to
+ change at run-time to accommodate varying content.
+
+Package: RTK-Common
+Description: Common files that belong to the RISC OS Toolkit
+
+Package: RTK
+Depends: RTK-Common
+
+Package: RTK-Doc
+Depends: RTK-Common
+Description: Documentation for the RISC OS Toolkit
