@@ -9,6 +9,7 @@
 #include "rtk/os/wimp.h"
 #include "rtk/desktop/component.h"
 #include "rtk/desktop/window.h"
+#include "rtk/events/redirection.h"
 
 // Coordinates within a component are specified with respect to its own
 // origin or that of its parent.  This allows a component to be moved
@@ -340,7 +341,8 @@ point component::external_origin(const box& bbox,xbaseline_type ixbaseline,
 component* component::_redirected_parent() const
 {
 	component* rp=_parent;
-	if (const redirection* r=dynamic_cast<const redirection*>(this))
+	if (const events::redirection* r=
+		dynamic_cast<const events::redirection*>(this))
 	{
 		if (r->redirect()) rp=r->redirect();
 	}
@@ -479,14 +481,6 @@ int component::ybaseline_set::offset(ybaseline_type src_ybaseline,
 int component::ybaseline_set::ysize() const
 {
 	return max(_ysize,_ymax-_ymin);
-}
-
-component::redirection::~redirection()
-{}
-
-void component::redirection::redirect(component* redirect)
-{
-	_redirect=redirect;
 }
 
 }; /* namespace desktop */

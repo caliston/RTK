@@ -17,7 +17,8 @@ OBJ = event.o \
  message.o \
  quit.o \
  help_request.o \
- reopen_menu.o
+ reopen_menu.o \
+ redirection.o
 
 all: $(OBJ)
 

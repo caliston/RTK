@@ -104,7 +104,6 @@ public:
 	};
 	class xbaseline_set;
 	class ybaseline_set;
-	class redirection;
 private:
 	/** The parent pointer. */
 	component* _parent;
@@ -574,33 +573,6 @@ public:
 	 * This is the minimum height required to accommodate the baseline set.
 	 */
 	int ysize() const;
-};
-
-/** A class for redirecting events.
- * This is a mixin class which allow a component to redirect event delivery.
- */
-class component::redirection
-{
-private:
-	/** The redirected parent, or 0 if redirection is disabled. */
-	component* _redirect;
-public:
-	/** Destroy redirection mixin.
-	 * Note that this class must have at least one virtual method
-	 * so that dynamic_cast<>() will work correctly.
-	 */
-	virtual ~redirection();
-
-	/** Get redirected parent.
-	 * @return the redirected parent, or 0 if redirection is disabled.
-	 */
-	component* redirect() const
-		{ return _redirect; }
-
-	/** Set redirected parent.
-	 * @param redirect the redirected parent, or 0 to disable redirection.
-	 */
-	void redirect(component* redirect);
 };
 
 }; /* namespace desktop */

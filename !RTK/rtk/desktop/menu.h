@@ -11,6 +11,7 @@
 
 #include "rtk/util/refcount.h"
 #include "rtk/desktop/component.h"
+#include "rtk/events/redirection.h"
 
 namespace rtk {
 namespace os {
@@ -29,7 +30,7 @@ class application;
  */
 class menu:
 	public component,
-	public component::redirection
+	public events::redirection
 {
 private:
 	/** The class from which this one is derived. */
