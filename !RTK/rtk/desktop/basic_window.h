@@ -513,6 +513,11 @@ public:
 	 */
 	int behind() const;
 private:
+	/** Find target of event.
+	 * @param pos the coordinates of the event, with respect to the screen
+	 */
+	component* find_target(const point& pos);
+
 	/** Reformat window.
 	 * @internal
 	 * This function is equivalent to reformat(const point&,const box&),

@@ -481,6 +481,28 @@ public:
 	 */
 	void set_caret_position(point p,int height,int index);
 
+	/** Claim selection.
+	 * If the selection was previously owned by a component within
+	 * this application then a claim_entity event is sent internally
+	 * to that previous owner, otherwise a Message_ClaimEntity is
+	 * broadcast.
+	 *
+	 * Components that use this method should normally call
+	 * application::deregister_selection in their unformat method.
+	 */
+	void claim_selection();
+
+	/** Claim clipboard.
+	 * If the clipboard was previously owned by a component within
+	 * this application then a claim_entity event is sent internally
+	 * to that previous owner, otherwise a Message_ClaimEntity is
+	 * broadcast.
+	 *
+	 * Components that use this method should normally call
+	 * application::deregister_clipboard in their unformat method.
+	 */
+	void claim_clipboard();
+
 	/** Begin drag action within specifed bounding box.
 	 * User drag types (8-11) are not currently allowed.
 	 * @param dbox the box to be dragged

@@ -633,6 +633,18 @@ void icon::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 {
 	switch (wimpblock.word[4])
 	{
+		case swi::Message_DataSave:
+		{
+			events::datasave ev(*this,wimpcode,wimpblock);
+			ev.post();
+		}
+		break;
+	case swi::Message_DataLoad:
+		{
+			events::dataload ev(*this,wimpcode,wimpblock);
+			ev.post();
+		}
+		break;
 	case swi::Message_HelpRequest:
 		{
 			events::help_request ev(*this,wimpblock);

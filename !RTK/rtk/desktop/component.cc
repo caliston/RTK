@@ -3,14 +3,17 @@
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
+#include <memory>
 #include <algorithm>
 #include <typeinfo>
 
+#include "rtk/swi/wimp.h"
 #include "rtk/os/wimp.h"
 #include "rtk/os/dragasprite.h"
 #include "rtk/desktop/component.h"
 #include "rtk/desktop/basic_window.h"
 #include "rtk/desktop/application.h"
+#include "rtk/events/claim_entity.h"
 #include "rtk/events/redirection.h"
 
 // Coordinates within a component are specified with respect to its own
@@ -275,6 +278,64 @@ void component::set_caret_position(point p,int height,int index)
 	{
 		os::Wimp_SetCaretPosition(w->handle(),-1,p,height,index);
 	}
+}
+
+void component::claim_selection()
+{
+	auto_ptr<os::wimp_block> block(new os::wimp_block);
+	block->word[0]=24;
+	block->word[3]=0;
+	block->word[4]=swi::Message_ClaimEntity;
+	block->word[5]=3;
+
+	if (desktop::application* app=parent_application())
+	{
+		if (component* current_selection=app->current_selection())
+		{
+			if (current_selection!=this)
+			{
+				events::claim_entity ev(*current_selection,
+					swi::User_Message,*block);
+				ev.post();
+				app->deregister_selection(*current_selection);
+			}
+		}
+		else
+		{
+			app->send_message(swi::User_Message,*(block.release()),0,0);
+		}
+	}
+
+	app->register_selection(*this);
+}
+
+void component::claim_clipboard()
+{
+	auto_ptr<os::wimp_block> block(new os::wimp_block);
+	block->word[0]=24;
+	block->word[3]=0;
+	block->word[4]=swi::Message_ClaimEntity;
+	block->word[5]=4;
+
+	if (desktop::application* app=parent_application())
+	{
+		if (component* current_clipboard=app->current_clipboard())
+		{
+			if (current_clipboard!=this)
+			{
+				events::claim_entity ev(*current_clipboard,
+					swi::User_Message,*block);
+				ev.post();
+				app->deregister_clipboard(*current_clipboard);
+			}
+		}
+		else
+		{
+			app->send_message(swi::User_Message,*(block.release()),0,0);
+		}
+	}
+
+	app->register_clipboard(*this);
 }
 
 void component::drag(const box& dbox,const box& bbox,int drag_type)

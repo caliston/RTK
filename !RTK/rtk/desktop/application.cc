@@ -19,6 +19,8 @@
 #include "rtk/events/null_reason.h"
 #include "rtk/events/user_drag_box.h"
 #include "rtk/events/message.h"
+#include "rtk/events/claim_entity.h"
+#include "rtk/events/datarequest.h"
 #include "rtk/transfer/load.h"
 #include "rtk/transfer/save.h"
 
@@ -31,6 +33,8 @@ application::application(const string& name):
 	_dbox_level(0),
 	_current_drag(0),
 	_drag_sprite(0),
+	_current_selection(0),
+	_current_clipboard(0),
 	_current_load(0),
 	_current_save(0),
 	_wimp_mask(0),
@@ -448,15 +452,16 @@ void application::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 		}
 		break;
 	case swi::Message_DataSave:
-		{
-			events::datasave ev(*this,wimpcode,wimpblock);
-			ev.post();
-		}
-		break;
 	case swi::Message_DataLoad:
+		if (wimpblock.word[5]==-2)
 		{
-			events::dataload ev(*this,wimpcode,wimpblock);
-			ev.post();
+			if (icon* ic=find_icon(wimpblock.word[6]))
+				ic->deliver_wimp_block(wimpcode,wimpblock);
+		}
+		else
+		{
+			if (basic_window* w=find_window(wimpblock.word[5]))
+				w->deliver_wimp_block(wimpcode,wimpblock);
 		}
 		break;
 	case swi::Message_RAMTransmit:
@@ -477,6 +482,41 @@ void application::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 		{
 			events::dataopen ev(*this,wimpcode,wimpblock);
 			ev.post();
+		}
+		break;
+	case swi::Message_ClaimEntity:
+		if (wimpblock.word[1]!=_handle)
+		{
+			if (wimpblock.word[5]&3)
+			{
+				if (_current_selection)
+				{
+					events::claim_entity ev(*_current_selection,
+						wimpcode,wimpblock);
+					ev.post();
+				}
+				_current_selection=0;
+			}
+			if (wimpblock.word[5]&4)
+			{
+				if (_current_clipboard)
+				{
+					events::claim_entity ev(*_current_clipboard,
+						wimpcode,wimpblock);
+					ev.post();
+				}
+				_current_clipboard=0;
+			}
+		}
+		break;
+	case swi::Message_DataRequest:
+		{
+			if (_current_clipboard)
+			{
+				events::datarequest ev(*_current_clipboard,
+					wimpcode,wimpblock);
+				ev.post();
+			}
 		}
 		break;
 	case swi::Message_HelpRequest:
@@ -575,6 +615,16 @@ transfer::load* application::auto_load(unsigned int filetype)
 	return 0;
 }
 
+component* application::current_selection() const
+{
+	return _current_selection;
+}
+
+component* application::current_clipboard() const
+{
+	return _current_clipboard;
+}
+
 void application::handle_event(events::quit &ev)
 {
 	terminate();
@@ -582,7 +632,8 @@ void application::handle_event(events::quit &ev)
 
 void application::handle_event(events::datasave &ev)
 {
-	if (ev.target()==this)
+	if (std::find(_icons.begin(),_icons.end(),
+		dynamic_cast<icon*>(ev.target())))
 	{
 		if (transfer::load* loadop=auto_load(ev.filetype()))
 		{
@@ -671,6 +722,16 @@ void application::register_drag(component& c,bool sprite)
 	_drag_sprite=sprite;
 }
 
+void application::register_selection(component& c)
+{
+	_current_selection=&c;
+}
+
+void application::register_clipboard(component& c)
+{
+	_current_clipboard=&c;
+}
+
 void application::deregister_window(basic_window& w)
 {
 	if (&w==_dbox)
@@ -695,6 +756,16 @@ void application::deregister_drag(component& c)
 {
 	if (_current_drag==&c) _current_drag=0;
 	_drag_sprite=false;
+}
+
+void application::deregister_selection(component& c)
+{
+	if (_current_selection==&c) _current_selection=0;
+}
+
+void application::deregister_clipboard(component& c)
+{
+	if (_current_clipboard==&c) _current_clipboard=0;
 }
 
 basic_window* application::find_window(int handle) const

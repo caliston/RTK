@@ -141,6 +141,12 @@ private:
 	 */
 	bool _drag_sprite;
 
+	/** The current caret or selection owner, or 0 if none. */
+	component* _current_selection;
+
+	/** The current clipboard owner, or 0 if none. */
+	component* _current_clipboard;
+
 	/** The current load operation. */
 	transfer::load* _current_load;
 
@@ -322,6 +328,16 @@ public:
 	 */
 	virtual transfer::load* auto_load(unsigned int filetype);
 
+	/** Get current selection owner.
+	 * @return the current selection owner
+	 */
+	component* current_selection() const;
+
+	/** Get current clipboard owner.
+	 * @return the current clipboard owner
+	 */
+	component* current_clipboard() const;
+
 	/** Register window.
 	 * A window should be registered while it has a Wimp window handle
 	 * in its possession.  This allows it to receive events from the
@@ -356,40 +372,61 @@ public:
 	void register_menu_data(util::refcount* mdata,unsigned int level);
 
 	/** Register null action.
-	 * @param c the component to be registered to receive null events.
+	 * @param c the component to be registered to receive null events
 	 */
 	void register_null(component& c);
 
 	/** Register drag action.
 	 * @param c the component to be registered as the owner of the
-	 *  current drag action.
+	 *  current drag action
 	 * @param sprite true if using DragASprite module, otherwise false
 	 */
 	void register_drag(component& c,bool sprite=false);
 
+	/** Register caret or selection owner.
+	 * @param c the component to be registered as the caret or selection
+	 *  owner
+	 */
+	void register_selection(component& c);
+
+	/** Register clipboard owner.
+	 * @param c the component to be registered as the clipboard owner
+	 */
+	void register_clipboard(component& c);
+
 	/** Deregister window.
 	 * This must be done while w->handle() returns the same value as
 	 * when the window was registered.
-	 * @param w the window to be deregistered.
+	 * @param w the window to be deregistered
 	 */
 	void deregister_window(basic_window& w);
 
 	/** Deregister icon.
 	 * This must be done while ic->handle() returns the same value as
 	 * when the icon was registered.
-	 * @param ic the icon to be deregistered.
+	 * @param ic the icon to be deregistered
 	 */
 	void deregister_icon(icon& ic);
 
 	/** Deregister null action.
-	 * @param c the component to be reregistered.
+	 * @param c the component to be reregistered
 	 */
 	void deregister_null(component& c);
 
 	/** Deregister drag action.
-	 * @param c the component to be deregistered.
+	 * @param c the component to be deregistered
 	 */
 	void deregister_drag(component& c);
+
+	/** Deregister caret or selection owner.
+	 * @param c the component to be deregistered
+	 */
+	void deregister_selection(component& c);
+
+	/** Deregister clipboard owner.
+	 * @param c the component to be deregistered
+	 */
+	void deregister_clipboard(component& c);
 
 	/** Find window.
 	 * @param handle the window handle

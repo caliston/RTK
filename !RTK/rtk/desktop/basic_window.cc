@@ -396,17 +396,8 @@ void basic_window::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 			}
 			else
 			{
-				component* target=this;
-				point offset;
-				parent_application(offset);
-				point position=
-					point(wimpblock.word[0],wimpblock.word[1])-offset;
-				while (component* child=target->find(position))
-				{
-					target=child;
-					position-=child->origin();
-				}
-				events::mouse_click ev(*target,wimpblock);
+				point pos(wimpblock.word[0],wimpblock.word[1]);
+				events::mouse_click ev(*find_target(pos),wimpblock);
 				ev.post();
 			}
 		}
@@ -419,7 +410,16 @@ void basic_window::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 			}
 			else
 			{
-				events::key_pressed ev(*this,wimpblock);
+				component* target=this;
+				point position=
+					point(wimpblock.word[2],wimpblock.word[3]);
+				if (_child) position+=_child->origin();
+				while (component* child=target->find(position))
+				{
+					target=child;
+					position-=child->origin();
+				}
+				events::key_pressed ev(*target,wimpblock);
 				ev.post();
 			}
 		}
@@ -441,6 +441,30 @@ void basic_window::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 {
 	switch (wimpblock.word[4])
 	{
+	case swi::Message_DataSave:
+		if (icon* ic=find_icon(wimpblock.word[6]))
+		{
+			ic->deliver_wimp_block(wimpcode,wimpblock);
+		}
+		else
+		{
+			point pos(wimpblock.word[7],wimpblock.word[8]);
+			events::datasave ev(*find_target(pos),wimpcode,wimpblock);
+			ev.post();
+		}
+		break;
+	case swi::Message_DataLoad:
+		if (icon* ic=find_icon(wimpblock.word[6]))
+		{
+			ic->deliver_wimp_block(wimpcode,wimpblock);
+		}
+		else
+		{
+			point pos(wimpblock.word[7],wimpblock.word[8]);
+			events::dataload ev(*find_target(pos),wimpcode,wimpblock);
+			ev.post();
+		}
+		break;
 	case swi::Message_HelpRequest:
 		if (icon* ic=find_icon(wimpblock.word[9]))
 		{
@@ -448,17 +472,8 @@ void basic_window::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 		}
 		else
 		{
-			component* target=this;
-			point offset;
-			parent_application(offset);
-			point position=
-				point(wimpblock.word[5],wimpblock.word[6])-offset;
-			while (component* child=target->find(position))
-			{
-				target=child;
-				position-=child->origin();
-			}
-			events::help_request ev(*target,wimpblock);
+			point pos(wimpblock.word[5],wimpblock.word[6]);
+			events::help_request ev(*find_target(pos),wimpblock);
 			ev.post();
 		}
 		break;
@@ -568,6 +583,20 @@ icon* basic_window::find_icon(int handle) const
 {
 	map<int,icon*>::const_iterator f=_ihandles.find(handle);
 	return (f!=_ihandles.end())?(*f).second:0;
+}
+
+component* basic_window::find_target(const point& pos)
+{
+	component* target=this;
+	point offset;
+	parent_application(offset);
+	point lpos=pos-offset;
+	while (component* child=target->find(lpos))
+	{
+		target=child;
+		lpos-=child->origin();
+	}
+	return target;
 }
 
 void basic_window::_reformat(const point& origin,const box& pbbox,int behind)
