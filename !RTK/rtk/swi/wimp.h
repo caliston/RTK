@@ -104,6 +104,8 @@ const int Message_DeviceClaim   =0x0B;
 const int Message_DeviceInUse   =0x0C;
 const int Message_DataSaved     =0x0D;
 const int Message_Shutdown      =0x0E;
+const int Message_ClaimEntity   =0x0F;
+const int Message_DataRequest   =0x10;
 
 const int Message_FilerOpenDir  =0x400;
 const int Message_FilerCloseDir =0x401;
