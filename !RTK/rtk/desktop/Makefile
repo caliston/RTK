@@ -6,7 +6,8 @@
 include ../../Rules.make
 
 OBJ = component.o \
- sizeable_component.o
+ sizeable_component.o \
+ application.o
 
 all: $(OBJ)
 
