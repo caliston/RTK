@@ -1,5 +1,5 @@
 // This file is part of the RISC OS Toolkit (RTK).
-// Copyright © 2003 Graham Shaw.
+// Copyright © 2003-2004 Graham Shaw.
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
@@ -15,6 +15,60 @@
 #include "rtk/events/save_to_app.h"
 #include "rtk/transfer/save.h"
 
+namespace {
+
+/** Choose sprite name for save dialogue.
+ * If no preferred sprite name is supplied then one is chosen to match
+ * the filetype.  If the preferred or chosen sprite name does not exist
+ * then one of 'directory', 'applicaton' or 'file_xxx' is used instead.
+ * @param filetype the filetype
+ * @param sprname the preferred sprite name
+ * @return the sprite name to be used by the save dialogue
+ */
+string sprite_name(unsigned int filetype,const string& sprname)
+{
+	string name(sprname);
+	if (!name.length())
+	{
+		if (filetype==0x1000)
+		{
+			name="directory";
+		}
+		else if (filetype==0x2000)
+		{
+			name="application";
+		}
+		else
+		{
+			ostringstream out;
+			out << "file_" << hex << setw(3) << filetype;
+			name=out.str();
+		}
+	}
+	try
+	{
+		rtk::os::Wimp_SpriteOp40(name.c_str(),0,0,0,0);
+	}
+	catch (rtk::os::exception& ex)
+	{
+		if (filetype==0x1000)
+		{
+			name="directory";
+		}
+		else if (filetype==0x2000)
+		{
+			name="application";
+		}
+		else
+		{
+			name="file_xxx";
+		}
+	}
+	return name;
+}
+
+}; /* anonymous namespace */
+
 namespace rtk {
 namespace desktop {
 
@@ -26,7 +80,7 @@ save_dbox::save_dbox():
 	back_icon(false);
 	close_icon(false);
 
-	_filetype_icon.sprite_name(sprite_name(_filetype));
+	_filetype_icon.sprite_name(sprite_name(_filetype,_sprname));
 	_filetype_icon.button(6);
 	_filetype_icon.xfit(false);
 	_filetype_icon.yfit(false);
@@ -69,7 +123,7 @@ void save_dbox::handle_event(events::mouse_click& ev)
 		{
 			// Solid drags enabled.
 			_filetype_icon.drag_sprite(_filetype_icon.bbox(),
-				(os::sprite_area*)1,sprite_name(_filetype));
+				(os::sprite_area*)1,sprite_name(_filetype,_sprname));
 		}
 		else
 		{
@@ -148,7 +202,14 @@ bool save_dbox::selection_button_state() const
 save_dbox& save_dbox::filetype(unsigned int filetype)
 {
 	_filetype=filetype;
-	_filetype_icon.sprite_name(sprite_name(_filetype));
+	_filetype_icon.sprite_name(sprite_name(_filetype,_sprname));
+	return *this;
+}
+
+save_dbox& save_dbox::spritename(const string& sprname)
+{
+	_sprname=sprname;
+	_filetype_icon.sprite_name(sprite_name(_filetype,_sprname));
 	return *this;
 }
 
@@ -219,22 +280,6 @@ void save_dbox::handle_save()
 void save_dbox::handle_cancel()
 {
 	remove();
-}
-
-string save_dbox::sprite_name(unsigned int filetype)
-{
-	ostringstream out;
-	out << "file_" << hex << setw(3) << filetype;
-	string name=out.str();
-	try
-	{
-		os::Wimp_SpriteOp40(name.c_str(),0,0,0,0);
-	}
-	catch (os::exception& ex)
-	{
-		name="file_xxx";
-	}
-	return name;
 }
 
 }; /* namespace desktop */

@@ -1,5 +1,5 @@
 // This file is part of the RISC OS Toolkit (RTK).
-// Copyright © 2003 Graham Shaw.
+// Copyright © 2003-2004 Graham Shaw.
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
@@ -40,6 +40,9 @@ private:
 
 	/** The filetype of the file to be saved. */
 	unsigned int _filetype;
+
+	/** The sprite name, or the empty string to derive from filetype. */
+	string _sprname;
 
 	/** The icon containing the filetype sprite. */
 	icon _filetype_icon;
@@ -85,6 +88,12 @@ public:
 	unsigned int filetype() const
 		{ return _filetype; }
 
+	/** Get sprite name.
+	 * @return the sprite name
+	 */
+	const string& spritename() const
+		{ return _sprname; }
+
 	/** Get pathname.
 	 * @return the pathname
 	 */
@@ -123,6 +132,13 @@ public:
 	 * @param filetype the required filetype
 	 */
 	save_dbox& filetype(unsigned int filetype);
+
+	/** Set sprite name.
+	 * If the name is set to the empty string then a sprite derived from
+	 * the filetype is used.
+	 * @param sprname the required sprite name
+	 */
+	save_dbox& spritename(const string& sprname);
 
 	/** Set pathname.
 	 * @param pathname the required pathname
@@ -171,14 +187,6 @@ private:
 	 * pressing the escape key.
 	 */
 	void handle_cancel();
-
-	/** Get the sprite name that corresponds to a filetype.
-	 * For a filetype of 0x123 the sprite would be 'file_123' if that
-	 * name exists in the Wimp sprite pool, otherwise 'file_xxx'.
-	 * @param filetype the filetype
-	 * @return the sprite name that corresponds to the filetype
-	 */
-	static string sprite_name(unsigned int filetype);
 };
 
 }; /* namespace desktop */
