@@ -39,6 +39,7 @@ OBJ = event.o \
  save.o \
  loaded.o \
  saved.o \
+ auto_scroll.o \
  redirection.o
 
 all: timestamp
