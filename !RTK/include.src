@@ -4,6 +4,7 @@
 *.!RTK.!RunHelp
 *.!RTK.!Sprites
 *.!RTK.Copyright
+*.!RTK.History
 *.!RTK.Doxyfile
 *.!RTK.footer/html
 *.!RTK.README
