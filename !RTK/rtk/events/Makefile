@@ -10,6 +10,7 @@ OBJ = event.o \
  null_reason.o \
  close_window.o \
  entering_window.o \
+ leaving_window.o \
  message.o \
  quit.o \
  reopen_menu.o
