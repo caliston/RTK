@@ -18,6 +18,17 @@ using rtk::graphics::box;
 struct sprite;
 struct sprite_area;
 
+struct file_info
+{
+	unsigned int loadaddr;
+	unsigned int execaddr;
+	unsigned int length;
+	unsigned int attr;
+	unsigned int objtype;
+	unsigned int filetype;
+	char name[];
+};
+
 /** Read byte from CMOS RAM.
  * @param address the address to read
  * @param _value a buffer for the returned value
@@ -67,6 +78,12 @@ void OS_File8(const char* name,unsigned int entries);
 void OS_File17(const char* name,unsigned int* _objtype,unsigned int* _loadaddr,
 	unsigned int* _execaddr,unsigned int* _length,unsigned int* _attr);
 
+/** Write filetype.
+ * @param name the object name
+ * @param filetype the required filetype
+ */
+void OS_File18(const char* name,unsigned int filetype);
+
 /** Read EOF status.
  * @param handle the file handle
  * @param _eof a buffer for the returned EOF status (true=EOF)
@@ -104,6 +121,20 @@ void OS_GBPB2(int handle,const void* buffer,unsigned int count,
  */
 void OS_GBPB4(int handle,void* buffer,unsigned int count,
 	unsigned int* _excess,unsigned int* _fp);
+
+/** Read catalogue information from directory.
+ * @param name the directory pathname
+ * @param buffer a buffer for the catalogue entries to be read
+ * @param count the number of catalogue entries to be read
+ * @param offset the offset at which to begin
+ * @param length the length of the buffer
+ * @param pattern the pattern to match
+ * @param _count a buffer for the returned number of directory entries read
+ * @param _offset a buffer for the returned offset, or -1 if finished
+ */
+void OS_GBPB12(const char* name,void* buffer,unsigned int count,
+	int offset,unsigned int length,const char* pattern,
+	unsigned int* _count,int* _offset);
 
 /** Rename object.
  * @param src_name the source name

@@ -79,6 +79,15 @@ void OS_File17(const char* name,unsigned int* _objtype,unsigned int* _loadaddr,
 	if (_attr) *_attr=regs.r[5];
 }
 
+void OS_File18(const char* name,unsigned int filetype)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=18;
+	regs.r[1]=(int)name;
+	regs.r[2]=filetype;
+	call_swi(swi::OS_File,&regs);
+}
+
 void OS_Args5(int handle,bool* _eof)
 {
 	_kernel_swi_regs regs;
@@ -129,6 +138,23 @@ void OS_GBPB4(int handle,void* buffer,unsigned int count,
 	call_swi(swi::OS_GBPB,&regs);
 	if (_excess) *_excess=regs.r[3];
 	if (_fp) *_fp=regs.r[4];
+}
+
+void OS_GBPB12(const char* name,void* buffer,unsigned int count,
+	int offset,unsigned int length,const char* pattern,
+	unsigned int* _count,int* _offset)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=12;
+	regs.r[1]=(int)name;
+	regs.r[2]=(int)buffer;
+	regs.r[3]=count;
+	regs.r[4]=offset;
+	regs.r[5]=length;
+	regs.r[6]=(int)pattern;
+	call_swi(swi::OS_GBPB,&regs);
+	if (_count) *_count=regs.r[3];
+	if (_offset) *_offset=regs.r[4];
 }
 
 void OS_FSControl25(const char* src_name,const char* dst_name)
