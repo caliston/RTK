@@ -33,6 +33,7 @@ application::application(const string& name):
 	_drag_sprite(0),
 	_current_load(0),
 	_current_save(0),
+	_wimp_mask(0),
 	_quit(false)
 {
 	static int messages[]={0};
@@ -323,7 +324,7 @@ void application::run()
 			rtk::graphics::vdu_gcontext::current(0);
 			static os::wimp_block wimpblock;
 			int wimpcode;
-			os::Wimp_Poll(0,wimpblock,0,&wimpcode);
+			os::Wimp_Poll(_wimp_mask,wimpblock,0,&wimpcode);
 			// Act on returned event block.
 			deliver_wimp_block(wimpcode,wimpblock);
 			// Send up to one message from queue.
@@ -369,7 +370,8 @@ void application::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 	case 0:
 		{
 			events::null_reason ev(*this);
-			ev.post();
+			bool found=ev.post();
+			if (!found) _wimp_mask|=1;
 		}
 		break;
 	case 1:

@@ -152,6 +152,9 @@ private:
 	 */
 	queue<message> _message_queue;
 
+	/** The mask passed to Wimp_Poll. */
+	unsigned int _wimp_mask;
+
 	/** The quit flag.
 	 * True if this application should terminate gracefully when control
 	 * returns to the main polling loop.
