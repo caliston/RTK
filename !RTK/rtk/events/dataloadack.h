@@ -47,7 +47,7 @@ public:
 	 * @param wimpblock the Wimp event block
 	 */
 	dataloadack(desktop::component& target,int wimpcode,
-		os::wimp_block& wimpblock);
+		const os::wimp_block& wimpblock);
 
 	/** Destroy dataloadack event.
 	 */

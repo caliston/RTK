@@ -12,7 +12,8 @@ namespace events {
 
 using rtk::desktop::component;
 
-message::message(component& target,int wimpcode,os::wimp_block& wimpblock):
+message::message(component& target,int wimpcode,
+	const os::wimp_block& wimpblock):
 	event(target),
 	_wimpcode(wimpcode),
 	_wimpblock(&wimpblock)

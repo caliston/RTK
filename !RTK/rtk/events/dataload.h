@@ -47,7 +47,7 @@ public:
 	 * @param wimpblock the Wimp event block
 	 */
 	dataload(desktop::component& target,int wimpcode,
-		os::wimp_block& wimpblock);
+		const os::wimp_block& wimpblock);
 
 	/** Destroy dataload event. */
 	virtual ~dataload();

@@ -15,7 +15,7 @@ namespace events {
 using rtk::desktop::component;
 
 datasaveack::datasaveack(component& target,int wimpcode,
-	os::wimp_block& wimpblock):
+	const os::wimp_block& wimpblock):
 	message(target,wimpcode,wimpblock)
 {}
 

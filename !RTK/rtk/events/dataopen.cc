@@ -14,7 +14,8 @@ namespace events {
 
 using rtk::desktop::component;
 
-dataopen::dataopen(component& target,int wimpcode,os::wimp_block& wimpblock):
+dataopen::dataopen(component& target,int wimpcode,
+	const os::wimp_block& wimpblock):
 	message(target,wimpcode,wimpblock)
 {}
 

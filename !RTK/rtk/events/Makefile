@@ -29,6 +29,8 @@ OBJ = event.o \
  dataopen.o \
  ramfetch.o \
  ramtransmit.o \
+ claim_entity.o \
+ datarequest.o \
  help_request.o \
  reopen_menu.o \
  save_to_file.o \

@@ -35,7 +35,7 @@ private:
 	int _wimpcode;
 
 	/** The Wimp event block. */
-	os::wimp_block* _wimpblock;
+	const os::wimp_block* _wimpblock;
 public:
 	/** A mixin class for handling message events.
 	 * If a class wishes to receive message events then it should
@@ -59,7 +59,8 @@ public:
 	 * @param wimpcode the Wimp event code
 	 * @param wimpblock the Wimp event block
 	 */
-	message(desktop::component& target,int wimpcode,os::wimp_block& wimpblock);
+	message(desktop::component& target,int wimpcode,
+		const os::wimp_block& wimpblock);
 
 	/** Destroy message event.
 	 */

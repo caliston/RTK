@@ -14,7 +14,8 @@ namespace events {
 
 using rtk::desktop::component;
 
-dataload::dataload(component& target,int wimpcode,os::wimp_block& wimpblock):
+dataload::dataload(component& target,int wimpcode,
+	const os::wimp_block& wimpblock):
 	message(target,wimpcode,wimpblock)
 {}
 
