@@ -26,7 +26,9 @@ window::window(point size):
 	_child(0),
 	_handle(0),
 	_created(false),
-	_dbox_opened(false),
+	_registered(false),
+	_opened(false),
+	_dbox(false),
 	_movable(true),
 	_back_icon(true),
 	_close_icon(true),
@@ -52,6 +54,7 @@ window::~window()
 {
 	if (_child) _child->remove();
 	remove();
+	uncreate();
 }
 
 window* window::as_window()
@@ -93,33 +96,50 @@ void window::resize() const
 
 void window::reformat(const point& origin,const box& pbbox)
 {
+	_dbox=false;
 	_reformat(origin,pbbox,behind());
 }
 
 void window::reformat(const point& origin,const box& pbbox,size_type level)
 {
-	if (!_dbox_opened)
+	if (!_opened||!_dbox)
 	{
+		// Window is a dialogue box.
+		_dbox=true;
+
 		// Reformat in usual manner.  (This does cause the window to be opened
 		// in the usual manner, but doing so does not appear to cause any
 		// significant harm.)
 		_reformat(origin,pbbox,behind());
+
 		// Calculate required top left-hand corner, with respect to screen.
 		point p=pbbox.xminymax();
 		parent_application(p);
+
 		// Open as dialogue box.
 		if (!level) os::Wimp_CreateMenu(_handle,p);
 		else os::Wimp_CreateSubMenu(_handle,p);
-		// Prevent window being unnecessarily reopened.
-		_dbox_opened=true;
+		_opened=true;
 	}
 }
 
 void window::unformat()
 {
 	if (_child) _child->unformat();
-	uncreate();
-	_dbox_opened=false;
+	if (_opened)
+	{
+		os::window_close block;
+		block.handle=_handle;
+		os::Wimp_CloseWindow(block);
+		_opened=false;
+		_dbox=false;
+	}
+	if (_registered)
+	{
+		if (application* app=parent_application())
+			app->deregister_window(*this);
+		_registered=false;
+	}
 	inherited::unformat();
 }
 
@@ -460,9 +480,6 @@ void window::create()
 		block.title.word[2]=_titlesize;
 		block.numicons=0;
 		os::Wimp_CreateWindow(block,&_handle);
-
-		if (application* app=parent_application())
-			app->register_window(*this);
 		_created=true;
 	}
 }
@@ -471,14 +488,23 @@ void window::uncreate()
 {
 	if (_created)
 	{
-		if (application* app=parent_application())
-			app->deregister_window(*this);
-		os::window_close block1;
-		block1.handle=_handle;
-		os::Wimp_CloseWindow(block1);
-		os::window_delete block2;
-		block2.handle=_handle;
-		os::Wimp_DeleteWindow(block2);
+		if (_opened)
+		{
+			os::window_close block;
+			block.handle=_handle;
+			os::Wimp_CloseWindow(block);
+			_opened=false;
+			_dbox=false;
+		}
+		if (_registered)
+		{
+			if (application* app=parent_application())
+				app->deregister_window(*this);
+			_registered=false;
+		}
+		os::window_delete block;
+		block.handle=_handle;
+		os::Wimp_DeleteWindow(block);
 		_handle=0;
 		_created=false;
 	}
@@ -537,6 +563,16 @@ void window::_reformat(const point& origin,const box& pbbox,int behind)
 	// Create RISC OS window.
 	create();
 
+	// Register with parent application.
+	if (!_registered)
+	{
+		if (application* app=parent_application())
+		{
+			app->register_window(*this);
+			_registered=true;
+		}
+	}
+
 	// Calculate extent (taking into account size of visible area
 	// and minimum bounding box of child).  Update RISC OS window.
 	box extent=calculate_extent(_bbox);
@@ -581,6 +617,7 @@ void window::_reformat(const point& origin,const box& pbbox,int behind)
 		block2.scroll=scroll;
 		block2.behind=behind;
 		os::Wimp_OpenWindow(block2,phandle,0);
+		_opened=true;
 
 		// Get window state (which may be different from what was requested
 		// when the window was opened).

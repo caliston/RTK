@@ -72,11 +72,20 @@ private:
 	 */
 	unsigned int _created:1;
 
-	/** The opened-as-dialogue-box flag.
-	 * True if this window has been opened as a dialogue box and should not
-	 * be opened again when it is reformatted.
+	/** The registered false.
+	 * True if this window is registered with an application, otherwise false.
 	 */
-	unsigned int _dbox_opened:1;
+	unsigned int _registered:1;
+
+	/** The window opened flag.
+	 * True if the RISC OS window is or might be open, otherwise false.
+	 */
+	unsigned int _opened:1;
+
+	/** The dialogue box flag.
+	 * True if the window is a dialogue box, otherwise false.
+	 */
+	unsigned int _dbox:1;
 
 	/** The movable flag.
 	 * True if this window is movable (by the user), otherwise false.
