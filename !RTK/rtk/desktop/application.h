@@ -13,6 +13,9 @@
 #include "rtk/util/refcount.h"
 #include "rtk/desktop/component.h"
 #include "rtk/events/quit.h"
+#include "rtk/events/datasave.h"
+#include "rtk/events/dataload.h"
+#include "rtk/events/dataopen.h"
 #include "rtk/events/reopen_menu.h"
 
 namespace rtk {
@@ -21,6 +24,13 @@ namespace os {
 union wimp_block;
 
 }; /* namespace os */
+
+namespace transfer {
+
+class save;
+class load;
+
+}; /* namespace transfer */
 
 namespace desktop {
 
@@ -125,6 +135,12 @@ private:
 	 */
 	bool _drag_sprite;
 
+	/** The current load operation. */
+	transfer::load* _current_load;
+
+	/** The current save operation. */
+	transfer::save* _current_save;
+
 	/** The outbound message queue.
 	 * Messages are added to the back of the queue and taken from the
 	 * front.  Transmission occurs automatically once a message has
@@ -181,6 +197,16 @@ public:
 	    add 1 for each level down)
 	 */
 	application& add(menu& m,const point& p,size_type level=0);
+
+	/** Add load operation.
+	 * @param loadop the load operation to be added
+	 */
+	application& add(transfer::load& loadop);
+
+	/** Add save operation.
+	 * @param la the save operation to be added
+	 */
+	application& add(transfer::save& saveop);
 
 	/** Get name.
 	 * The name of an application is fixed when it is constructed.
@@ -242,6 +268,15 @@ public:
 	 * @param wimpblock the Wimp event block
 	 */
 	void deliver_message(int wimpcode,os::wimp_block& wimpblock);
+
+	/** Deliver Wimp message acknowledgement.
+	 * @internal
+	 * The event block (which should contain a message) is converted
+	 * into a suitable event object and posted to the appropriate target.
+	 * @param wimpcode the Wimp event code
+	 * @param wimpblock the Wimp event block
+	 */
+	void deliver_message_ack(int wimpcode,os::wimp_block& wimpblock);
 
 	/** Send Wimp message.
 	 * The event block must be dynamically allocated on the heap.

@@ -19,6 +19,8 @@
 #include "rtk/events/null_reason.h"
 #include "rtk/events/user_drag_box.h"
 #include "rtk/events/message.h"
+#include "rtk/transfer/load.h"
+#include "rtk/transfer/save.h"
 
 namespace rtk {
 namespace desktop {
@@ -29,6 +31,8 @@ application::application(const string& name):
 	_dbox_level(0),
 	_current_drag(0),
 	_drag_sprite(0),
+	_current_load(0),
+	_current_save(0),
 	_quit(false)
 {
 	static int messages[]={0};
@@ -46,6 +50,9 @@ application::~application()
 	// Similarly for menus.
 	remove_menus(0);
 	remove_menu_data(0);
+	// Similarly for load and save operations.
+	if (_current_load) _current_load->remove();
+	if (_current_save) _current_save->remove();
 }
 
 application* application::as_application()
@@ -201,6 +208,14 @@ void application::remove_notify(component& c)
 			_menus[level]=0;
 		}
 	}
+	else if (&c==_current_load)
+	{
+		_current_load=0;
+	}
+	else if (&c==_current_save)
+	{
+		_current_save=0;
+	}
 }
 
 application& application::add(window& w,const point& p)
@@ -269,6 +284,22 @@ application& application::add(menu& m,const point& p,size_type level)
 
 	// Invalidate this component (to ensure that the menu is
 	// reformatted) and return.
+	invalidate();
+	return *this;
+}
+
+application& application::add(transfer::load& loadop)
+{
+	_current_load=&loadop;
+	link_child(loadop);
+	invalidate();
+	return *this;
+}
+
+application& application::add(transfer::save& saveop)
+{
+	_current_save=&saveop;
+	link_child(saveop);
 	invalidate();
 	return *this;
 }
@@ -377,6 +408,9 @@ void application::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 	case 18:
 		deliver_message(wimpcode,wimpblock);
 		break;
+	case 19:
+		deliver_message_ack(wimpcode,wimpblock);
+		break;
 	default:
 		{
 			events::wimp ev(*this,wimpcode,wimpblock);
@@ -393,6 +427,38 @@ void application::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 	case swi::Message_Quit:
 		{
 			events::quit ev(*this);
+			ev.post();
+		}
+		break;
+	case swi::Message_DataSave:
+		{
+			events::datasave ev(*this,wimpcode,wimpblock);
+			ev.post();
+		}
+		break;
+	case swi::Message_DataLoad:
+		{
+			events::dataload ev(*this,wimpcode,wimpblock);
+			ev.post();
+		}
+		break;
+	case swi::Message_RAMTransmit:
+		{
+			if (_current_load)
+				_current_load->deliver_wimp_block(wimpcode,wimpblock);
+		}
+		break;
+	case swi::Message_DataSaveAck:
+	case swi::Message_DataLoadAck:
+	case swi::Message_RAMFetch:
+		{
+			if (_current_save)
+				_current_save->deliver_wimp_block(wimpcode,wimpblock);
+		}
+		break;
+	case swi::Message_DataOpen:
+		{
+			events::dataopen ev(*this,wimpcode,wimpblock);
 			ev.post();
 		}
 		break;
@@ -422,6 +488,39 @@ void application::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 			m->deliver_wimp_block(wimpcode,wimpblock,0);
 			m->remove();
 			remove_menu_data(0);
+		}
+		break;
+	default:
+		{
+			events::message ev(*this,wimpcode,wimpblock);
+			ev.post();
+		}
+		break;
+	}
+}
+
+void application::deliver_message_ack(int wimpcode,os::wimp_block& wimpblock)
+{
+	switch (wimpblock.word[4])
+	{
+	case swi::Message_DataOpen:
+		{
+			events::datasave ev(*this,wimpcode,wimpblock);
+			ev.post();
+		}
+		break;
+	case swi::Message_DataSave:
+	case swi::Message_DataLoad:
+	case swi::Message_RAMTransmit:
+		{
+			if (_current_save)
+				_current_save->deliver_wimp_block(wimpcode,wimpblock);
+		}
+		break;
+	case swi::Message_RAMFetch:
+		{
+			if (_current_load)
+				_current_load->deliver_wimp_block(wimpcode,wimpblock);
 		}
 		break;
 	default:
