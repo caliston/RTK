@@ -18,6 +18,7 @@ OBJ = component.o \
  icon.o \
  action_button.o \
  default_button.o \
+ option_button.o \
  display_field.o \
  writable_field.o \
  window.o \
