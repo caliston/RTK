@@ -18,6 +18,7 @@ OBJ = event.o \
  message.o \
  quit.o \
  datasave.o \
+ datasaveack.o \
  help_request.o \
  reopen_menu.o \
  save_to_file.o \
