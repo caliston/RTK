@@ -71,17 +71,32 @@ public:
 	virtual void plot(int code,const point& p)=0;
 
 	/** Draw string to graphics context using desktop font.
-	 * @param s the string to be drawn
+	 * @param s the null-terminated string to be drawn
 	 * @param p the point at which to begin
 	 */
-	virtual void draw(const string& s,const point& p)=0;
+	virtual void draw(const char* s,const point& p)=0;
 
 	/** Draw string to graphics context using specified font.
 	 * @param f the font to be used
 	 * @param s the string to be drawn
 	 * @param p the point at which to begin
 	 */
-	virtual void draw(const font& f,const string& s,const point& p)=0;
+	virtual void draw(const font& f,const char* s,const point& p)=0;
+
+	/** Draw string to graphics context using desktop font.
+	 * @param s the string to be drawn
+	 * @param p the point at which to begin
+	 */
+	void draw(const string& s,const point& p)
+		{ draw(s.c_str(),p); }
+
+	/** Draw string to graphics context using specified font.
+	 * @param f the font to be used
+	 * @param s the string to be drawn
+	 * @param p the point at which to begin
+	 */
+	void draw(const font& f,const string& s,const point& p)
+		{ draw(f,s.c_str(),p); } 
 
 	/** Get current foreground colour.
 	 * This is one of the 16 standard Wimp colours.

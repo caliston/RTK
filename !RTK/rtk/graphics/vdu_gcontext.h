@@ -43,8 +43,8 @@ public:
 	virtual ~vdu_gcontext();
 
 	virtual void plot(int code,const point& p);
-	virtual void draw(const string& s,const point& p);
-	virtual void draw(const font& f,const string& s,const point& p);
+	virtual void draw(const char* s,const point& p);
+	virtual void draw(const font& f,const char* s,const point& p);
 protected:
 	virtual void fcolour_notify(int fcolour);
 	virtual void bcolour_notify(int bcolour);

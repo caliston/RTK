@@ -41,13 +41,13 @@ void vdu_gcontext::plot(int code,const point& p)
 	os::OS_Plot(code,origin()+p);
 }
 
-void vdu_gcontext::draw(const string &s,const point& p)
+void vdu_gcontext::draw(const char* s,const point& p)
 {
 	current(this);
-	os::Wimp_TextOp2(s.c_str(),origin()+p);
+	os::Wimp_TextOp2(s,origin()+p);
 }
 
-void vdu_gcontext::draw(const font& f,const string& s,const point& p)
+void vdu_gcontext::draw(const font& f,const char* s,const point& p)
 {
 	current(this);
 	f.paint(s,origin()+p);
