@@ -60,10 +60,11 @@ void datasave::reply(void* buffer,unsigned int buffer_size) const
 	os::Wimp_SendMessage(swi::User_Message_Recorded,block,thandle(),0,0);
 }
 
-void datasave::reply(const string& pathname) const
+void datasave::reply(const string& pathname,bool secure) const
 {
 	os::wimp_block block;
 	prepare_reply(block,swi::Message_DataSaveAck,npos);
+	if (!secure) block.word[9]=-1;
 	unsigned int i=pathname.copy(block.byte+44,211);
 	block.byte[44+i]=0;
 	block.word[0]=44+((i+4)&~3);

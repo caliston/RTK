@@ -92,9 +92,12 @@ public:
 	void reply(void* buffer,unsigned int buffer_size) const;
 
 	/** Send Message_DataSaveAck in reply to this event.
+	 * The pathname is secure if it is permanent location for the file
+	 * to be stored (as opposed to a temporary name such as <Wimp$Scrap>).
 	 * @param pathname the required pathname
+	 * @param secure true if pathname is secure, otherwise false
 	 */
-	void reply(const string& pathname) const;
+	void reply(const string& pathname,bool secure=false) const;
 };
 
 }; /* namespace events */
