@@ -605,7 +605,7 @@ void text_area::handle_event(events::mouse_click& ev)
 			{
 				// No selection:
 				// Begin drag operation to adjust the selection.
-				drag(box(),bbox(),7);
+				drag(box(),7);
 				_dragging=true;
 				app->register_null(*this);
 			}
@@ -615,7 +615,7 @@ void text_area::handle_event(events::mouse_click& ev)
 		if (application* app=parent_application())
 		{
 			// Begin drag operation to adjust the selection.
-			drag(box(),bbox(),7);
+			drag(box(),7);
 			_dragging=true;
 			app->register_null(*this);
 		}
