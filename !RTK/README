@@ -6,7 +6,7 @@
 -----------------------------------------------------------------------
 The RISC OS Toolkit
 
-Version 0.2.0 (06 Oct 2003)
+Version 0.3.0 (16 Dec 2003)
 -----------------------------------------------------------------------
 
 Introduction
@@ -29,10 +29,9 @@ Introduction
     * to provide an extensible, type-safe event delivery mechanism.
     * to implement style-guide compliant behaviour by default.
 
-  Please be aware that the RTK is currently at an early stage of
-  development. Most of the basic infrastructure is complete, but many
-  important classes have not been written. Some functions are correct
-  but not efficient.
+  Please be aware that the RTK is still under development.  Most of the
+  basic infrastructure is complete, but there are many more classes that
+  could be added.  Some functions are correct but not efficient.
 
 Requirements
 
@@ -134,8 +133,7 @@ Support
 
 Todo
 
-   * a radio icon class
-   * a card layout class
+   * a multi-line text field class
    * a toolbar layout class
    * a template layout class
    * a discard/cancel/save dialogue box class

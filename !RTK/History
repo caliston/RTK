@@ -3,6 +3,20 @@
 # Distribution and use are subject to the GNU Lesser General Public License,
 # a copy of which may be found in the file !RTK.Copyright.
 
+Version 0.3.0 (16 Dec 2003)
+
+  Added class card_layout.
+  Added class radio_button.
+  Added ESG support.
+  Fixed error in clip-box coordinate translation.
+  Improved positioning of tall icons on icon bar.
+  Added function window::button().
+  Added class events::menusdeleted.
+  Arranged automatic event redirection for submenus.
+  Added class desktop::progress_bar.
+  Corrected bug which could cause component destructors to loop forever.
+  Masked Null_Reason polls if no handler present.
+
 Version 0.2.0 (06 Oct 2003)
 
   Added class transfer::load.
