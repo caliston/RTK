@@ -7,6 +7,7 @@ include ../../Rules.make
 
 OBJ = component.o \
  sizeable_component.o \
+ icon.o \
  window.o \
  application.o
 
