@@ -35,6 +35,7 @@ OBJ = component.o \
  save_dbox.o \
  menu_item.o \
  menu.o \
+ ibar_menu.o \
  application.o
 
 all: timestamp
