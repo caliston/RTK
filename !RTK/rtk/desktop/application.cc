@@ -16,6 +16,7 @@
 #include "rtk/desktop/application.h"
 #include "rtk/events/wimp.h"
 #include "rtk/events/null_reason.h"
+#include "rtk/events/user_drag_box.h"
 #include "rtk/events/message.h"
 
 namespace rtk {
@@ -25,6 +26,7 @@ application::application(const string& name):
 	_name(name),
 	_dbox(0),
 	_dbox_level(0),
+	_current_drag(0),
 	_quit(false)
 {
 	static int messages[]={0};
@@ -355,6 +357,15 @@ void application::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 				w->deliver_wimp_block(wimpcode,wimpblock);
 		}
 		break;
+	case 7:
+		if (_current_drag)
+		{
+			component* target=_current_drag;
+			deregister_drag(*target);
+			events::user_drag_box ev(*target,wimpblock);
+			ev.post();
+		}
+		break;
 	case 9:
 		if (_menus.size()&&_menus[0])
 			_menus[0]->deliver_wimp_block(wimpcode,wimpblock,0);
@@ -460,6 +471,11 @@ void application::register_menu_data(util::refcount* mdata,unsigned int level)
 	_mdata[level]=mdata;
 }
 
+void application::register_drag(component& c)
+{
+	_current_drag=&c;
+}
+
 void application::deregister_window(window& w)
 {
 	_whandles.erase(w.handle());
@@ -468,6 +484,11 @@ void application::deregister_window(window& w)
 void application::deregister_icon(icon& ic)
 {
 	_ihandles.erase(ic.handle());
+}
+
+void application::deregister_drag(component& c)
+{
+	if (_current_drag==&c) _current_drag=0;
 }
 
 window* application::find_window(int handle) const

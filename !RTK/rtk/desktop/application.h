@@ -115,6 +115,9 @@ private:
 	 */
 	size_type _dbox_level;
 
+	/** The owner of the current drag action. */
+	component* _current_drag;
+
 	/** The outbound message queue.
 	 * Messages are added to the back of the queue and taken from the
 	 * front.  Transmission occurs automatically once a message has
@@ -275,6 +278,12 @@ public:
 	 */
 	void register_menu_data(util::refcount* mdata,unsigned int level);
 
+	/** Register drag action.
+	 * @param c the component to be registered as the owner of the
+	 *  current drag action.
+	 */
+	void register_drag(component& c);
+
 	/** Deregister window.
 	 * This must be done while w->handle() returns the same value as
 	 * when the window was registered.
@@ -288,6 +297,11 @@ public:
 	 * @param ic the icon to be deregistered.
 	 */
 	void deregister_icon(icon& ic);
+
+	/** Deregister drag action.
+	 * @param c the component to be deregistered.
+	 */
+	void deregister_drag(component& c);
 
 	/** Find window.
 	 * @param handle the window handle

@@ -9,6 +9,7 @@
 #include "rtk/os/wimp.h"
 #include "rtk/desktop/component.h"
 #include "rtk/desktop/window.h"
+#include "rtk/desktop/application.h"
 #include "rtk/events/redirection.h"
 
 // Coordinates within a component are specified with respect to its own
@@ -258,6 +259,27 @@ void component::set_caret_position(point p,int height,int index)
 	if (w)
 	{
 		os::Wimp_SetCaretPosition(w->handle(),-1,p,height,index);
+	}
+}
+
+void component::drag_box(const box& dbox)
+{
+	point offset;
+	application* app=parent_application(offset);
+	if (app)
+	{
+		box adbox=dbox+offset;
+		box apbox=app->bbox();
+		os::drag_box block;
+		block.type=5;
+		block.dbox=adbox;
+		block.pbox=apbox;
+		block.r12=0;
+		block.draw_func=0;
+		block.remove_func=0;
+		block.move_func=0;
+		os::Wimp_DragBox(block);
+		app->register_drag(*this);
 	}
 }
 

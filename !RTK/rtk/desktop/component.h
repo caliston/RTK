@@ -459,6 +459,8 @@ public:
 	 *  is an icon.
 	 */
 	void set_caret_position(point p,int height,int index);
+
+	void drag_box(const box& dbox);
 protected:
 	/** Link parent pointer of child to this component.
 	 * This function provides restricted access to the private function
