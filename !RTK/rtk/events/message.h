@@ -24,6 +24,7 @@ class message:
 	public event
 {
 private:
+	/** The Wimp event block. */
 	os::wimp_block* _wimpblock;
 public:
 	/** A mixin class for handling message events.
@@ -45,6 +46,7 @@ public:
 	 * for the lifetime of this object.  It is not freed when this
 	 * object is destroyed.
 	 * @param target the target of the event
+	 * @param wimpblock the Wimp event block
 	 */
 	message(desktop::component& target,os::wimp_block& wimpblock);
 

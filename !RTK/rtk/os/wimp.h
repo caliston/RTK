@@ -497,7 +497,7 @@ void Wimp_ReadPixTrans(sprite_area* area,const char* name,
 /** Read pixel translation table for sprite (by pointer).
  * @param area the sprite area that contains the sprite (0 for system
  *  area)
- * @param sprite the sprite pointer
+ * @param sp the sprite pointer
  * @param _scale a buffer for the returned scale factors (4 words)
  * @param _table a buffer for the returned translation table
  *  (2, 4 or 16 bytes)

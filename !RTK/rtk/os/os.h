@@ -31,7 +31,7 @@ void OS_SpriteOp40(sprite_area* area,sprite* sp,int* _xsize,int* _ysize,
 
 /** Read sprite information (given name).
  * @param area the sprite area
- * @param sp the sprite name
+ * @param name the sprite name
  * @param _xsize a buffer for the returned horizontal size
  * @param _ysize a buffer for the returned vertical size
  * @param _mask a buffer for the returned mask status

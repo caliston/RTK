@@ -66,6 +66,8 @@ void Font_Paint(int handle,const char* s,int plot,const point& p,void* coord,
  *  (if flag bit 17 set), else to split point
  * @param _p a buffer for the returned spatial offset to caret position
  *  (if flag bit 17 set), else to split point
+ * @param _length the number of split characters encountered (if flag
+ *  bit 20 set), else length of string
  */
 void Font_ScanString(int handle,const char* s,int plot,const point& p,
 	void* coord,void* trans,int length,int* _split,point* _p,int* _length);

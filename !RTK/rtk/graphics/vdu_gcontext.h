@@ -29,7 +29,7 @@ public:
 	 * If the current context is unchanged then no action is taken.
 	 * If it is changed then any assumed state (currently the foreground
 	 * and background colours) is re-established.
-	 * @param the required current context
+	 * @param current the required current context
 	 */
 	static void current(vdu_gcontext* current);
 public:

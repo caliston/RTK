@@ -214,13 +214,13 @@ public:
 	menu& title(const string& title,size_type capacity=0);
 
 	/** Set menu item height.
-	 * @param the required menu item height
+	 * @param value the required menu item height
 	 * @return a reference to this
 	 */
 	menu& height(int value);
 
 	/** Set gap between menu items.
-	 * @param the required gap between menu items
+	 * @param value the required gap between menu items
 	 * @return a reference to this
 	 */
 	menu& gap(int value);

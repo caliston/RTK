@@ -439,7 +439,7 @@ public:
 
 	/** Set foreground colour.
 	 * This is one of the 16 standard Wimp colours.
-	 * @param colour the required foreground colour
+	 * @param fcolour the required foreground colour
 	 * @return a reference to this
 	 */
 	icon& fcolour(int fcolour);

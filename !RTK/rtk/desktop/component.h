@@ -395,7 +395,7 @@ public:
 	void force_redraw();
 
 	/** Set caret position.
-	 * @param point the required position of the caret
+	 * @param p the required position of the caret
 	 * @param height the required height of the caret
 	 * @param index the required index into string
 	 * @todo the caret position is not set correctly if the component
@@ -408,8 +408,6 @@ protected:
 	 * set_parent().  It should be called by a container component
 	 * whenever a child is added.
 	 * @param c the child for which this is the new parent
-	 * @param mc true if the child is being linked as a menu or dialogue
-	 *  box, otherwise false
 	 * @postcondition c.parent()==this
 	 */
 	void link_child(component& c);
@@ -538,7 +536,7 @@ public:
 	/** Add component to baseline set.
 	 * The baselines are moved as necessary to accommodate the component.
 	 * @param bbox the bounding box of the component
-	 * @param xbaseline the horizontal baseline of the component
+	 * @param ybaseline the horizontal baseline of the component
 	 * @return a reference to this
 	 */
 	ybaseline_set& add(const box& bbox,ybaseline_type ybaseline);
