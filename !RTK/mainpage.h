@@ -18,10 +18,9 @@
  * - to provide an extensible, type-safe event delivery mechanism.
  * - to implement style-guide compliant behaviour by default.
  *
- * Please be aware that the RTK is currently at an early stage of
- * development.  Most of the basic infrastructure is complete, but
- * many important classes have not been written.  Some functions are
- * correct but not efficient.
+ * Please be aware that the RTK is still under development.  Most of
+ * the basic infrastructure is complete, but there are many more classes
+ * that could be added.  Some functions are correct but not efficient.
  * @section requirements Requirements
  * Supported operating systems include:
  * - RISC OS 4.02
