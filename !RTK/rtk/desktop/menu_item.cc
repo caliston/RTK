@@ -106,6 +106,8 @@ void menu_item::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock,
 				// If selection occurred at current level then
 				// post menu selection event to this component.
 				events::menu_selection ev(*this);
+				ev.post();
+
 				if (ev.buttons()&1)
 				{
 					// If selection was made using the adjust button
@@ -113,7 +115,6 @@ void menu_item::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock,
 					events::reopen_menu ev2(*this);
 					ev2.post();
 				}
-				ev.post();
 			}
 			else
 			{

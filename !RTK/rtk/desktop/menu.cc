@@ -84,9 +84,9 @@ void menu::reformat(const point& origin,const box& pbbox)
 void menu::reformat(const point& origin,const box& pbbox,size_type level)
 {
 	inherited::reformat(origin,pbbox);
+	create();
 	if (!_opened)
 	{
-		create();
 		point p=pbbox.xminymax();
 		application* app=parent_application(p);
 		if (!level) os::Wimp_CreateMenu(&**_mdata,p);

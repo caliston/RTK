@@ -608,7 +608,20 @@ void application::handle_event(events::reopen_menu &ev)
 {
 	if (_menus.size()&&_menus[0])
 	{
-		if (_menus[0]->auto_reopen()) _menus[0]->reopen();
+		if (_menus[0]->auto_reopen()) 
+		{
+			for (vector<menu*>::iterator i=_menus.begin();i!=_menus.end();++i)
+			{
+				if (!(*i)->layout_valid())
+				{
+					size_type level=i-_menus.begin();
+					point cpos=(*i)->origin();
+					box mcbbox=(*i)->min_bbox();
+					(*i)->reformat(cpos,mcbbox,level);
+				}
+			}
+			_menus[0]->reopen();
+		}
 	}
 }
 
