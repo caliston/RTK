@@ -422,7 +422,28 @@ public:
 	 * @return work area flags for use by the Wimp
 	 */
 	int work_area_flags() const;
+
+	/** Get handle of window in front of this one.
+	 * @internal
+	 * @return the handle of the window in front of this one, or -1 if
+	 *  this window is at the top of the window stack
+	 */
+	int window::behind() const;
 private:
+	/** Reformat window.
+	 * @internal
+	 * This function is equivalent to reformat(const point&,const box&),
+	 * except that the required position in the window stack can (and must)
+	 * be specified.
+	 * @param origin the new origin of this component, with respect to
+	 *  its parent
+	 * @param bbox the proposed bounding box for this component, with
+	 *  respect to its own origin
+	 * @param behind the window behind which this one should be opened,
+	 *  or -1 to open at the top of the window stack
+	 */
+	void _reformat(const point& origin,const box& bbox,int behind);
+
 	/** Calculate extent.
 	 * @internal
 	 * @param bbox the proposed bounding box of this component

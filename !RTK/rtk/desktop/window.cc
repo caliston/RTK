@@ -93,88 +93,7 @@ void window::resize() const
 
 void window::reformat(const point& origin,const box& bbox)
 {
-	// Update origin and bounding box of this component.
-	_bbox=bbox;
-	inherited::reformat(origin,bbox);
-
-	// Create RISC OS window.
-	create();
-
-	// Calculate extent (taking into account size of visible area
-	// and minimum bounding box of child).  Update RISC OS window.
-	box extent=calculate_extent(_bbox);
-	if (_extent!=extent)
-	{
-		os::Wimp_SetExtent(_handle,extent);
-		_extent=extent;
-	}
-
-	// Calculate origin of parent with respect to origin of screen.
-	point parent_origin(-this->origin());
-	parent_application(parent_origin);
-
-	// The Wimp can override the requested size of a window.  When this
-	// happens, the child will be placed incorrectly.  To correct this,
-	// the bounding box and extent are recalculated after the window has
-	// been opered.  If the extent has changed then the process of
-	// opening the window is repeated.  (For safety, only one repeat is
-	// allowed.  This should be sufficient, and if it isn't then there
-	// is a significant risk of an infinite loop.)
-	static os::window_state_get block1;
-	static os::window_open block2;
-	int attempts=2;
-	while (attempts--)
-	{
-		// Calculate visible area with respect to origin of screen.
-		box vabox=bbox+origin+parent_origin;
-
-		// Calculate required scroll offsets.
-		// Note that this is done after the window has been resized
-		// (therefore the scroll bars can move when the window size changes
-		// even if the child origin does not).
-		point scroll=(_child)?_bbox.xminymax()-_child->origin():point();
-
-		// Obtain parent window handle (-1 if top-level).
-		window* p=parent_work_area();
-		int phandle=(p)?p->handle():-1;
-
-		// Get window state (to preserve position in window stack).
-		block1.handle=_handle;
-		os::Wimp_GetWindowState(block1);
-
-		// Open window.
-		block2.handle=_handle;
-		block2.bbox=vabox;
-		block2.scroll=scroll;
-		block2.behind=block1.behind;
-		os::Wimp_OpenWindow(block2,phandle,0);
-
-		// Get window state (which may be different from what was requested
-		// when the window was opened).
-		block1.handle=_handle;
-		os::Wimp_GetWindowState(block1);
-
-		// Update bounding box.
-		_bbox=block1.bbox-origin-parent_origin;
-
-		// Recalculate extent.  If unchanged then terminate loop.
-		extent=calculate_extent(_bbox);
-		if (_extent!=extent)
-		{
-			os::Wimp_SetExtent(_handle,extent);
-			_extent=extent;
-		}
-		else attempts=0;
-	}
-
-	// Reformat child, if there is one.
-	if (_child)
-	{
-		// Calculate child origin.
-		point corigin=_bbox.xminymax()-block1.scroll;
-		// Reformat child.
-		_child->reformat(corigin,extent);
-	}
+	_reformat(origin,bbox,behind());
 }
 
 void window::reformat(const point& origin,const box& bbox,size_type level)
@@ -184,7 +103,7 @@ void window::reformat(const point& origin,const box& bbox,size_type level)
 		// Reformat in usual manner.  (This does cause the window to be opened
 		// in the usual manner, but doing so does not appear to cause any
 		// significant harm.)
-		reformat(origin,bbox);
+		_reformat(origin,bbox,behind());
 		// Calculate required top left-hand corner, with respect to screen.
 		point p=bbox.xminymax();
 		parent_application(p);
@@ -402,7 +321,7 @@ void window::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 			}
 
 			// Reformat this component.
-			reformat(origin,bbox);
+			_reformat(origin,bbox,block.behind);
 		}
 		break;
 	case 3:
@@ -570,6 +489,19 @@ int window::work_area_flags() const
 	return _button<<12;
 }
 
+int window::behind() const
+{
+	int behind=-1;
+	if (_handle)
+	{
+		static os::window_state_get block;
+		block.handle=_handle;
+		os::Wimp_GetWindowState(block);
+		behind=block.behind;
+	}
+	return behind;
+}
+
 void window::register_icon(icon& ic)
 {
 	_ihandles[ic.handle()]=&ic;
@@ -584,6 +516,88 @@ icon* window::find_icon(int handle) const
 {
 	map<int,icon*>::const_iterator f=_ihandles.find(handle);
 	return (f!=_ihandles.end())?(*f).second:0;
+}
+
+void window::_reformat(const point& origin,const box& bbox,int behind)
+{
+	// Update origin and bounding box of this component.
+	_bbox=bbox;
+	inherited::reformat(origin,bbox);
+
+	// Create RISC OS window.
+	create();
+
+	// Calculate extent (taking into account size of visible area
+	// and minimum bounding box of child).  Update RISC OS window.
+	box extent=calculate_extent(_bbox);
+	if (_extent!=extent)
+	{
+		os::Wimp_SetExtent(_handle,extent);
+		_extent=extent;
+	}
+
+	// Calculate origin of parent with respect to origin of screen.
+	point parent_origin(-this->origin());
+	parent_application(parent_origin);
+
+	// The Wimp can override the requested size of a window.  When this
+	// happens, the child will be placed incorrectly.  To correct this,
+	// the bounding box and extent are recalculated after the window has
+	// been opered.  If the extent has changed then the process of
+	// opening the window is repeated.  (For safety, only one repeat is
+	// allowed.  This should be sufficient, and if it isn't then there
+	// is a significant risk of an infinite loop.)
+	static os::window_state_get block1;
+	static os::window_open block2;
+	int attempts=2;
+	while (attempts--)
+	{
+		// Calculate visible area with respect to origin of screen.
+		box vabox=bbox+origin+parent_origin;
+
+		// Calculate required scroll offsets.
+		// Note that this is done after the window has been resized
+		// (therefore the scroll bars can move when the window size changes
+		// even if the child origin does not).
+		point scroll=(_child)?_bbox.xminymax()-_child->origin():point();
+
+		// Obtain parent window handle (-1 if top-level).
+		window* p=parent_work_area();
+		int phandle=(p)?p->handle():-1;
+
+		// Open window.
+		block2.handle=_handle;
+		block2.bbox=vabox;
+		block2.scroll=scroll;
+		block2.behind=behind;
+		os::Wimp_OpenWindow(block2,phandle,0);
+
+		// Get window state (which may be different from what was requested
+		// when the window was opened).
+		block1.handle=_handle;
+		os::Wimp_GetWindowState(block1);
+
+		// Update bounding box.
+		_bbox=block1.bbox-origin-parent_origin;
+
+		// Recalculate extent.  If unchanged then terminate loop.
+		extent=calculate_extent(_bbox);
+		if (_extent!=extent)
+		{
+			os::Wimp_SetExtent(_handle,extent);
+			_extent=extent;
+		}
+		else attempts=0;
+	}
+
+	// Reformat child, if there is one.
+	if (_child)
+	{
+		// Calculate child origin.
+		point corigin=_bbox.xminymax()-block1.scroll;
+		// Reformat child.
+		_child->reformat(corigin,extent);
+	}
 }
 
 box window::calculate_extent(const box& bbox)
