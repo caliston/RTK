@@ -309,6 +309,18 @@ void Wimp_TextColour(int colour)
 	call_swi(swi::Wimp_TextColour,&regs);
 }
 
+void Wimp_TransferBlock(int src_thandle,void* src_buffer,
+	int dst_thandle,void* dst_buffer,unsigned int count)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=src_thandle;
+	regs.r[1]=(int)src_buffer;
+	regs.r[2]=dst_thandle;
+	regs.r[3]=(int)dst_buffer;
+	regs.r[4]=count;
+	call_swi(swi::Wimp_TransferBlock,&regs);
+}
+
 void Wimp_TextOp0(int fcolour,int bcolour)
 {
 	_kernel_swi_regs regs;

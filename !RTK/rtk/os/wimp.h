@@ -536,6 +536,16 @@ void Wimp_ReadPixTrans(sprite_area* area,sprite* sp,
  */
 void Wimp_TextColour(int colour);
 
+/** Transfer data from one task to another.
+ * @param src_thandle the source task handle
+ * @param src_buffer the source buffer
+ * @param dst_thandle the destination task handle
+ * @param dst_buffer the destination buffer
+ * @param count the number of bytes to transfer
+ */
+void Wimp_TransferBlock(int src_thandle,void* src_buffer,
+	int dst_thandle,void* dst_buffer,unsigned int count);
+
 /** Set colours for use by Wimp_TextOp2.
  * @param fcolour the foreground palette entry
  * @param bcolour the background palette entry
