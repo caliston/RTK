@@ -175,6 +175,15 @@ public:
 
 	/** Detach save operaton. */
 	save_dbox& detach_save();
+
+	/** Get selection button.
+	 * The primary reason for making this component visible is
+	 * so that mouse_click events may be detected and acted upon
+	 * remotely.
+	 * @return a reference to the selection button
+	 */
+	option_button& selection_button()
+		{ return _selection_button; }
 private:
 	/** Handle save request.
 	 * This results from the user clicking on the save button or
