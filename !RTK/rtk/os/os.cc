@@ -181,6 +181,23 @@ void OS_FSControl25(const char* src_name,const char* dst_name)
 	call_swi(swi::OS_FSControl,&regs);
 }
 
+void OS_FSControl26(const char* src_name,const char* dst_name,
+	unsigned int mask,unsigned long long start_time,
+	unsigned long long end_time,void* extra_info)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=26;
+	regs.r[1]=(int)src_name;
+	regs.r[2]=(int)dst_name;
+	regs.r[3]=mask;
+	regs.r[4]=start_time>>0;
+	regs.r[5]=start_time>>32;
+	regs.r[6]=end_time>>0;
+	regs.r[7]=end_time>>32;
+	regs.r[8]=(int)extra_info;
+	call_swi(swi::OS_FSControl,&regs);
+}
+
 void OS_FSControl37(const char* pathname,char* buffer,const char* pathvar,
 	const char* path,unsigned int size,unsigned int* _size)
 {

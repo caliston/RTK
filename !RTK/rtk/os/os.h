@@ -155,6 +155,18 @@ void OS_SetVarVal(const char* varname,const char* value,unsigned int length,
  */
 void OS_FSControl25(const char* src_name,const char* dst_name);
 
+/** Copy objects.
+ * @param src_name the source name
+ * @param dst_name the destination name
+ * @param mask a bitmap describing the required action
+ * @param start_time the optional inclusive start time
+ * @param end_time the optional inclusive end time
+ * @param extra_info an optional pointer to extra information
+ */
+void OS_FSControl26(const char* src_name,const char* dst_name,
+	unsigned int mask,unsigned long long start_time,
+	unsigned long long end_time,void* extra_info);
+
 /** Canonicalise pathname.
  * @param name the object name
  * @param buffer a buffer for the result
