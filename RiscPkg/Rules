@@ -23,8 +23,8 @@ all:
 	Dir Temp
 	RiscPkg-GenControl RTK-Common < ../RiscPkg/Control > RiscPkg/Control
 	zip -r ^.RTK-Common_$(VERSION) * -i@^.RiscPkg.RTK-Common/inc
-	RiscPkg-GenControl RTK < ../RiscPkg/Control > RiscPkg/Control
-	zip -r ^.RTK_$(VERSION) * -i@^.RiscPkg.RTK/inc
+	RiscPkg-GenControl RTK-Dev < ../RiscPkg/Control > RiscPkg/Control
+	zip -r ^.RTK-Dev_$(VERSION) * -i@^.RiscPkg.RTK-Dev/inc
 	RiscPkg-GenControl RTK-Doc < ../RiscPkg/Control > RiscPkg/Control
 	zip -r ^.RTK-Doc_$(VERSION) * -i@^.RiscPkg.RTK-Doc/inc
 	Dir ^

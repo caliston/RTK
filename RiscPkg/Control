@@ -16,7 +16,7 @@ Description: The RISC OS Toolkit (a C++ application framework)
 Package: RTK-Common
 Description: Common files that belong to the RISC OS Toolkit
 
-Package: RTK
+Package: RTK-Dev
 Depends: RTK-Common
 
 Package: RTK-Doc
