@@ -349,6 +349,11 @@ void window::redraw(gcontext& context,const box& clip)
 	inherited::redraw(context,clip);
 }
 
+void window::handle_event(events::close_window& ev)
+{
+	remove();
+}
+
 void window::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 {
 	switch (wimpcode)

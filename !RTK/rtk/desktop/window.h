@@ -10,6 +10,7 @@
 #include <string>
 
 #include "rtk/desktop/component.h"
+#include "rtk/events/close_window.h"
 
 namespace rtk {
 namespace os {
@@ -38,7 +39,8 @@ class icon;
  */
 
 class window:
-	public component
+	public component,
+	public events::close_window::handler
 {
 private:
 	/** The class from which this one is derived. */
@@ -335,6 +337,14 @@ public:
 	 * @return a reference to this
 	 */
 	window& wf_colour(int colour);
+
+	/** Default handler for close_window events.
+	 * If this handler remains registered then the window will close itself
+	 * (by removing itself from the component heirarchy) when the close
+	 * button is pressed.
+	 * @param ev the close_window event
+	 */
+	void handle_event(events::close_window& ev);
 
 	/** Deliver Wimp event block.
 	 * @internal
