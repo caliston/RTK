@@ -241,7 +241,7 @@ public:
 	 * the relevant destructors.
 	 * @param ev the quit event
 	 */
-	void handle_event(events::quit& ev);
+	virtual void handle_event(events::quit& ev);
 
 	/** Default handler for datasave events.
 	 * @param ev the datasave event
@@ -261,7 +261,7 @@ public:
 	 * to false.
 	 * @param ev the reopen_menu event
 	 */
-	void handle_event(events::reopen_menu& ev);
+	virtual void handle_event(events::reopen_menu& ev);
 
 	/** Deliver Wimp event block.
 	 * @internal
