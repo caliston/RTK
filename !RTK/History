@@ -3,6 +3,23 @@
 # Distribution and use are subject to the GNU Lesser General Public License,
 # a copy of which may be found in the file !RTK.Copyright.
 
+Version 0.5.0 (01 Feb 2004)
+
+  Ensured that labels are redrawn correctly when their content changes
+  Reduced unnecessary redraws by card_layout or toolbar_layout.
+  Moved most of the functionality of window into a new class, basic_window.
+  Added class toolbar_layout.
+  Fixed bug where components are removed from tree when partially destructed.
+  Ensured that menus are reformatted before they are reopened.
+  Added a tick attribute to menu_item.
+  Components can now safely delete themselves from within an event handler.
+  Added class events::menuwarning.  
+  Added ability to set sprite name for use by save_dbox.
+  Fixed bug where menu tree is closed when open dialogue box is reopened.
+  Ensured that icon size takes account of half-size flag.
+  Ensured that icon is invalidated when hcentre, vcentre or rjustify changes.
+  Corrected icon sprite size when name not specified in validation string.
+
 Version 0.4.1 (02 Jan 2004)
 
   Deferred deletion of window to destructor, to fix dialogue box opening bug.

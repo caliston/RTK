@@ -119,7 +119,6 @@
  * with a subject of "subscribe".
  *
  * @todo a multi-line text field class
- * @todo a toolbar layout class
  * @todo a template layout class
  * @todo a discard/cancel/save dialogue box class
  * @todo printing
