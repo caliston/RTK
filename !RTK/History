@@ -1,3 +1,8 @@
+# This file is part of the RISC OS Toolkit (RTK).
+# Copyright © 2003 Graham Shaw.
+# Distribution and use are subject to the GNU Lesser General Public License,
+# a copy of which may be found in the file !RTK.Copyright.
+
 Version 0.1.0 (12 Sep 2003)
 
   Added class desktop::absolute_layout.
@@ -11,4 +16,4 @@ Version 0.1.0 (12 Sep 2003)
 
 Version 0.0.0 (01 Sep 2003)
 
-  Initial revision
+  Initial revision.
