@@ -6,7 +6,8 @@
 include ../../Rules.make
 
 OBJ = point.o \
- box.o
+ box.o \
+ font.o
 
 all: $(OBJ)
 
