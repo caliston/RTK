@@ -278,6 +278,19 @@ void Wimp_SpriteOp40(const char* name,int* _xsize,int* _ysize,
 	if (_mode) *_mode=regs.r[6];
 }
 
+void Wimp_BlockCopy(int whandle,const box& src,const point& dst)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=whandle;
+	regs.r[1]=src.xmin();
+	regs.r[2]=src.ymin();
+	regs.r[3]=src.xmax();
+	regs.r[4]=src.ymax();
+	regs.r[5]=dst.x();
+	regs.r[6]=dst.y();
+	call_swi(swi::Wimp_BlockCopy,&regs);
+}
+
 void Wimp_ReadPixTrans(sprite_area* area,const char* name,
 	unsigned int* _scale,unsigned char* _table)
 {

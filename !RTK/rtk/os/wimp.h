@@ -508,6 +508,13 @@ inline void Wimp_CreateSubMenu(os::menu* m,const point& p)
 void Wimp_SpriteOp40(const char* name,int* _xsize,int* _ysize,
 	int* _mask,int* _mode);
 
+/** Copy block of work area.
+ * @param whandle the window handle
+ * @param src the source area
+ * @param dst the bottom left-hand corner of the destination area
+ */
+void Wimp_BlockCopy(int whandle,const box& src,const point& dst);
+
 /** Read pixel translation table for sprite (by name).
  * @param area the sprite area that contains the sprite (0 for system
  *  area, 1 for Wimp sprite area)
