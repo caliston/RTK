@@ -3,7 +3,7 @@
 # Distribution and use are subject to the GNU Lesser General Public License,
 # a copy of which may be found in the file !RTK.Copyright.
 
-PREFIX = RTK-0/5/0
+PREFIX = RTK-0/6/0
 
 all: bin doc dist
 

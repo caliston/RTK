@@ -3,6 +3,15 @@
 # Distribution and use are subject to the GNU Lesser General Public License,
 # a copy of which may be found in the file !RTK.Copyright.
 
+Version 0.6.0 (10 May 2004)
+
+  Filled background of (default_)action_button and display_field.
+  Added class ibar_icon.
+  Added class ibar_menu.
+  Fixed declaration of rtk::os::wimp_block in menu.h.
+  Right-justified program information dialogue box labels.
+  Arranged for menu::show() to redirect events unless instructed otherwise.
+
 Version 0.5.0 (01 Feb 2004)
 
   Ensured that labels are redrawn correctly when their content changes
