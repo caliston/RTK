@@ -22,6 +22,7 @@ OBJ = event.o \
  dataload.o \
  dataloadack.o \
  ramfetch.o \
+ ramtransmit.o \
  help_request.o \
  reopen_menu.o \
  save_to_file.o \
