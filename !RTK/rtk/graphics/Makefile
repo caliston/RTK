@@ -3,7 +3,10 @@
 # Distribution and use are subject to the GNU Lesser General Public License,
 # a copy of which may be found in the file !RTK.Copyright.
 
-include ../../Rules.make
+CPPFLAGS = -Irtk_build:
+CXXFLAGS = -mthrowback -munixlib -mpoke-function-name -Wall -W -Wno-unused -O2
+
+include fixdeps:Rules/make
 
 OBJ = point.o \
  box.o \
