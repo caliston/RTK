@@ -6,7 +6,7 @@
 -----------------------------------------------------------------------
 The RISC OS Toolkit
 
-Version 0.1.0 (12 Sep 2003)
+Version 0.2.0 (06 Oct 2003)
 -----------------------------------------------------------------------
 
 Introduction
@@ -134,9 +134,9 @@ Support
 
 Todo
 
-   * an absolute layout class
-   * a template layout class
-   * virtual row, column and grid layout classes
+   * a radio icon class
    * a card layout class
+   * a toolbar layout class
+   * a template layout class
    * a discard/cancel/save dialogue box class
-   * a save-as dialogue box class
+   * printing

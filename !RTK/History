@@ -3,6 +3,20 @@
 # Distribution and use are subject to the GNU Lesser General Public License,
 # a copy of which may be found in the file !RTK.Copyright.
 
+Version 0.2.0 (06 Oct 2003)
+
+  Added class transfer::load.
+  Added class transfer::save.
+  Added class transfer::load_linelist.
+  Added class transfer::save_linelist.
+  Added supporting event classes.
+  Added class desktop::save_dbox.
+  Added class desktop::option_button.
+  Added class desktop::writable_field.
+  Added user drag box support.
+  Added fit-to-parent flags to desktop::component.
+  Miscellaneous bug fixes.
+
 Version 0.1.0 (12 Sep 2003)
 
   Added class desktop::absolute_layout.
