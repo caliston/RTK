@@ -200,6 +200,11 @@ box component::bbox() const
 	return min_bbox();
 }
 
+box component::min_wrap_bbox(const box& wbox) const
+{
+	return min_bbox();
+}
+
 void component::invalidate()
 {
 	component* p=this;

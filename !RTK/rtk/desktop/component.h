@@ -357,9 +357,24 @@ public:
 	 * ybaseline().  In some cases this function will ensure that
 	 * size_valid() is true, but it is not required to, and min_bbox()
 	 * should not be used in place of an explicit call to resize().
+	 *
+	 * Where a component supports automatic line wrapping, this function
+	 * gives the minimum bounding box without wrapping.
 	 * @return the minimum bounding box with respect to the origin
 	 */
 	virtual box min_bbox() const=0;
+
+	/** Get minimum bounding box with line wrapping.
+	 * A preferred width and a preferred height are specified, however
+	 * at most one of these will be relevant to any given component:
+	 * the other should be disregarded.
+	 *
+	 * By default this function returns the same as min_bbox(), which is
+	 * the correct result for a component which does not perform automatic
+	 * line wrapping.
+	 * @param wbox a box specifying the preferred width and/or height
+	 */
+	virtual box min_wrap_bbox(const box& wbox) const;
 
 	/** Determine whether the size of this component is valid.
 	 * The size is valid if resize() has been called since the last
