@@ -15,6 +15,7 @@ OBJ = component.o \
  virtual_column_layout.o \
  virtual_grid_layout.o \
  card_layout.o \
+ toolbar_layout.o \
  label.o \
  icon.o \
  action_button.o \
