@@ -32,6 +32,11 @@ void OS_Byte161(int address,int* _value);
  */
 void OS_Find(int code,const char* name,const char* path,int* _handle);
 
+/** Close file.
+ * @param handle the file handle
+ */
+void OS_Find0(int handle);
+
 /** Read sprite information (given pointer).
  * @param area the sprite area
  * @param sp the sprite pointer
