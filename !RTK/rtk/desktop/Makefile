@@ -5,7 +5,8 @@
 
 include ../../Rules.make
 
-OBJ = component.o
+OBJ = component.o \
+ sizeable_component.o
 
 all: $(OBJ)
 
