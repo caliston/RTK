@@ -23,6 +23,7 @@ OBJ = component.o \
  writable_field.o \
  window.o \
  info_dbox.o \
+ save_dbox.o \
  menu_item.o \
  menu.o \
  application.o
