@@ -54,11 +54,17 @@ public:
 	 */
 	virtual ~message();
 
+	/** Get task handle of sender.
+	 * This is equal to data().word[1].
+	 * @return the task handle of the sender
+	 */
+	int thandle() const;
+
 	/** Get message action code.
-	 * This is equal to message_data().word[4].
+	 * This is equal to data().word[4].
 	 * @return the message action code
 	 */
-	int message_action_code();
+	int msgcode() const;
 
 	/** Get message data.
 	 * The value returned is a reference to the original message block
@@ -66,7 +72,7 @@ public:
 	 * for at least the lifetime of this object.
 	 * @return the message data
 	 */
-	const os::wimp_block& data()
+	const os::wimp_block& data() const
 		{ return *_wimpblock; }
 protected:
 	virtual bool deliver(desktop::component& dest);

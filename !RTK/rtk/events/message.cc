@@ -20,7 +20,12 @@ message::message(component& target,os::wimp_block& wimpblock):
 message::~message()
 {}
 
-int message::message_action_code()
+int message::thandle() const
+{
+	return _wimpblock->word[1];
+}
+
+int message::msgcode() const
 {
 	return _wimpblock->word[4];
 }
