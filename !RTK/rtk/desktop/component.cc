@@ -138,14 +138,19 @@ void component::remove()
 
 component& component::origin(const point& origin)
 {
-	// Component will not be able to detect that it has moved when
-	// reformat() is called, so must force redraw now.
-	force_redraw();
-	// Move component to specified location.
-	_origin=origin;
-	// Invalidate component, so that the parent (if there is one) can
-	// either accept the new location or override it.
-	invalidate();
+	// Don't do anything unless a change is required.
+	if (origin!=_origin)
+	{
+		// Component will not be able to detect that it has moved when
+		// reformat() is called, so it must force a redraw now - but not
+		// if it is a window.
+		if (!as_window()) force_redraw();
+		// Move component to specified location.
+		_origin=origin;
+		// Invalidate component, so that the parent (if there is one) can
+		// either accept the new location or override it.
+		invalidate();
+	}
 	return *this;
 }
 
