@@ -276,6 +276,11 @@ box text_area::bbox() const
 
 box text_area::min_bbox() const
 {
+	// Determine how many OS units are in a pixel (horizontally).
+	int xeigfactor=0;
+	os::OS_ReadModeVariable(swi::XEigFactor,&xeigfactor);
+	unsigned int xpix=1<<xeigfactor;
+
 	// Update _min_bbox_valid.
 	if (!size_valid()) resize();
 
@@ -290,9 +295,11 @@ box text_area::min_bbox() const
 		}
 		int ysize=_text.size()*line_height();
 
-		// Construct minimum bounding box, with respect to top left-hand
-		// corner of text area.
-		box abbox(0,-ysize,xsize,0);
+		// Construct minimum bounding box, with respect to top
+		// left-hand corner of text area.
+		// (Add one pixel to width, to ensure that there is
+		// enough space for line-breaking to work correctly.)
+		box abbox(0,-ysize,xsize+xpix,0);
 
 		// Translate to external origin and return.
 		abbox-=external_origin(abbox,xbaseline_left,ybaseline_top);
