@@ -8,6 +8,7 @@ include ../../Rules.make
 OBJ = component.o \
  sizeable_component.o \
  grid_layout.o \
+ row_layout.o \
  icon.o \
  action_button.o \
  default_button.o \
