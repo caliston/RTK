@@ -17,6 +17,7 @@ OBJ = event.o \
  menu_selection.o \
  message.o \
  quit.o \
+ datasave.o \
  help_request.o \
  reopen_menu.o \
  save_to_file.o \
