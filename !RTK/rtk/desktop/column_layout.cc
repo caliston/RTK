@@ -214,7 +214,7 @@ column_layout& column_layout::cells(size_type ycells)
 	for (size_type i=min(ycells,_components.size());i!=_components.size();++i)
 		if (component* c=_components[i]) c->remove();
 	_components.resize(ycells,0);
-	_ymax.resize(ycells,0);
+	_ymax.resize(ycells+1,0);
 	invalidate();
 	return *this;
 }
