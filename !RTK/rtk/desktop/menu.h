@@ -107,15 +107,14 @@ private:
 public:
 	/** Construct menu.
 	 * By default a menu:
-	 * <UL>
-	 * <LI>has a title foreground colour of 7;</LI>
-	 * <LI>has a title background colour of 2;</LI>
-	 * <LI>has a work area foreground colour of 7;</LI>
-	 * <LI>has a work area background colour of 0;</LI>
-	 * <LI>has a height for each menu item of 44 OS units;</LI>
-	 * <LI>has a gap between menu items of 0 OS units; and</LI>
-	 * <LI>has no title.</LI>
-	 * </UL>
+	 * - has a title foreground colour of 7;
+	 * - has a title background colour of 2;
+	 * - has a work area foreground colour of 7;
+	 * - has a work area background colour of 0;
+	 * - has a height for each menu item of 44 OS units;
+	 * - has a gap between menu items of 0 OS units; and
+	 * - has no title.
+	 *
 	 */
 	menu();
 

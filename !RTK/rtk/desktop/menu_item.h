@@ -61,11 +61,10 @@ private:
 public:
 	/** Construct menu item.
 	 * By default, a menu item:
-	 * <UL>
-	 * <LI>has a background colour of 0;</LI>
-	 * <LI>is not followed by a separator; and</LI>
-	 * <LI>keeps the menu tree open if clicked with adjust.</LI>
-	 * </UL>
+	 * - has a background colour of 0;
+	 * - is not followed by a separator; and
+	 * - keeps the menu tree open if clicked with adjust.
+	 *
 	 * Other default attributes are as for an icon.
 	 */
 	menu_item();
