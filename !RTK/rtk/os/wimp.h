@@ -271,6 +271,19 @@ struct menu
 	menu_item item[1];
 };
 
+/** A structure for use by Wimp_DragBox. */
+struct drag_box
+{
+	int whandle;
+	int type;
+	box dbox;
+	box pbox;
+	int r12;
+	int draw_func;
+	int remove_func;
+	int move_func;
+};
+
 /** Register a task with the window manager.
  * @param version the most recent window manager version number known to
  *  task, multiplied by 100
@@ -371,6 +384,11 @@ void Wimp_GetIconState(icon_state_get& block);
  * @param block the pointer information block
  */
 void Wimp_GetPointerInfo(pointer_info_get& block);
+
+/** Begin drag operation.
+ * @param block the drag box box
+ */
+void Wimp_DragBox(drag_box& block);
 
 /** Force area of screen or window to be redrawn.
  * @param handle the window handle (-1 for desktop, -2 for icon bar)

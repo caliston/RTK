@@ -140,6 +140,13 @@ void Wimp_GetPointerInfo(pointer_info_get& block)
 	call_swi(swi::Wimp_GetPointerInfo,&regs);
 }
 
+void Wimp_DragBox(drag_box& block)
+{
+	_kernel_swi_regs regs;
+	regs.r[1]=(int)&block;
+	call_swi(swi::Wimp_DragBox,&regs);
+}
+
 void Wimp_ForceRedraw(int handle,const box& bbox)
 {
 	_kernel_swi_regs regs;
