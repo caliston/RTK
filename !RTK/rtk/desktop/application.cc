@@ -634,6 +634,10 @@ void application::register_drag(component& c,bool sprite)
 
 void application::deregister_window(window& w)
 {
+	if (&w==_dbox)
+	{
+		os::Wimp_CreateMenu(-1,point());
+	}
 	_whandles.erase(w.handle());
 }
 
