@@ -21,6 +21,7 @@ OBJ = component.o \
  toolbar_layout.o \
  label.o \
  icon.o \
+ ibar_icon.o \
  action_button.o \
  default_button.o \
  option_button.o \
