@@ -110,7 +110,8 @@ void Font_Paint(int handle,const char* s,int plot,const point& p,void* coord,
  *  bit 20 set), else length of string
  */
 void Font_ScanString(int handle,const char* s,int plot,const point& p,
-	void* coord,void* trans,int length,char** _split,point* _p,int* _length);
+	void* coord,void* trans,int length,const char** _split,point* _p,
+	int* _length);
 
 }; /* namespace os */
 }; /* namespace rtk */
