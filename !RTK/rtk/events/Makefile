@@ -20,6 +20,7 @@ OBJ = event.o \
  help_request.o \
  reopen_menu.o \
  save_to_file.o \
+ save_to_app.o \
  redirection.o
 
 all: $(OBJ)
