@@ -114,10 +114,11 @@
  * mailto:rtk-request@sagitta.demon.co.uk
  *
  * with a subject of "subscribe".
- * @todo an absolute layout class
- * @todo a template layout class
- * @todo virtual row, column and grid layout classes
+ *
+ * @todo a radio icon class
  * @todo a card layout class
+ * @todo a toolbar layout class
+ * @todo a template layout class
  * @todo a discard/cancel/save dialogue box class
- * @todo a save-as dialogue box class
+ * @todo printing
  */
