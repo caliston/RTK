@@ -1,7 +1,12 @@
 PREFIX = RTK-0/1/0
 
-all:
-	make -C !RTK
+all: bin doc dist
+
+bin:
+	make -C !RTK bin
+
+doc:
+	make -C !RTK doc
 
 dist: dist-src dist-bin dist-doc
 

@@ -5,7 +5,7 @@
 
 AR = libfile
 
-all:
+bin: always
 	make -C rtk
 	mkdir -p a
 	$(AR) -c a.rtk rtk.util.o.*
@@ -14,3 +14,11 @@ all:
 	$(AR) -i a.rtk rtk.desktop.o.*
 	$(AR) -i a.rtk rtk.events.o.*
 	$(AR) -i a.rtk rtk.transfer.o.*
+
+doc: always
+	doxygen
+	Copy html.!!RunHelp html.!RunHelp ~CF~P~V
+
+all: bin doc
+
+always:
