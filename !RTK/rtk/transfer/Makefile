@@ -6,6 +6,7 @@
 include ../../Rules.make
 
 OBJ = load.o \
+ load_linelist.o \
  save.o
 
 all: $(OBJ)
