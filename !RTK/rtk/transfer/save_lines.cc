@@ -8,38 +8,38 @@
 namespace rtk {
 namespace transfer {
 
-string save_lines::null_sequence::operator()()
+std::string save_lines::null_source::operator()()
 {
-	return string();
+	return std::string();
 }
 
-bool save_lines::null_sequence::eof() const
+bool save_lines::null_source::eof() const
 {
 	return true;
 }
 
-void save_lines::null_sequence::reset()
+void save_lines::null_source::reset()
 {}
 
-save_lines::size_type save_lines::null_sequence::estsize() const
+save_lines::size_type save_lines::null_source::estsize() const
 {
 	return 0;
 }
 
 save_lines::save_lines():
-	_lines(new null_sequence),
+	_source(new null_source),
 	_eol(false),
 	_final_newline(true)
 {}
 
 save_lines::~save_lines()
 {
-	delete _lines;
+	delete _source;
 }
 
 void save_lines::start()
 {
-	_lines->reset();
+	_source->reset();
 	_eol=false;
 }
 
@@ -53,13 +53,13 @@ void save_lines::get_block(const void** data,size_type* count)
 		if (count) *count=1;
 		_eol=false;
 	}
-	else if (!_lines->eof())
+	else if (!_source->eof())
 	{
-		// Fetch line from sequence.
-		const string& s=(*_lines)();
+		// Fetch line from source.
+		const std::string& s=(*_source)();
 
 		// Decide whether line is terminated by a newline character.
-		bool has_newline=_final_newline||!_lines->eof();
+		bool has_newline=_final_newline||!_source->eof();
 
 		if (s.length())
 		{
@@ -100,14 +100,14 @@ void save_lines::finish()
 
 save_lines::size_type save_lines::estsize()
 {
-	return _lines->estsize();
+	return _source->estsize();
 }
 
 save_lines& save_lines::clear()
 {
-	basic_sequence* null=new null_sequence;
-	delete _lines;
-	_lines=null;
+	basic_source* null=new null_source;
+	delete _source;
+	_source=null;
 	return *this;
 }
 

@@ -24,35 +24,31 @@ class save_lines:
 	public save
 {
 private:
-	/** An abstract base class to represent a sequence of lines.
-	 * Also included is an iterator into the sequence.
-	 */
-	class basic_sequence
+	/** An abstract base class to represent a source of lines. */
+	class basic_source
 	{
 	public:
-		/** Get next line from sequence.
-		 * The iterator is incremented by this function.
-		 * @return the next line from the sequence
+		/** Get next line from source.
+		 * @return the next line from the source
 		 */
 		virtual string operator()()=0;
 
-		/** Test whether iterator is at end of sequence.
+		/** Test whether more lines are available.
 		 * @return true if at end, otherwise false
 		 */
 		virtual bool eof() const=0;
 
-		/** Reset iterator to start of sequence. */
+		/** Reset to start of source. */
 		virtual void reset()=0;
 
-		/** Get estimated size of sequence in bytes. */
+		/** Estimate total number of bytes. */
 		virtual size_type estsize() const=0;
 	};
 
-	/** A class to represent a sequence of lines, using a given iterator type.
-	 */
+	/** A class to represent a sequence as a line source. */
 	template<class iterator>
-	class sequence:
-		public basic_sequence
+	class sequence_source:
+		public basic_source
 	{
 	private:
 		/** The first member of the sequence. */
@@ -64,11 +60,11 @@ private:
 		/** An iterator into the sequence. */
 		iterator _pos;
 	public:
-		/** Construct sequence.
+		/** Construct sequence_source.
 		 * @param first the first member of the sequence
 		 * @param last the last member of the sequence
 		 */
-		sequence(iterator first,iterator last);
+		sequence_source(iterator first,iterator last);
 
 		virtual string operator()();
 		virtual bool eof() const;
@@ -76,9 +72,9 @@ private:
 		virtual size_type estsize() const;
 	};
 
-	/** A class to represent the null sequence. */
-	class null_sequence:
-		public basic_sequence
+	/** A class to represent the null line source. */
+	class null_source:
+		public basic_source
 	{
 	public:
 		virtual string operator()();
@@ -88,7 +84,7 @@ private:
 	};
 
 	/** The sequence of lines. */
-	basic_sequence* _lines;
+	basic_source* _source;
 
 	/** The end-of-line flag.
 	 * When true, a line of text has been saved but the associated newline
@@ -115,16 +111,16 @@ protected:
 	virtual void finish();
 	virtual size_type estsize();
 public:
-	/** Set lines to be saved.
-	 * The sequence is specified using a pair of iterators, which may be
-	 * of any iterator type.
+	/** Set line source.
+	 * The source is a sequence of std::string, which may be specified
+	 * using any iterator type.
 	 * @param first the first line to be saved
 	 * @param last the last line to be saved
 	 */
 	template<class iterator>
 	save_lines& lines(iterator first,iterator last);
 
-	/** Clear lines to be saved. */
+	/** Clear line source. */
 	save_lines& clear();
 
 	/** Get final newline flag.
@@ -141,32 +137,33 @@ public:
 };
 
 template<class iterator>
-save_lines::sequence<iterator>::sequence(iterator first,iterator last):
+save_lines::sequence_source<iterator>::sequence_source(
+	iterator first,iterator last):
 	_first(first),
 	_last(last),
 	_pos(last)
 {}
 
 template<class iterator>
-string save_lines::sequence<iterator>::operator()()
+string save_lines::sequence_source<iterator>::operator()()
 {
 	return (_pos!=_last)?*_pos++:string();
 }
 
 template<class iterator>
-bool save_lines::sequence<iterator>::eof() const
+bool save_lines::sequence_source<iterator>::eof() const
 {
 	return _pos==_last;
 }
 
 template<class iterator>
-void save_lines::sequence<iterator>::reset()
+void save_lines::sequence_source<iterator>::reset()
 {
 	_pos=_first;
 }
 
 template<class iterator>
-save_lines::size_type save_lines::sequence<iterator>::estsize() const
+save_lines::size_type save_lines::sequence_source<iterator>::estsize() const
 {
 	size_type size=0;
 	for (iterator i=_first;i!=_last;++i)
@@ -180,9 +177,10 @@ save_lines::size_type save_lines::sequence<iterator>::estsize() const
 template<class iterator>
 save_lines& save_lines::lines(iterator first,iterator last)
 {
-	sequence<iterator>* new_lines=new sequence<iterator>(first,last);
-	delete _lines;
-	_lines=new_lines;
+	sequence_source<iterator>* new_source=
+		new sequence_source<iterator>(first,last);
+	delete _source;
+	_source=new_source;
 	return *this;
 }
 
