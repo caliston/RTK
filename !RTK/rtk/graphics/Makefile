@@ -8,7 +8,8 @@ include ../../Rules.make
 OBJ = point.o \
  box.o \
  font.o \
- gcontext.o
+ gcontext.o \
+ vdu_gcontext.o
 
 all: $(OBJ)
 
