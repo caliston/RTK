@@ -9,7 +9,8 @@ OBJ = event.o \
  wimp.o \
  null_reason.o \
  message.o \
- quit.o
+ quit.o \
+ reopen_menu.o
 
 all: $(OBJ)
 
