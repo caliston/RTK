@@ -382,6 +382,17 @@ void application::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 			ev.post();
 		}
 		break;
+	case swi::Message_HelpRequest:
+		if (wimpblock.word[8]==-2)
+		{
+			if (icon* ic=find_icon(wimpblock.word[9]))
+				ic->deliver_wimp_block(wimpcode,wimpblock);
+		}
+		else if (window* w=find_window(wimpblock.word[8]))
+		{
+			w->deliver_wimp_block(wimpcode,wimpblock);
+		}
+		break;
 	case swi::Message_MenuWarning:
 		if (_menus.size()&&_menus[0])
 			_menus[0]->deliver_wimp_block(wimpcode,wimpblock,0);

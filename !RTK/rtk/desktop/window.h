@@ -357,6 +357,17 @@ public:
 	 */
 	void deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock);
 
+	/** Deliver Wimp message.
+	 * @internal
+	 * The event block (which should contain a message) is converted
+	 * into a suitable event object and posted to the appropriate target.
+	 * This function should be used when it has been established that
+	 * this window, or a child of this window, is the target.
+	 * @param wimpcode the Wimp event code
+	 * @param wimpblock the Wimp event block
+	 */
+	void deliver_message(int wimpcode,os::wimp_block& wimpblock);
+
 	/** Register icon for event delivery.
 	 * @internal
 	 * This function is called by an icon object when it is given an

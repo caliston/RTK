@@ -4,6 +4,7 @@
 // a copy of which may be found in the file !RTK.Copyright.
 
 #include "rtk/swi/os.h"
+#include "rtk/swi/wimp.h"
 #include "rtk/os/os.h"
 #include "rtk/os/wimp.h"
 #include "rtk/desktop/icon.h"
@@ -12,6 +13,8 @@
 #include "rtk/events/wimp.h"
 #include "rtk/events/mouse_click.h"
 #include "rtk/events/key_pressed.h"
+#include "rtk/events/message.h"
+#include "rtk/events/help_request.h"
 
 namespace rtk {
 namespace desktop {
@@ -461,9 +464,32 @@ void icon::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 			ev.post();
 		}
 		break;
+	case 17:
+	case 18:
+		deliver_message(wimpcode,wimpblock);
+		break;
 	default:
 		{ 
 			events::wimp ev(*this,wimpcode,wimpblock);
+			ev.post();
+		}
+		break;
+	}
+}
+
+void icon::deliver_message(int wimpcode,os::wimp_block& wimpblock)
+{
+	switch (wimpblock.word[4])
+	{
+	case swi::Message_HelpRequest:
+		{
+			events::help_request ev(*this,wimpblock);
+			ev.post();
+		}
+		break;
+	default:
+		{
+			events::message ev(*this,wimpblock);
 			ev.post();
 		}
 		break;

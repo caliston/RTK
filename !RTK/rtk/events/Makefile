@@ -16,6 +16,7 @@ OBJ = event.o \
  menu_selection.o \
  message.o \
  quit.o \
+ help_request.o \
  reopen_menu.o
 
 all: $(OBJ)

@@ -5,6 +5,7 @@
 
 #include "rtk/graphics/gcontext.h"
 #include "rtk/graphics/vdu_gcontext.h"
+#include "rtk/swi/wimp.h"
 #include "rtk/os/wimp.h"
 #include "rtk/desktop/icon.h"
 #include "rtk/desktop/window.h"
@@ -16,6 +17,7 @@
 #include "rtk/events/mouse_click.h"
 #include "rtk/events/key_pressed.h"
 #include "rtk/events/message.h"
+#include "rtk/events/help_request.h"
 
 namespace rtk {
 namespace desktop {
@@ -459,14 +461,45 @@ void window::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 		break;
 	case 17:
 	case 18:
+		deliver_message(wimpcode,wimpblock);
+		break;
+	default:
 		{
-			events::message ev(*this,wimpblock);
+			events::wimp ev(*this,wimpcode,wimpblock);
+			ev.post();
+		}
+		break;
+	}
+}
+
+void window::deliver_message(int wimpcode,os::wimp_block& wimpblock)
+{
+	switch (wimpblock.word[4])
+	{
+	case swi::Message_HelpRequest:
+		if (icon* ic=find_icon(wimpblock.word[9]))
+		{
+			ic->deliver_wimp_block(wimpcode,wimpblock);
+		}
+		else
+		{
+			component* target=this;
+			point offset;
+			parent_application(offset);
+			point position=
+				point(wimpblock.word[5],wimpblock.word[6])-offset;
+			while (component* child=target->find(position))
+			{
+				target=child;
+				position-=child->origin();
+			}
+			events::help_request ev(*target,wimpblock);
 			ev.post();
 		}
 		break;
 	default:
 		{
-			events::wimp ev(*this,wimpcode,wimpblock);
+			events::message ev(*this,wimpblock);
 			ev.post();
 		}
 		break;
