@@ -3,6 +3,14 @@
 # Distribution and use are subject to the GNU Lesser General Public License,
 # a copy of which may be found in the file !RTK.Copyright.
 
+Version 0.4.0 (24 Dec 2003)
+
+  Added os::OS_FSControl26().
+  Made transfer::save generate saved events in response to save_to_file
+  Ensured that dialogue boxes are closed before they are unformatted.
+  Rewrote !Help file.
+  Added package metadata and build script.
+
 Version 0.3.0 (16 Dec 2003)
 
   Added class card_layout.

@@ -10,7 +10,7 @@ namespace util {
 
 const unsigned int* version()
 {
-	static const unsigned int version[]={0,3,0};
+	static const unsigned int version[]={0,4,0};
 	return version;
 }
 
