@@ -46,7 +46,10 @@ void label::redraw(gcontext& context,const box& clip)
 
 label& label::text(const string& text)
 {
+	force_redraw();
 	_text=text;
+	reformat(origin(),box());
+	force_redraw();
 	invalidate();
 	return *this;
 }
