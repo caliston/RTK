@@ -11,6 +11,7 @@ OBJ = event.o \
  close_window.o \
  entering_window.o \
  leaving_window.o \
+ mouse_click.o \
  message.o \
  quit.o \
  reopen_menu.o
