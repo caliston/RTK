@@ -14,6 +14,7 @@
 #include "rtk/events/wimp.h"
 #include "rtk/events/mouse_click.h"
 #include "rtk/events/message.h"
+#include "rtk/events/menusdeleted.h"
 
 namespace rtk {
 namespace desktop {
@@ -344,7 +345,7 @@ void menu::deliver_message(int wimpcode,os::wimp_block &wimpblock,
 		break;
 	case swi::Message_MenusDeleted:
 		{
-			events::message ev(*this,wimpcode,wimpblock);
+			events::menusdeleted ev(*this);
 			ev.post();
 		}
 		break;
