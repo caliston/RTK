@@ -560,6 +560,12 @@ void Wimp_TransferBlock(int src_thandle,const void* src_buffer,
  */
 void Wimp_ReadSysInfo(int index,int* _r0,int* _r1);
 
+/** Set anti-aliased font to standard Wimp colours.
+ * @param bcolour the required background colour
+ * @param fcolour the required foreground colour
+ */
+void Wimp_SetFontColours(int bcolour,int fcolour);
+
 /** Get menu state.
  * @param buffer a buffer for the returned menu tree
  */
