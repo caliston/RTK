@@ -20,6 +20,7 @@ all:
 	Access Temp.Apps.Library.!RTK.rtk.transfer.h.* LR/R
 	Access Temp.Apps.Library.!RTK.rtk.util.h.* LR/R
 	Copy SysVars Temp.SysVars ~CFR~V
+	Copy Sprites Temp.Sprites ~CFR~V
 
 	Dir Temp
 	RiscPkg-GenControl RTK-Common < ../RiscPkg/Control > RiscPkg/Control
