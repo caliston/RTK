@@ -7,6 +7,7 @@ AR = libfile
 
 all:
 	make -C rtk
+	mkdir -p a
 	$(AR) -c a.rtk rtk.util.o.*
 	$(AR) -i a.rtk rtk.graphics.o.*
 	$(AR) -i a.rtk rtk.os.o.*
