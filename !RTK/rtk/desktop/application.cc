@@ -734,7 +734,7 @@ void application::register_clipboard(component& c)
 
 void application::deregister_window(basic_window& w)
 {
-	if (&w==_dbox)
+	if ((&w==_dbox)&&(_dbox_level==0))
 	{
 		os::Wimp_CreateMenu(-1,point());
 	}
