@@ -10,6 +10,7 @@ OBJ = component.o \
  icon.o \
  action_button.o \
  default_button.o \
+ display_field.o \
  window.o \
  menu_item.o \
  menu.o \
