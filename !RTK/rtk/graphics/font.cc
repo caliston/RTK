@@ -150,7 +150,6 @@ void font::paint(const string& s,const point& p) const
 	// Font_Paint must be able to access the character following
 	// the end of the string.
 	int handle=_f->handle();
-	os::ColourTrans_SetFontColours(handle,0xffffff00,0x00000000,14,0,0,0);
 	os::Font_Paint(handle,s.c_str(),0x190,p,0,0,s.length());
 }
 

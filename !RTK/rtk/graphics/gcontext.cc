@@ -10,7 +10,9 @@ namespace rtk {
 namespace graphics {
 
 gcontext::gcontext(const point& origin):
-	_origin(origin)
+	_origin(origin),
+	_fcolour(7),
+	_bcolour(0)
 {}
 
 gcontext::~gcontext()

@@ -31,6 +31,7 @@ void vdu_gcontext::current(vdu_gcontext* current)
 			os::Wimp_SetColour(current->bcolour()|0x80);
 			os::Wimp_TextColour(current->fcolour());
 			os::Wimp_TextColour(current->bcolour()|0x80);
+			os::Wimp_SetFontColours(current->bcolour(),current->fcolour());
 		}
 	}
 }
@@ -57,12 +58,14 @@ void vdu_gcontext::fcolour_notify(int fcolour)
 {
 	os::Wimp_SetColour(fcolour);
 	os::Wimp_TextColour(fcolour);
+	os::Wimp_SetFontColours(bcolour(),fcolour);
 }
 
 void vdu_gcontext::bcolour_notify(int bcolour)
 {
 	os::Wimp_SetColour(bcolour|0x80);
 	os::Wimp_TextColour(bcolour|0x80);
+	os::Wimp_SetFontColours(bcolour,fcolour());
 }
 
 }; /* namespace graphics */
