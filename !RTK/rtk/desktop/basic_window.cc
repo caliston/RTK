@@ -320,6 +320,42 @@ void basic_window::handle_event(events::close_window& ev)
 	remove();
 }
 
+void basic_window::handle_event(events::auto_scroll& ev)
+{
+	// Translate bounding box coordinates from target to this window.
+	point offset;
+	parent_application(offset);
+	offset=-offset;
+	ev.target()->parent_application(offset);
+	box lbbox=ev.bbox()+offset;
+
+	// Calculate how far the work area has to move to make the
+	// specified bounding box visible.
+	point diff;
+	if (lbbox.xmin()<bbox().xmin())
+	{
+		diff.x(lbbox.xmin()-bbox().xmin());
+	}
+	if (lbbox.xmax()>bbox().xmax())
+	{
+		diff.x(lbbox.xmax()-bbox().xmax());
+	}
+	if (lbbox.ymin()<bbox().ymin())
+	{
+		diff.y(lbbox.ymin()-bbox().ymin());
+	}
+	if (lbbox.ymax()>bbox().ymax())
+	{
+		diff.y(lbbox.ymax()-bbox().ymax());
+	}
+
+	// Move the work area.
+	if (_child&&(diff!=point()))
+	{
+		_child->origin(_child->origin()-diff,true);
+	}
+}
+
 void basic_window::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 {
 	switch (wimpcode)
@@ -710,7 +746,7 @@ box basic_window::calculate_extent(const box& bbox)
 		ybaseline_set ybs;
 
 		// Add minimum bounding box of child to baseline sets.
-		box mcbbox(_child->min_bbox());
+		box mcbbox(_child->min_wrap_bbox(bbox));
 		xbs.add(mcbbox,_child->xbaseline());
 		ybs.add(mcbbox,_child->ybaseline());
 

@@ -11,6 +11,7 @@
 
 #include "rtk/desktop/component.h"
 #include "rtk/events/close_window.h"
+#include "rtk/events/auto_scroll.h"
 
 namespace rtk {
 namespace os {
@@ -43,7 +44,8 @@ class icon;
 
 class basic_window:
 	public component,
-	public events::close_window::handler
+	public events::close_window::handler,
+	public events::auto_scroll::handler
 {
 private:
 	/** The class from which this one is derived. */
@@ -422,12 +424,19 @@ public:
 	basic_window& wf_colour(int colour);
 
 	/** Default handler for close_window events.
-	 * If this handler remains registered then the window will close itself
+	 * If this handler remains active then the window will close itself
 	 * (by removing itself from the component heirarchy) when the close
 	 * button is pressed.
 	 * @param ev the close_window event
 	 */
 	void handle_event(events::close_window& ev);
+
+	/** Default handler for auto-scroll events.
+	 * If this handler remains active then the window will automatically
+	 * respond to auto-scroll events.
+	 * @param ev the auto-scroll event
+	 */
+	void handle_event(events::auto_scroll& ev);
 
 	/** Deliver Wimp event block.
 	 * @internal
