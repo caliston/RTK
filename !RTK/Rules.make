@@ -8,7 +8,7 @@ AS = objasm
 FIXDEPS = fix-deps
 
 CPPFLAGS = -Irtk:
-CXXFLAGS = -mthrowback -munixlib -mpoke-function-name -Wall -W -Wno-unused
+CXXFLAGS = -mthrowback -munixlib -mpoke-function-name -Wall -W -Wno-unused -O2
 ASFLAGS = -throwback
 
 .SUFFIXES: .o .s .cc .d .dd
