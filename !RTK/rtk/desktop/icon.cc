@@ -221,10 +221,22 @@ void icon::reformat(const point& origin,const box &bbox)
 		}
 		_created=true;
 	}
-	else if (moved)
+	else
 	{
-		// Icon has been created but needs to be moved.
-		os::Wimp_ResizeIcon(whandle,_handle,_bbox+offset);
+		// Icon has been created.
+		// Get current position (with respect to the work area),
+		// then compare with required position.
+		static os::icon_state_get block;
+		block.whandle=whandle;
+		block.ihandle=_handle;
+		os::Wimp_GetIconState(block);
+
+		box bbox=_bbox+offset;
+		if (bbox!=block.icon.bbox)
+		{
+			// Icon has moved (with respect to the work area).
+			os::Wimp_ResizeIcon(whandle,_handle,bbox);
+		}
 	}
 }
 
