@@ -52,6 +52,16 @@ void OS_Find0(int handle);
 void OS_GBPB2(int handle,const void* buffer,unsigned int count,
 	unsigned int* _fp);
 
+/** Read bytes from file.
+ * @param handle the file handle
+ * @param buffer a buffer for the data to be read
+ * @param count the number of bytes to be read
+ * @param _excess a buffer for the returned number of bytes not transferred
+ * @param _fp a buffer for the returned file pointer
+ */
+void OS_GBPB4(int handle,void* buffer,unsigned int count,
+	unsigned int* _excess,unsigned int* _fp);
+
 /** Read sprite information (given pointer).
  * @param area the sprite area
  * @param sp the sprite pointer
