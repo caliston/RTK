@@ -28,6 +28,7 @@ OBJ = event.o \
  reopen_menu.o \
  save_to_file.o \
  save_to_app.o \
+ loaded.o \
  redirection.o
 
 all: $(OBJ)
