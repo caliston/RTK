@@ -24,6 +24,49 @@ struct sprite_area;
  */
 void OS_Byte161(int address,int* _value);
 
+/** Write catalogue information.
+ * @param name the object name
+ * @param loadaddr the required load address
+ * @param execaddr the required execution address
+ * @param attr the required file attributes
+ */
+void OS_File1(const char* name,unsigned int loadaddr,unsigned int execaddr,
+	unsigned int attr);
+
+/** Write file attributes.
+ * @param name the object name
+ * @param attr the required file attributes
+ */
+void OS_File4(const char* name,unsigned int attr);
+
+/** Delete object.
+ * @param name the object name
+ * @param _objtype a buffer for the returned object type
+ * @param _loadaddr a buffer for the returned load address
+ * @param _execaddr a buffer for the returned execution address
+ * @param _length a buffer for the returned object length
+ * @param _attr a buffer for the returned object attributes
+ */
+void OS_File6(const char* name,unsigned int* _objtype,unsigned int* _loadaddr,
+	unsigned int* _execaddr,unsigned int* _length,unsigned int* _attr);
+
+/** Create directory.
+ * @param name the object name
+ * @param entries the initial number of entries, or 0 for default
+ */
+void OS_File8(const char* name,unsigned int entries);
+
+/** Read catalogue information.
+ * @param name the object name
+ * @param _objtype a buffer for the returned object type
+ * @param _loadaddr a buffer for the returned load address
+ * @param _execaddr a buffer for the returned execution address
+ * @param _length a buffer for the returned object length
+ * @param _attr a buffer for the returned object attributes
+ */
+void OS_File17(const char* name,unsigned int* _objtype,unsigned int* _loadaddr,
+	unsigned int* _execaddr,unsigned int* _length,unsigned int* _attr);
+
 /** Read EOF status.
  * @param handle the file handle
  * @param _eof a buffer for the returned EOF status (true=EOF)
@@ -61,6 +104,24 @@ void OS_GBPB2(int handle,const void* buffer,unsigned int count,
  */
 void OS_GBPB4(int handle,void* buffer,unsigned int count,
 	unsigned int* _excess,unsigned int* _fp);
+
+/** Rename object.
+ * @param src_name the source name
+ * @param dst_name the destination name
+ */
+void OS_FSControl25(const char* src_name,const char* dst_name);
+
+/** Canonicalise pathname.
+ * @param name the object name
+ * @param buffer a buffer for the result
+ * @param pathvar the name of a system variable containing the path
+ * @param path the path to use if path_variable is null or non-existant
+ * @param size the size of the buffer
+ * @param _size the space remaining after the result (but the terminator)
+ *  has been placed in the buffer
+ */
+void OS_FSControl37(const char* name,char* buffer,const char* pathvar,
+	const char* path,unsigned int size,unsigned int* _size);
 
 /** Read sprite information (given pointer).
  * @param area the sprite area

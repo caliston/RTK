@@ -21,6 +21,64 @@ void OS_Byte161(int address,int* _value)
 	if (_value) *_value=regs.r[2];
 }
 
+void OS_File1(const char* name,unsigned int loadaddr,unsigned int execaddr,
+	unsigned int attr)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=1;
+	regs.r[1]=(int)name;
+	regs.r[2]=loadaddr;
+	regs.r[3]=execaddr;
+	regs.r[5]=attr;
+	call_swi(swi::OS_File,&regs);
+}
+
+void OS_File4(const char* name,unsigned int attr)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=4;
+	regs.r[1]=(int)name;
+	regs.r[5]=attr;
+	call_swi(swi::OS_File,&regs);
+}
+
+void OS_File6(const char* name,unsigned int* _objtype,unsigned int* _loadaddr,
+	unsigned int* _execaddr,unsigned int* _length,unsigned int* _attr)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=6;
+	regs.r[1]=(int)name;
+	call_swi(swi::OS_File,&regs);
+	if (_objtype) *_objtype=regs.r[0];
+	if (_loadaddr) *_loadaddr=regs.r[2];
+	if (_execaddr) *_execaddr=regs.r[3];
+	if (_length) *_length=regs.r[4];
+	if (_attr) *_attr=regs.r[5];
+}
+
+void OS_File8(const char* name,unsigned int entries)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=8;
+	regs.r[1]=(int)name;
+	regs.r[4]=entries;
+	call_swi(swi::OS_File,&regs);
+}
+
+void OS_File17(const char* name,unsigned int* _objtype,unsigned int* _loadaddr,
+	unsigned int* _execaddr,unsigned int* _length,unsigned int* _attr)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=17;
+	regs.r[1]=(int)name;
+	call_swi(swi::OS_File,&regs);
+	if (_objtype) *_objtype=regs.r[0];
+	if (_loadaddr) *_loadaddr=regs.r[2];
+	if (_execaddr) *_execaddr=regs.r[3];
+	if (_length) *_length=regs.r[4];
+	if (_attr) *_attr=regs.r[5];
+}
+
 void OS_Args5(int handle,bool* _eof)
 {
 	_kernel_swi_regs regs;
@@ -71,6 +129,29 @@ void OS_GBPB4(int handle,void* buffer,unsigned int count,
 	call_swi(swi::OS_GBPB,&regs);
 	if (_excess) *_excess=regs.r[3];
 	if (_fp) *_fp=regs.r[4];
+}
+
+void OS_FSControl25(const char* src_name,const char* dst_name)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=25;
+	regs.r[1]=(int)src_name;
+	regs.r[2]=(int)dst_name;
+	call_swi(swi::OS_FSControl,&regs);
+}
+
+void OS_FSControl37(const char* pathname,char* buffer,const char* pathvar,
+	const char* path,unsigned int size,unsigned int* _size)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=37;
+	regs.r[1]=(int)pathname;
+	regs.r[2]=(int)buffer;
+	regs.r[3]=(int)pathvar;
+	regs.r[4]=(int)path;
+	regs.r[5]=size;
+	call_swi(swi::OS_FSControl,&regs);
+	if (_size) *_size=regs.r[5];
 }
 
 void OS_SpriteOp40(sprite_area* area,sprite* sp,int* _xsize,int* _ysize,
