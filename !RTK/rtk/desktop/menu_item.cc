@@ -155,6 +155,7 @@ void menu_item::deliver_message(int wimpcode,os::wimp_block& wimpblock,
 					{
 						point offset=_submenu->min_bbox().xminymax();
 						app->add(*_submenu,p-offset,level+1);
+						_submenu->redirect(this);
 					}
 				}
 				else if (_has_dbox)
