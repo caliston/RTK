@@ -81,6 +81,7 @@
  * Documentation available from the RTK web site currently includes:
  * - the RTK reference manual
  * - a number of example programs
+ *
  * @section building Building from Source
  * To build the RTK from souce code the following tools must be present
  * on the Run$Path:
@@ -88,6 +89,7 @@
  * - gcc
  * - libfile
  * - fixdeps
+ *
  * Suitable versions of make, gcc and libfile may be found within
  * supported distributions of GCC.  fixdeps may be obtained from the
  * RTK web site.
