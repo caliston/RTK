@@ -13,6 +13,7 @@ OBJ = component.o \
  grid_layout.o \
  virtual_row_layout.o \
  virtual_column_layout.o \
+ virtual_grid_layout.o \
  label.o \
  icon.o \
  action_button.o \
