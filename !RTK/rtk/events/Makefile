@@ -6,7 +6,8 @@
 include ../../Rules.make
 
 OBJ = event.o \
- wimp.o
+ wimp.o \
+ null_reason.o
 
 all: $(OBJ)
 
