@@ -24,4 +24,7 @@ namespace desktop {};
 /// The namespace used to hold RTK event objects.
 namespace events {};
 
+/// The namespace used to hold RTK data transfer components.
+namespace transfer {};
+
 }; /* namespace rtk */
