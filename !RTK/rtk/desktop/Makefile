@@ -20,6 +20,7 @@ OBJ = component.o \
  card_layout.o \
  toolbar_layout.o \
  label.o \
+ text_area.o \
  icon.o \
  ibar_icon.o \
  action_button.o \
