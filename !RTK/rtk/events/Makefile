@@ -5,7 +5,8 @@
 
 include ../../Rules.make
 
-OBJ = event.o
+OBJ = event.o \
+ wimp.o
 
 all: $(OBJ)
 
