@@ -112,7 +112,7 @@ void window::reformat(const point& origin,const box& bbox)
 	parent_application(parent_origin);
 
 	// Calculate visible area with respect to origin of screen.
-	box vabox(bbox+origin+parent_origin);
+	box vabox=bbox+origin+parent_origin;
 
 	// Calculate required scroll offsets.
 	// Note that this is done after the window has been resized
@@ -137,13 +137,25 @@ void window::reformat(const point& origin,const box& bbox)
 	block2.behind=block1.behind;
 	os::Wimp_OpenWindow(block2,phandle,0);
 
+	// Get window state (which may be different from what was requested
+	// when the window was opened).
+	block1.handle=_handle;
+	os::Wimp_GetWindowState(block1);
+
+	// Update bounding box
+	_bbox=block1.bbox-origin-parent_origin;
+
+	// Recalculate extent
+	extent=calculate_extent(_bbox);
+	if (_extent!=extent)
+	{
+		os::Wimp_SetExtent(_handle,extent);
+		_extent=extent;
+	}
+
 	// Reformat child, if there is one.
 	if (_child)
 	{
-		// Get window state (so that child origin depends on the actual scroll
-		// offset, not the requested scroll offset).
-		block1.handle=_handle;
-		os::Wimp_GetWindowState(block1);
 		// Calculate child origin.
 		point corigin=_bbox.xminymax()-block1.scroll;
 		// Reformat child.
