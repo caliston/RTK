@@ -19,6 +19,7 @@ OBJ = event.o \
  quit.o \
  datasave.o \
  datasaveack.o \
+ dataload.o \
  help_request.o \
  reopen_menu.o \
  save_to_file.o \
