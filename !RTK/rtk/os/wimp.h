@@ -553,6 +553,18 @@ void Wimp_TransferBlock(int src_thandle,const void* src_buffer,
  */
 void Wimp_ReadSysInfo(int index,int* _r0,int* _r1);
 
+/** Get menu state.
+ * @param buffer a buffer for the returned menu tree
+ */
+void Wimp_GetMenuState(int* buffer);
+
+/** Get menu state.
+ * @param whandle the window handle
+ * @param ihandle the icon handle
+ * @param buffer a buffer for the returned menu tree
+ */
+void Wimp_GetMenuState(int whandle,int ihandle,int* buffer);
+
 /** Set colours for use by Wimp_TextOp2.
  * @param fcolour the foreground palette entry
  * @param bcolour the background palette entry

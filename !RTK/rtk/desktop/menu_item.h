@@ -177,9 +177,21 @@ public:
 
 	/** Deliver Wimp event block.
 	 * @internal
+	 * The event block is delivered to the appropriate target, which
+	 * is determined by the supplied menu tree.
+	 * @param wimpcode the Wimp event code
+	 * @param wimpblock the Wimp event block
+	 * @param tree the menu tree (a array of menu indexes ending in -1)
+	 * @param level the level within the menu heirarchy (0=top level,
+	    add 1 for each level down)
+	 */
+	void deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock,
+		const int* tree,unsigned int level);
+
+	/** Deliver Wimp event block.
+	 * @internal
 	 * The event block is converted into a suitable event object and
-	 * posted to the appropriate target (which should be this menu, one
-	 * of its children, or a component lower in the menu heirarchy).
+	 * posted.  This object will be the target.
 	 * @param wimpcode the Wimp event code
 	 * @param wimpblock the Wimp event block
 	 * @param level the level within the menu heirarchy (0=top level,
@@ -191,9 +203,8 @@ public:
 	/** Deliver Wimp message.
 	 * @internal
 	 * The event block (which should contain a message) is converted
-	 * into a suitable event object and posted to the appropriate target
-	 * (which should be this menu, one of its children, or a component
-	 * lower in the menu heirarchy).
+	 * into a suitable event object and posted.  This object will be
+	 * the target.
 	 * @param wimpcode the Wimp event code
 	 * @param wimpblock the Wimp event block
 	 * @param level the level within the menu heirarchy (0=top level,
@@ -201,6 +212,12 @@ public:
 	 */
 	void deliver_message(int wimpcode,os::wimp_block& wimpblock,
 		unsigned int level);
+
+	/** Find menu item given menu tree.
+	 * @param tree the menu tree
+	 * @return the menu item, or 0 if not found
+	 */
+	menu_item* find_item(int* tree,unsigned int level);
 };
 
 }; /* namespace desktop */

@@ -303,20 +303,33 @@ void menu::show(const events::mouse_click& ev,bool redirect)
 }
 
 void menu::deliver_wimp_block(int wimpcode,os::wimp_block &wimpblock,
-	unsigned int level)
+	const int* tree,unsigned int level)
+{
+	if (tree)
+	{
+		unsigned int index=tree[level];
+		if (index<_items.size())
+		{
+			_items[index]->deliver_wimp_block(wimpcode,wimpblock,tree,level);
+			if ((wimpcode==17)&&(wimpblock.word[4]==swi::Message_MenuWarning))
+			{
+				// The menu tree must be updated as submenu handles
+				// become known, so that it can be re-opened correctly
+				// if the user clicks with adjust.
+				(*_mdata)->item[index].submenu=
+					_items[index]->submenu_handle();
+			}
+		}
+	}
+}
+
+void menu::deliver_wimp_block(int wimpcode,os::wimp_block &wimpblock)
 {
 	switch (wimpcode)
 	{
-	case 9:
-		{
-			unsigned int index=wimpblock.word[level];
-			if ((index<_items.size())&&_items[index])
-				_items[index]->deliver_wimp_block(wimpcode,wimpblock,level);
-		}
-		break;
 	case 17:
 	case 18:
-		deliver_message(wimpcode,wimpblock,level);
+		deliver_message(wimpcode,wimpblock);
 		break;
 	default:
 		{
@@ -327,26 +340,10 @@ void menu::deliver_wimp_block(int wimpcode,os::wimp_block &wimpblock,
 	}
 }
 
-void menu::deliver_message(int wimpcode,os::wimp_block &wimpblock,
-	unsigned int level)
+void menu::deliver_message(int wimpcode,os::wimp_block &wimpblock)
 {
 	switch (wimpblock.word[4])
 	{
-	case swi::Message_MenuWarning:
-		{
-			unsigned int index=wimpblock.word[8+level];
-			if (index<_items.size())
-			{
-				_items[index]->deliver_wimp_block(wimpcode,
-					wimpblock,level);
-				// The menu tree must be updated as submenu handles
-				// become known, so that it can be re-opened correctly
-				// if the user clicks with adjust.
-				(*_mdata)->item[index].submenu=
-					_items[index]->submenu_handle();
-			}
-		}
-		break;
 	case swi::Message_MenusDeleted:
 		{
 			events::menusdeleted ev(*this);

@@ -330,6 +330,24 @@ void Wimp_ReadSysInfo(int index,int* _r0,int* _r1)
 	if (_r1) *_r1=regs.r[1];
 }
 
+void Wimp_GetMenuState(int* buffer)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=0;
+	regs.r[1]=(int)buffer;
+	call_swi(swi::Wimp_GetMenuState,&regs);
+}
+
+void Wimp_GetMenuState(int whandle,int ihandle,int* buffer)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=1;
+	regs.r[1]=(int)buffer;
+	regs.r[2]=whandle;
+	regs.r[3]=ihandle;
+	call_swi(swi::Wimp_GetMenuState,&regs);
+}
+
 void Wimp_TextOp0(int fcolour,int bcolour)
 {
 	_kernel_swi_regs regs;

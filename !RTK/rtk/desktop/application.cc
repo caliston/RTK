@@ -414,7 +414,7 @@ void application::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 		break;
 	case 9:
 		if (_menus.size()&&_menus[0])
-			_menus[0]->deliver_wimp_block(wimpcode,wimpblock,0);
+			_menus[0]->deliver_wimp_block(wimpcode,wimpblock,wimpblock.word,0);
 		break;
 	case 17:
 	case 18:
@@ -484,10 +484,20 @@ void application::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 		{
 			w->deliver_wimp_block(wimpcode,wimpblock);
 		}
+		else
+		{
+			int whandle=wimpblock.word[8];
+			int ihandle=wimpblock.word[9];
+			int tree[64];
+			os::Wimp_GetMenuState(whandle,ihandle,tree);
+			if (_menus.size()&&_menus[0])
+				_menus[0]->deliver_wimp_block(wimpcode,wimpblock,tree,0);
+		}
 		break;
 	case swi::Message_MenuWarning:
 		if (_menus.size()&&_menus[0])
-			_menus[0]->deliver_wimp_block(wimpcode,wimpblock,0);
+			_menus[0]->deliver_wimp_block(wimpcode,wimpblock,
+				wimpblock.word+8,0);
 		break;
 	case swi::Message_MenusDeleted:
 		if (basic_window* w=find_window(wimpblock.word[5]))
@@ -497,7 +507,7 @@ void application::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 		}
 		else if (menu* m=find_menu(wimpblock.word[5]))
 		{
-			m->deliver_wimp_block(wimpcode,wimpblock,0);
+			m->deliver_wimp_block(wimpcode,wimpblock);
 			m->remove();
 			remove_menu_data(0);
 		}

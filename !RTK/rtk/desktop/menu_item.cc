@@ -14,6 +14,7 @@
 #include "rtk/events/wimp.h"
 #include "rtk/events/menu_selection.h"
 #include "rtk/events/message.h"
+#include "rtk/events/help_request.h"
 #include "rtk/events/menuwarning.h"
 
 namespace rtk {
@@ -93,6 +94,33 @@ menu_item& menu_item::separator(bool value)
 	return *this;
 }
 
+void menu_item::deliver_wimp_block(int wimpcode,os::wimp_block &wimpblock,
+	const int* tree,unsigned int level)
+{
+	if (tree)
+	{
+		// Test whether selection occurred at current level
+		// or further down the heirarchy.
+		int index=tree[level+1];
+		if (index==-1)
+		{
+			// If selection occurred at current level then
+			// deliver wimp block to this component.
+			deliver_wimp_block(wimpcode,wimpblock,level);
+		}
+		else
+		{
+			// If selection occurred further down the heirarchy
+			// then deliver block to submenu (assuming one is
+			// present, which should be the case).
+			if (_has_submenu)
+			{
+				_submenu->deliver_wimp_block(wimpcode,wimpblock,tree,level+1);
+			}
+		}
+	}
+}
+
 void menu_item::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock,
 	unsigned int level)
 {
@@ -100,33 +128,15 @@ void menu_item::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock,
 	{
 	case 9:
 		{
-			// Test whether selection occurred at current level
-			// or further down the heirarchy.
-			int index=wimpblock.word[level+1];
-			if (index==-1)
-			{
-				// If selection occurred at current level then
-				// post menu selection event to this component.
-				events::menu_selection ev(*this);
-				ev.post();
+			events::menu_selection ev(*this);
+			ev.post();
 
-				if (ev.buttons()&1)
-				{
-					// If selection was made using the adjust button
-					// then re-open menu tree.
-					events::reopen_menu ev2(*this);
-					ev2.post();
-				}
-			}
-			else
+			if (ev.buttons()&1)
 			{
-				// If selection occurred further down the heirarchy
-				// then deliver block to submenu (assuming one is
-				// present, which should be the case).
-				if (_has_submenu)
-				{
-					_submenu->deliver_wimp_block(wimpcode,wimpblock,level+1);
-				}
+				// If selection was made using the adjust button
+				// then re-open menu tree.
+				events::reopen_menu ev2(*this);
+				ev2.post();
 			}
 		}
 		break;
@@ -148,49 +158,39 @@ void menu_item::deliver_message(int wimpcode,os::wimp_block& wimpblock,
 {
 	switch (wimpblock.word[4])
 	{
+	case swi::Message_HelpRequest:
+		{
+			events::help_request ev(*this,wimpblock);
+			ev.post();
+		}
+		break;
 	case swi::Message_MenuWarning:
 		{
-			// Test whether selection occurred at current level
-			// or further down the heirarchy.
-			int index=wimpblock.word[8+level+1];
-			if (index==-1)
+			// Automatically open submenu or dialogue box
+			// (assuming one or other of these is present,
+			// which should be the case).
+			point p(wimpblock.word[6],wimpblock.word[7]);
+			if (_has_submenu)
 			{
-				// If selection occurred at current level then
-				// automatically open submenu or dialogue box
-				// (assuming one or other of these is present,
-				// which should be the case).
-				// Do not set delivered flag.
-				point p(wimpblock.word[6],wimpblock.word[7]);
-				if (_has_submenu)
+				if (application* app=parent_application())
 				{
-					if (application* app=parent_application())
-					{
-						point offset=_submenu->min_bbox().xminymax();
-						app->add(*_submenu,p-offset,level+1);
-						_submenu->redirect(this);
-					}
+					point offset=_submenu->min_bbox().xminymax();
+					app->add(*_submenu,p-offset,level+1);
+					_submenu->redirect(this);
 				}
-				else if (_has_dbox)
+			}
+			else if (_has_dbox)
+			{
+				if (application* app=parent_application())
 				{
-					if (application* app=parent_application())
-					{
-						point offset=_dbox->min_bbox().xminymax();
-						app->add(*_dbox,p-offset,level+1);
-					}
+					point offset=_dbox->min_bbox().xminymax();
+					app->add(*_dbox,p-offset,level+1);
 				}
+			}
 
-				// Post menuwarning event.
-				events::menuwarning ev(*this);
-				ev.post();
-			}
-			else
-			{
-				// If selection occurred further down the heirarchy
-				// then deliver block to submenu (assuming one is
-				// present, which should be the case).
-				if (_has_submenu)
-					_submenu->deliver_wimp_block(wimpcode,wimpblock,level+1);
-			}
+			// Post menuwarning event.
+			events::menuwarning ev(*this);
+			ev.post();
 		}
 		break;
 	default:
