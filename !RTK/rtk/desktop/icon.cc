@@ -322,11 +322,12 @@ box icon::auto_bbox() const
 		prefxsize+=16;
 		prefysize=44;
 		descent=4;
-		if ((_text_and_sprite==1)&&(*sprite0!=0))
+		if (_text_and_sprite==1)
 		{
 			int spxsize=0;
 			int spysize=0;
-			sprite_size(0,sprite0,&spxsize,&spysize);
+			if (*sprite0!=0) sprite_size(0,sprite0,&spxsize,&spysize);
+			else if (_text) sprite_size(0,_text,&spxsize,&spysize);
 			spxsize<<=xeigfactor;
 			spysize<<=yeigfactor;
 			switch ((_hcentre<<2)+(_vcentre<<1)+_rjustify)
