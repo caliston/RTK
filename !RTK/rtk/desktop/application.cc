@@ -543,9 +543,40 @@ void application::send_message(int wimpcode,os::wimp_block& wimpblock,
 	_message_queue.push(msg);
 }
 
+transfer::load* application::auto_load(unsigned int filetype)
+{
+	return 0;
+}
+
 void application::handle_event(events::quit &ev)
 {
 	terminate();
+}
+
+void application::handle_event(events::datasave &ev)
+{
+	if (ev.target()==this)
+	{
+		if (transfer::load* loadop=auto_load(ev.filetype()))
+		{
+			add(*loadop);
+			ev.target(*loadop);
+			ev.post();
+		}
+	}
+}
+
+void application::handle_event(events::dataload &ev)
+{
+	if (ev.target()==this)
+	{
+		if (transfer::load* loadop=auto_load(ev.filetype()))
+		{
+			add(*loadop);
+			ev.target(*loadop);
+			ev.post();
+		}
+	}
 }
 
 void application::handle_event(events::reopen_menu &ev)

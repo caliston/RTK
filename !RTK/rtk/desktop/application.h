@@ -45,6 +45,8 @@ class menu;
 class application:
 	public component,
 	public events::quit::handler,
+	public events::datasave::handler,
+	public events::dataload::handler,
 	public events::reopen_menu::handler
 {
 private:
@@ -241,6 +243,16 @@ public:
 	 */
 	void handle_event(events::quit& ev);
 
+	/** Default handler for datasave events.
+	 * @param ev the datasave event
+	 */
+	virtual void handle_event(events::datasave& ev);
+
+	/** Default handler for dataload events.
+	 * @param ev the dataload event
+	 */
+	virtual void handle_event(events::dataload& ev);
+
 	/** Default handler for reopen-menu events.
 	 * If this handler remains registered then the application
 	 * will re-open the current menu tree when a menu selection
@@ -290,6 +302,13 @@ public:
 	 */
 	void send_message(int wimpcode,os::wimp_block& wimpblock,int whandle,
 		int ihandle=0);
+
+	/** Get load operation for filetype.
+	 * The default behaviour is not to handle any filetype,
+	 * @param filetype the filetype
+	 * @return the load operation for that filetype, or 0 if none
+	 */
+	virtual transfer::load* auto_load(unsigned int filetype);
 
 	/** Register window.
 	 * A window should be registered while it has a Wimp window handle
