@@ -49,6 +49,11 @@ private:
 	 */
 	bool _has_dbox:1;
 
+	/** The tick flag.
+	 * True if this menu item is ticked, otherwise false.
+	 */
+	bool _tick:1;
+
 	/** The separator flag.
 	 * True if this menu item is followed by a separator, otherwise false.
 	 */
@@ -113,12 +118,24 @@ public:
 	 */
 	menu_item& detach_dbox();
 
+	/** Get tick flag.
+	 * @return true if this menu item is ticked, otherwise false.
+	 */
+	bool tick() const
+		{ return _tick; }
+
 	/** Get separator flag.
 	 * @return true if this menu item is followed by a separator,
 	 *  otherwise false
 	 */
 	bool separator() const
 		{ return _separator; }
+
+	/** Set tick flag.
+	 * @param value true if this item is to be ticked, otherwise false
+	 * @return a reference to this
+	 */
+	menu_item& tick(bool value);
 
 	/** Set separator flag.
 	 * @param value true if this item is to be followed by a separator,

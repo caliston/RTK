@@ -22,6 +22,7 @@ namespace desktop {
 menu_item::menu_item():
 	_has_submenu(false),
 	_has_dbox(false),
+	_tick(false),
 	_separator(false)
 {
 	bcolour(0);
@@ -73,6 +74,13 @@ menu_item& menu_item::detach_dbox()
 		_has_dbox=false;
 		_dbox=0;
 	}
+	return *this;
+}
+
+menu_item& menu_item::tick(bool value)
+{
+	_tick=value;
+	invalidate();
 	return *this;
 }
 
@@ -193,10 +201,7 @@ void menu_item::deliver_message(int wimpcode,os::wimp_block& wimpblock,
 
 int menu_item::menu_flags() const
 {
-	int flags=0;
-	if (_separator) flags|=2;
-	if (_has_submenu||_has_dbox) flags|=8;
-	return flags;
+	return (_tick<<0)|(_separator<<1)|((_has_submenu||_has_dbox)<<3);
 }
 
 int menu_item::submenu_handle() const
