@@ -179,6 +179,12 @@ private:
 	 */
 	bool _rjustify:1;
 
+	/** The adjust-select flag.
+	 * True if selecting with adjust does not cancel other icons in
+	 * the same ESG, otherwise false.
+	 */
+	bool _adjust_select:1;
+
 	/** The half size flag.
 	 * True if the icon is to be shown at half size, otherwise false.
 	 */
@@ -294,6 +300,13 @@ public:
 	bool rjustify() const
 		{ return _rjustify; }
 
+	/** Get adjust-select flag.
+	 * @return true if selecting with adjust does not unselect other icons
+	 *  in the same ESG, otherwise false
+	 */
+	bool adjust_select() const
+		{ return _adjust_select; }
+
 	/** Get half size flag.
 	 * @return true if icon is displayed at half size, otherwise false
 	 */
@@ -305,6 +318,12 @@ public:
 	 */
 	int button() const
 		{ return _button; }
+
+	/** Get exclusive selection group (ESG).
+	 * @return the ESG
+	 */
+	int esg() const
+		{ return _esg; }
 
 	/** Get selected flag.
 	 * If true then the appearance of the icon will change to indicate
@@ -408,6 +427,13 @@ public:
 	 */
 	icon& rjustify(bool value);
 
+	/** Set adjust-select flag.
+	 * @param value true if selecting with adjust is not to deselect
+	 *  other icons in the same ESG, otherwise false
+	 * @return a reference to this
+	 */
+	icon& adjust_select(bool value);
+
 	/** Set halfsize flag.
 	 * @param value true if the icon is to be displayed at half size,
 	 *  otherwise false
@@ -420,6 +446,12 @@ public:
 	 * @return a reference to this
 	 */
 	icon& button(int value);
+
+	/** Set exclusive selection group (ESG).
+	 * @param value the required ESG
+	 * @return a reference to this
+	 */
+	icon& esg(int value);
 
 	/** Set selected flag.
 	 * If true then the appearance of the icon will change to indicate

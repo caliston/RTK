@@ -30,6 +30,7 @@ icon::icon():
 	_fill(false),
 	_has_font(false),
 	_rjustify(false),
+	_adjust_select(false),
 	_half_size(false),
 	_button(0),
 	_esg(0),
@@ -387,6 +388,13 @@ icon& icon::rjustify(bool value)
 	return *this;
 }
 
+icon& icon::adjust_select(bool value)
+{
+	_adjust_select=value;
+	set_state();
+	return *this;
+}
+
 icon& icon::half_size(bool value)
 {
 	_half_size=value;
@@ -399,6 +407,13 @@ icon& icon::half_size(bool value)
 icon& icon::button(int value)
 {
 	_button=value;
+	set_state();
+	return *this;
+}
+
+icon& icon::esg(int value)
+{
+	_esg=value;
 	set_state();
 	return *this;
 }
@@ -537,6 +552,7 @@ int icon::icon_flags() const
 		(_fill<<5)|
 		(_has_font<<6)|
 		(_rjustify<<9)|
+		(_adjust_select<<10)|
 		(_half_size<<11)|
 		(_button<<12)|
 		(_esg<<16)|
