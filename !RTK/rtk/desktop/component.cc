@@ -371,7 +371,7 @@ void component::drag(const box& dbox,int drag_type)
 		os::drag_box block;
 		block.type=drag_type;
 		block.dbox=dbox+offset;
-		block.pbox=app->bbox()+offset;
+		block.pbox=app->bbox();
 		block.r12=0;
 		block.draw_func=0;
 		block.remove_func=0;
