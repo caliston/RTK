@@ -14,6 +14,7 @@ display_field::display_field()
 	border(true);
 	hcentre(true).vcentre(true);
 	fcolour(7).bcolour(1);
+	yfit(false);
 }
 
 }; /* namespace desktop */

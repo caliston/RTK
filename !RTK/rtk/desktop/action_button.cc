@@ -15,6 +15,7 @@ action_button::action_button()
 	hcentre(true).vcentre(true);
 	fcolour(7).bcolour(1);
 	button(3);
+	yfit(false);
 }
 
 }; /* namespace desktop */
