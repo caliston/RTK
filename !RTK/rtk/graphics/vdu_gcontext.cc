@@ -24,14 +24,14 @@ void vdu_gcontext::current(vdu_gcontext* current)
 {
 	if (current!=_current)
 	{
-	current=current;
-		if (current)
+		_current=current;
+		if (_current)
 		{
-			os::Wimp_SetColour(current->fcolour());
-			os::Wimp_SetColour(current->bcolour()|0x80);
-			os::Wimp_TextColour(current->fcolour());
-			os::Wimp_TextColour(current->bcolour()|0x80);
-			os::Wimp_SetFontColours(current->bcolour(),current->fcolour());
+			os::Wimp_SetColour(_current->fcolour());
+			os::Wimp_SetColour(_current->bcolour()|0x80);
+			os::Wimp_TextColour(_current->fcolour());
+			os::Wimp_TextColour(_current->bcolour()|0x80);
+			os::Wimp_SetFontColours(_current->bcolour(),_current->fcolour());
 		}
 	}
 }
