@@ -344,13 +344,13 @@ void menu::deliver_message(int wimpcode,os::wimp_block &wimpblock,
 		break;
 	case swi::Message_MenusDeleted:
 		{
-			events::message ev(*this,wimpblock);
+			events::message ev(*this,wimpcode,wimpblock);
 			ev.post();
 		}
 		break;
 	default:
 		{
-			events::message ev(*this,wimpblock);
+			events::message ev(*this,wimpcode,wimpblock);
 			ev.post();
 		}
 		break;

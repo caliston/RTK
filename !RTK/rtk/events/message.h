@@ -18,7 +18,8 @@ union wimp_block;
 namespace events {
 
 /** A class to represent a RISC OS user message.
- * This can be either a User_Message or a User_Message_Recorded.
+ * This can be a User_Message, a User_Message_Recorded or a
+ * User_Message_Acknowledge.
  */
 class message:
 	public event
@@ -30,6 +31,9 @@ public:
 	/** A null value for use in place of a byte count. */
 	static const size_type npos=static_cast<size_type>(-1);
 private:
+	/** The Wimp event code. */
+	int _wimpcode;
+
 	/** The Wimp event block. */
 	os::wimp_block* _wimpblock;
 public:
@@ -52,9 +56,10 @@ public:
 	 * for the lifetime of this object.  It is not freed when this
 	 * object is destroyed.
 	 * @param target the target of the event
+	 * @param wimpcode the Wimp event code
 	 * @param wimpblock the Wimp event block
 	 */
-	message(desktop::component& target,os::wimp_block& wimpblock);
+	message(desktop::component& target,int wimpcode,os::wimp_block& wimpblock);
 
 	/** Destroy message event.
 	 */
@@ -72,13 +77,19 @@ public:
 	 */
 	int msgcode() const;
 
-	/** Get message data.
+	/** Get Wimp event code.
+	 * @return the wimp event code
+	 */
+	int wimpcode() const
+		{ return _wimpcode; }
+
+	/** Get Wimp event block.
 	 * The value returned is a reference to the original message block
 	 * passed to the constructor.  It can be expected to remain valid
 	 * for at least the lifetime of this object.
-	 * @return the message data
+	 * @return the wimp event block
 	 */
-	const os::wimp_block& data() const
+	const os::wimp_block& wimpblock() const
 		{ return *_wimpblock; }
 
 	/** Prepare reply to message.

@@ -12,8 +12,9 @@ namespace events {
 
 using rtk::desktop::component;
 
-message::message(component& target,os::wimp_block& wimpblock):
+message::message(component& target,int wimpcode,os::wimp_block& wimpblock):
 	event(target),
+	_wimpcode(wimpcode),
 	_wimpblock(&wimpblock)
 {}
 
@@ -33,13 +34,13 @@ int message::msgcode() const
 void message::prepare_reply(os::wimp_block& reply,int msgcode,
 	size_type size) const
 {
-	if (size==npos) size=data().word[0];
+	if (size==npos) size=_wimpblock->word[0];
 	unsigned int words=(size+3)>>2;
-	for (unsigned int i=5;i<words;++i) reply.word[i]=data().word[i];
+	for (unsigned int i=5;i<words;++i) reply.word[i]=_wimpblock->word[i];
 	reply.word[0]=size;
 	reply.word[1]=0;
 	reply.word[2]=0;
-	reply.word[3]=data().word[2];
+	reply.word[3]=_wimpblock->word[2];
 	reply.word[4]=msgcode;
 }
 

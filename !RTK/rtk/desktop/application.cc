@@ -426,7 +426,7 @@ void application::deliver_message(int wimpcode,os::wimp_block& wimpblock)
 		break;
 	default:
 		{
-			events::message ev(*this,wimpblock);
+			events::message ev(*this,wimpcode,wimpblock);
 			ev.post();
 		}
 		break;
