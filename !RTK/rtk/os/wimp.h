@@ -543,7 +543,7 @@ void Wimp_TextColour(int colour);
  * @param dst_buffer the destination buffer
  * @param count the number of bytes to transfer
  */
-void Wimp_TransferBlock(int src_thandle,void* src_buffer,
+void Wimp_TransferBlock(int src_thandle,const void* src_buffer,
 	int dst_thandle,void* dst_buffer,unsigned int count);
 
 /** Read system information.
