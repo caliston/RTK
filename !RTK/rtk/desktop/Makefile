@@ -8,9 +8,10 @@ include ../../Rules.make
 OBJ = component.o \
  sizeable_component.o \
  absolute_layout.o \
- grid_layout.o \
  row_layout.o \
  column_layout.o \
+ grid_layout.o \
+ virtual_row_layout.o \
  label.o \
  icon.o \
  action_button.o \
