@@ -29,6 +29,7 @@ OBJ = event.o \
  save_to_file.o \
  save_to_app.o \
  loaded.o \
+ saved.o \
  redirection.o
 
 all: $(OBJ)
