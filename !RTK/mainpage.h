@@ -118,8 +118,10 @@
  *
  * with a subject of "subscribe".
  *
- * @todo a multi-line text field class
+ * @todo support for GCC 3
+ * @todo a tree layout class
  * @todo a template layout class
- * @todo a discard/cancel/save dialogue box class
+ * @todo a drawfile viewer
+ * @todo memory block load and save classes
  * @todo printing
  */

@@ -4,7 +4,7 @@ Priority: Optional
 Licence: Free
 Maintainer: Graham Shaw <gdshaw@sagitta.demon.co.uk>
 Standards-Version: 0.1.0
-Version: 0.6.0-0
+Version: 0.7.0-0
 Description: The RISC OS Toolkit (a C++ application framework)
  The most distinctive feature of the RTK is its support for automatic
  layout.  This is achieved by specifying the relationship between

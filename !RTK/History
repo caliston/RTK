@@ -3,6 +3,38 @@
 # Distribution and use are subject to the GNU Lesser General Public License,
 # a copy of which may be found in the file !RTK.Copyright.
 
+Version 0.7.0 (25 Dec 2004)
+
+  Added function os::Wimp_TextOp3.
+  Added function os::Font_CharBBox.
+  Added function os::Font_ReadDefn.
+  Added function component::force_redraw(const box&).
+  Added function component::drag.
+  Added functions application::register_null and deregister_null.
+  Added class events::datarequest.
+  Added class events::claim_entity.
+  Added class transfer::save_lines and load_lines.
+  Deprecated classes transfer::save_linelist and load_linelist.
+  Added function os::Wimp_BlockCopy.
+  Added support for desktop and symbol fonts to graphics::font.
+  Added class util::cumulative_sum.
+  Added infrastructure for selection and clipboard support.
+  Added template function util::array_size.
+  Added anti-alised font colour to graphics context.
+  Corrected bug that prevented current graphics context from being remembered.
+  Added class events::auto_scroll.
+  Added infrastructure for flowable component support.
+  Modified save_dbox to automatically set filetype of attached save operation.
+  Added function save_dbox::selection_button().
+  Fixed bug which caused menu tree to close unnecessarily when dbox closed.
+  Gave save_dbox the ability to redirect events.    
+  Avoided unnecessary invalidation in component::origin(const point&,bool).
+  Delivery of key_pressed events to the owner of the focus, if known.
+  Added class desktop::text_area.  
+  Changed ibar_icon to accept attachment of basic_window instead of window.
+  Corrected problem with bounding box in component::drag(const box&,int).
+  Added class desktop::text_window.  
+
 Version 0.6.0 (10 May 2004)
 
   Filled background of (default_)action_button and display_field.
