@@ -35,7 +35,9 @@ union icon_data
 	/** The icon data as an array of words. */
 	int word[3];
 	/** The icon data as an array of pointers. */
-	void *pointer[3];
+	void* pointer[3];
+	/** The icon data as an array of const pointers. */
+	const void* const_pointer[3];
 };
 
 /** A structure to represent the state of an icon. */

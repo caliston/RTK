@@ -499,15 +499,17 @@ os::icon_data icon::icon_data() const
 		data.word[1]=0;
 		data.word[2]=0;
 	case text_icon:
-		data.pointer[0]=_text;
-		data.pointer[1]=_val;
+		if (_text) data.pointer[0]=_text;
+		else data.const_pointer[0]="";
+		if (_val) data.pointer[1]=_val;
+		else data.const_pointer[1]="";
 		data.word[2]=_textsize+1;
 		break;
 	case named_sprite_icon:
-		data.pointer[0]=_name;
+		if (_name) data.pointer[0]=_name;
+		else data.const_pointer[0]="";
 		if (_area) data.pointer[1]=_area;
 		else data.word[1]=1;
-		data.word[1]=1;
 		data.word[2]=_namesize+1;
 		break;
 	case sprite_icon:
