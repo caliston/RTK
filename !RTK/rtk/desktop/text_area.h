@@ -449,11 +449,18 @@ public:
 	/** Move caret one word to the right. */
 	void handle_right_word();
 
-	/** Move caret down one line. */
-	void handle_down_line();
+	/** Move caret downwards.
+	 * If diff is negative then the caret moves upwards.
+	 * @param diff the number of lines by which to move
+	 */
+	void handle_down_lines(int diff=1);
 
-	/** Move caret up one line. */
-	void handle_up_line();
+	/** Move caret upwards.
+	 * If diff is negative then the caret moves downwards.
+	 * @param diff the number of lines by which to move
+	 */
+	void handle_up_lines(int diff=1)
+		{ handle_down_lines(-diff); }
 
 	/** Move caret to start of line. */
 	void handle_start_of_line();

@@ -634,8 +634,8 @@ void text_area::handle_event(events::key_pressed& ev)
 	case 0x18b:handle_end_of_line(); break;
 	case 0x18c:handle_left_char(); break;
 	case 0x18d:handle_right_char(); break;
-	case 0x18e:handle_down_line(); break;
-	case 0x18f:handle_up_line(); break;
+	case 0x18e:handle_down_lines(); break;
+	case 0x18f:handle_up_lines(); break;
 	case 0x19c:handle_left_word(); break;
 	case 0x19d:handle_right_word(); break;
 	case 0x1ab:handle_end_of_text(); break;
@@ -850,23 +850,23 @@ void text_area::handle_right_word()
 	show_caret(_caret_last.next_word(),true,true);
 }
 
-void text_area::handle_down_line()
+void text_area::handle_down_lines(int diff)
 {
-	// Place the caret as near as possible to its preferred
-	// horizontal location on the next line down if there is one.
-	fixed_mark caret_last_pos(*this,_caret_last);
-	unsigned int line=caret_last_pos.line();
-	if (line!=_lines.sum(_lines.size())-1) ++line;
-	show_caret(snap(line,_caret_pref_x),false,true);
-}
+	// Determine the current line number.
+	int line=fixed_mark(*this,_caret_last).line();
 
-void text_area::handle_up_line()
-{
+	// Determine the number of lines in the text.
+	int lines=_lines.sum(_lines.size());
+
+	// Change the line number by the specified amount,
+	// without allowing it to go before the start or
+	// after the end of the text.
+	line+=diff;
+	if (line<0) line=0;
+	if (line>=lines) line=lines-1;
+
 	// Place the caret as near as possible to its preferred
-	// horizontal location on the next line up if there is one.
-	fixed_mark caret_first_pos(*this,_caret_first);
-	unsigned int line=caret_first_pos.line();
-	if (line) --line;
+	// horizontal location on the appropriate line.
 	show_caret(snap(line,_caret_pref_x),false,true);
 }
 
