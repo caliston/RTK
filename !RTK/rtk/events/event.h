@@ -40,6 +40,11 @@ public:
 	desktop::component* target() const
 		{ return _target; }
 
+	/** Set target.
+	 * @param target the required target of the event
+	 */
+	void target(desktop::component& target);
+
 	/** Post event.
 	 * Search upwards from the target for a component with a suitable
 	 * handler for this event, then pass this event to that handler.

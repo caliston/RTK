@@ -18,6 +18,11 @@ event::event(component& target):
 event::~event()
 {}
 
+void event::target(component& target)
+{
+	_target=&target;
+}
+
 bool event::post()
 {
 	bool handled=false;
