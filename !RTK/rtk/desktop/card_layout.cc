@@ -46,6 +46,11 @@ box card_layout::auto_bbox() const
 	return abbox;
 }
 
+component* card_layout::find(const point& p) const
+{
+	return _component;
+}
+
 box card_layout::bbox() const
 {
 	return _bbox;

@@ -49,6 +49,7 @@ public:
 	virtual ~card_layout();
 
 	virtual box auto_bbox() const;
+	virtual component* find(const point& p) const;
 	virtual box bbox() const;
 	virtual void resize() const;
 	virtual void reformat(const point& origin,const box &pbbox);
