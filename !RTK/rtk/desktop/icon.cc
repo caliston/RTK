@@ -460,7 +460,7 @@ void icon::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 
 int icon::icon_flags() const
 {
-	int flags;
+	int flags=0;
 	switch (_itype)
 	{
 	case empty_icon:
