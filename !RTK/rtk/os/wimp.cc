@@ -123,14 +123,14 @@ void Wimp_SetIconState(icon_state_set& block)
 {
 	_kernel_swi_regs regs;
 	regs.r[1]=(int)&block;
-	call_swi(swi::Wimp_GetWindowState,&regs);
+	call_swi(swi::Wimp_SetIconState,&regs);
 }
 
 void Wimp_GetIconState(icon_state_get& block)
 {
 	_kernel_swi_regs regs;
 	regs.r[1]=(int)&block;
-	call_swi(swi::Wimp_GetWindowState,&regs);
+	call_swi(swi::Wimp_GetIconState,&regs);
 }
 
 void Wimp_GetPointerInfo(pointer_info_get& block)
