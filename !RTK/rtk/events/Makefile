@@ -12,6 +12,7 @@ OBJ = event.o \
  entering_window.o \
  leaving_window.o \
  mouse_click.o \
+ user_drag_box.o \
  key_pressed.o \
  menu_selection.o \
  message.o \
