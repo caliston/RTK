@@ -8,6 +8,7 @@ include ../../Rules.make
 OBJ = event.o \
  wimp.o \
  null_reason.o \
+ close_window.o \
  message.o \
  quit.o \
  reopen_menu.o
