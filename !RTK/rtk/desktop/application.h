@@ -118,6 +118,11 @@ private:
 	/** The owner of the current drag action. */
 	component* _current_drag;
 
+	/** The drag sprite flag.
+	 * True if using DragASprite module for _current_drag, otherwise false.
+	 */
+	bool _drag_sprite;
+
 	/** The outbound message queue.
 	 * Messages are added to the back of the queue and taken from the
 	 * front.  Transmission occurs automatically once a message has
@@ -281,8 +286,9 @@ public:
 	/** Register drag action.
 	 * @param c the component to be registered as the owner of the
 	 *  current drag action.
+	 * @param sprite true if using DragASprite module, otherwise false
 	 */
-	void register_drag(component& c);
+	void register_drag(component& c,bool sprite=false);
 
 	/** Deregister window.
 	 * This must be done while w->handle() returns the same value as

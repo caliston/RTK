@@ -10,6 +10,7 @@
 #include "rtk/swi/wimp.h"
 #include "rtk/os/os.h"
 #include "rtk/os/wimp.h"
+#include "rtk/os/dragasprite.h"
 #include "rtk/desktop/icon.h"
 #include "rtk/desktop/window.h"
 #include "rtk/desktop/menu.h"
@@ -27,6 +28,7 @@ application::application(const string& name):
 	_dbox(0),
 	_dbox_level(0),
 	_current_drag(0),
+	_drag_sprite(0),
 	_quit(false)
 {
 	static int messages[]={0};
@@ -360,6 +362,7 @@ void application::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 	case 7:
 		if (_current_drag)
 		{
+			if (_drag_sprite) os::DragASprite_Stop();
 			component* target=_current_drag;
 			deregister_drag(*target);
 			events::user_drag_box ev(*target,wimpblock);
@@ -471,9 +474,10 @@ void application::register_menu_data(util::refcount* mdata,unsigned int level)
 	_mdata[level]=mdata;
 }
 
-void application::register_drag(component& c)
+void application::register_drag(component& c,bool sprite)
 {
 	_current_drag=&c;
+	_drag_sprite=sprite;
 }
 
 void application::deregister_window(window& w)
@@ -489,6 +493,7 @@ void application::deregister_icon(icon& ic)
 void application::deregister_drag(component& c)
 {
 	if (_current_drag==&c) _current_drag=0;
+	_drag_sprite=false;
 }
 
 window* application::find_window(int handle) const

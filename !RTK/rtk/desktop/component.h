@@ -6,6 +6,8 @@
 #ifndef _RTK_DESKTOP_COMPONENT
 #define _RTK_DESKTOP_COMPONENT
 
+#include <string>
+
 #include "rtk/graphics/point.h"
 #include "rtk/graphics/box.h"
 
@@ -15,6 +17,12 @@ namespace graphics {
 class gcontext;
 
 }; /* namespace graphics */
+
+namespace os {
+
+struct sprite_area;
+
+}; /* namespace sprite_area */
 
 namespace events {
 
@@ -464,6 +472,13 @@ public:
 	 * @param dbox the box to be dragged
 	 */
 	void drag_box(const box& dbox);
+
+	/** Begin drag sprite action.
+	 * @param dbox the box to be dragged
+	 * @param area the sprite area, or 0 for the wimp sprite area
+	 * @param name the sprite name
+	 */
+	void drag_sprite(const box& dbox,os::sprite_area* area,const string& name);
 protected:
 	/** Link parent pointer of child to this component.
 	 * This function provides restricted access to the private function
