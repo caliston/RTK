@@ -3,4 +3,6 @@
 | Distribution and use are subject to the GNU Lesser General Public License,
 | a copy of which may be found in the file !RTK.Copyright.
 
+If "<RTK$Dir>"="" Then Set RTK$Dir <Obey$Dir>
 If "<RTK$Path>"="" Then Set RTK$Path <Obey$Dir>.
+IconSprites <RTK$Dir>.!Sprites

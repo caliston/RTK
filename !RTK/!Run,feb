@@ -3,4 +3,6 @@
 | Distribution and use are subject to the GNU Lesser General Public License,
 | a copy of which may be found in the file !RTK.Copyright.
 
+Set RTK$Dir <Obey$Dir>
 Set RTK$Path <Obey$Dir>.
+IconSprites <RTK$Dir>.!Sprites
