@@ -173,6 +173,7 @@ void absolute_layout::remove_notify(component& c)
 
 absolute_layout& absolute_layout::add(component& c,const point& p)
 {
+	c.remove();
 	c.origin(p);
 	_components.push_back(&c);
 	link_child(c);

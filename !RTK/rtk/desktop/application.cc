@@ -222,6 +222,7 @@ void application::remove_notify(component& c)
 
 application& application::add(window& w,const point& p)
 {
+	w.remove();
 	w.origin(p);
 	_windows.push_back(&w);
 	link_child(w);
@@ -231,6 +232,7 @@ application& application::add(window& w,const point& p)
 
 application& application::add(icon& ic)
 {
+	ic.remove();
 	_icons.push_back(&ic);
 	link_child(ic);
 	invalidate();
@@ -292,6 +294,7 @@ application& application::add(menu& m,const point& p,size_type level)
 
 application& application::add(transfer::load& loadop)
 {
+	loadop.remove();
 	_current_load=&loadop;
 	link_child(loadop);
 	invalidate();
@@ -300,6 +303,7 @@ application& application::add(transfer::load& loadop)
 
 application& application::add(transfer::save& saveop)
 {
+	saveop.remove();
 	_current_save=&saveop;
 	link_child(saveop);
 	invalidate();
