@@ -7,8 +7,7 @@
 #define _RTK_OS_EXCEPTION
 
 #include <exception>
-
-struct _kernel_oserror;
+#include "kernel.h"
 
 namespace rtk {
 namespace os {
