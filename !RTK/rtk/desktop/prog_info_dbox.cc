@@ -30,6 +30,7 @@ prog_info_dbox& prog_info_dbox::add(const string& name,const string& value)
 
 	icon& name_icon=*new icon();
 	name_icon.text(name);
+	name_icon.rjustify(true);
 	name_icon.xbaseline(xbaseline_right);
 
 	display_field& value_icon=*new display_field();
