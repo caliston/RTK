@@ -14,6 +14,7 @@
 namespace rtk {
 namespace transfer {
 
+/** A class for loading lines of text. */
 class load_linelist:
 	public load
 {
