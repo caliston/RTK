@@ -451,6 +451,22 @@ string icon::sprite_name() const
 	return ((_itype==named_sprite_icon)&&_name)?string(_name):string();
 }
 
+bool icon::selected() const
+{
+	bool selected=_selected;
+	if (_created)
+	{
+		window *w=parent_work_area();
+		int whandle=(w)?w->handle():-1;
+		os::icon_state_get block;
+		block.whandle=whandle;
+		block.ihandle=_handle;
+		os::Wimp_GetIconState(block);
+		selected=(block.icon.flags>>21)&1;
+	}
+	return selected;
+}
+
 void icon::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 {
 	switch (wimpcode)

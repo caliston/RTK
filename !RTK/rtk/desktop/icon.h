@@ -311,8 +311,7 @@ public:
 	 * that it is selected.
 	 * @return true if icon is selected, otherwise false
 	 */
-	bool selected() const
-		{ return _selected; }
+	bool selected() const;
 
 	/** Get enabled flag.
 	 * If false then the icon will not be visible.
