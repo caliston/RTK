@@ -17,6 +17,7 @@ namespace rtk {
 namespace os {
 
 class menu;
+union wimp_block;
 
 }; /* namespace os */
 
