@@ -157,6 +157,21 @@ void OS_GBPB12(const char* name,void* buffer,unsigned int count,
 	if (_offset) *_offset=regs.r[4];
 }
 
+void OS_SetVarVal(const char* varname,const char* value,unsigned int length,
+	unsigned int context,unsigned int vartype,unsigned int* _context,
+	unsigned int* _vartype)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=(int)varname;
+	regs.r[1]=(int)value;
+	regs.r[2]=length;
+	regs.r[3]=context;
+	regs.r[4]=vartype;
+	call_swi(swi::OS_SetVarVal,&regs);
+	if (_context) *_context=regs.r[3];
+	if (_vartype) *_vartype=regs.r[4];
+}
+
 void OS_FSControl25(const char* src_name,const char* dst_name)
 {
 	_kernel_swi_regs regs;

@@ -136,6 +136,19 @@ void OS_GBPB12(const char* name,void* buffer,unsigned int count,
 	int offset,unsigned int length,const char* pattern,
 	unsigned int* _count,int* _offset);
 
+/** Set system variable.
+ * @param varname the variable name
+ * @param value the required value
+ * @param length the length of the required value
+ * @param context the context pointer, or 0 if none
+ * @param vartype the variable type
+ * @param _context a buffer for the returned context pointer
+ * @param _vartype a buffer for the returned variable type
+ */
+void OS_SetVarVal(const char* varname,const char* value,unsigned int length,
+	unsigned int context,unsigned int vartype,unsigned int* _context,
+	unsigned int* _vartype);
+
 /** Rename object.
  * @param src_name the source name
  * @param dst_name the destination name
