@@ -9,6 +9,7 @@ CXXFLAGS = -mthrowback -munixlib -mpoke-function-name -Wall -W -Wno-unused -O2
 include fixdeps:Rules/make
 
 OBJ = load.o \
+ load_lines.o \
  load_linelist.o \
  save.o \
  save_lines.o \
