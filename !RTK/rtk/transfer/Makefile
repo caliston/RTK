@@ -7,7 +7,8 @@ include ../../Rules.make
 
 OBJ = load.o \
  load_linelist.o \
- save.o
+ save.o \
+ save_linelist.o
 
 all: $(OBJ)
 
