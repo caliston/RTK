@@ -481,7 +481,23 @@ public:
 	 */
 	void set_caret_position(point p,int height,int index);
 
+	/** Begin drag action within specifed bounding box.
+	 * User drag types (8-11) are not currently allowed.
+	 * @param dbox the box to be dragged
+	 * @param bbox the bounding box
+	 * @param drag_type the drag type (default=7: invisible)
+	 */
+	void drag(const box& dbox,const box& bbox,int drag_type=7);
+
+	/** Begin drag action to anywhere on the desktop.
+	 * User drag types (8-11) are not currently allowed.
+	 * @param dbox the box to be dragged
+	 * @param drag_type the drag type (default=7: invisible)
+	 */                  
+	void drag(const box& dbox,int drag_type=7);
+
 	/** Begin drag action.
+	 * @deprecated superceded by component::drag(const box&,int)
 	 * @param dbox the box to be dragged
 	 */
 	void drag_box(const box& dbox);
