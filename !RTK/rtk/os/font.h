@@ -50,6 +50,33 @@ void Font_FindFont(const char* id,int xsize,int ysize,int xres,int yres,
  */
 void Font_LoseFont(int handle);
 
+/** Read font definition (get buffer length)
+ * @param handle the font handle
+ * @param _length a buffer to hold the returned buffer size
+ */
+void Font_ReadDefn(int handle,int* _buffer_size);
+
+/** Read font definition.
+ * @param handle the font handle
+ * @param _id a buffer for the returned font id
+ * @param _xsize a buffer for the returned font width (16 units = 1 point)
+ * @param _ysize a buffer for the returned font height (16 units = 1 point)
+ * @param _xres a buffer for the returned horizontal resolution (dots per inch)
+ * @param _yres a buffer for the returned vertical resolution (dots per inch)
+ * @param _age a buffer for the returned age of the font
+ * @param _usage_count a buffer for the returned usage count of the font
+ */
+void Font_ReadDefn(int handle,char* _id,int* _xsize,int* _ysize,
+	int* _xres,int* _yres,int* _age,int* _usage_count);
+
+/** Get bounding box of a character.
+ * @param handle the font handle
+ * @param code the character code
+ * @param flags
+ * @param _bbox a buffer for the returned bounding box
+ */
+void Font_CharBBox(int handle,int code,int flags,box* _bbox);
+
 /** Plot string to screen using font.
  * Termination of the string is desirable whether or not flag bit 7 is set
  * because the byte after the last printable character must be readable.

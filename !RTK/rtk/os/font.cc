@@ -33,6 +33,42 @@ void Font_LoseFont(int handle)
 	call_swi(swi::Font_LoseFont,&regs);
 }
 
+void Font_ReadDefn(int handle,int* _buffer_size)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=handle;
+	regs.r[1]=0;
+	regs.r[3]=0x4c4c5546;
+	call_swi(swi::Font_ReadDefn,&regs);
+	if (_buffer_size) *_buffer_size=regs.r[2];
+}
+
+void Font_ReadDefn(int handle,char* _id,int* _xsize,int* _ysize,
+	int* _xres,int* _yres,int* _age,int* _usage_count)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=handle;
+	regs.r[1]=(int)_id;
+	regs.r[3]=0;
+	call_swi(swi::Font_ReadDefn,&regs);
+	if (_xsize) *_xsize=regs.r[2];
+	if (_ysize) *_ysize=regs.r[3];
+	if (_xres) *_xres=regs.r[4];
+	if (_yres) *_yres=regs.r[5];
+	if (_age) *_age=regs.r[6];
+	if (_usage_count) *_usage_count=regs.r[7];
+}
+
+void Font_CharBBox(int handle,int code,int flags,box* _bbox)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=handle;
+	regs.r[1]=code;
+	regs.r[2]=flags;
+	call_swi(swi::Font_CharBBox,&regs);
+	if (_bbox) *_bbox=box(regs.r[1],regs.r[2],regs.r[3],regs.r[4]);
+}
+
 void Font_Paint(int handle,const char* s,int plot,const point& p,void* coord,
 	void* trans,int length)
 {
