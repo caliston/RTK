@@ -584,6 +584,14 @@ void Wimp_TextOp1(const char* s,int count,int* _width);
  */
 void Wimp_TextOp2(const char* s,const point& p);
 
+/** Get split point using desktop font.
+ * @param s the string to plot
+ * @param width the allowed width, in OS units
+ * @param split the split character
+ * @param _index a buffer for the returned index of the split point
+ */
+void Wimp_TextOp3(const char* s,int width,char split,const char** _index);
+
 /** Resize or move icon.
  * @param whandle the window handle (-1 for iconbar)
  * @param ihandle the icon handle

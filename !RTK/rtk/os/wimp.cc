@@ -379,6 +379,17 @@ void Wimp_TextOp2(const char* s,const point& p)
 	call_swi(swi::Wimp_TextOp,&regs);
 }
 
+void Wimp_TextOp3(const char* s,int width,char split,const char** _index)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=3;
+	regs.r[1]=(int)s;
+	regs.r[2]=width;
+	regs.r[3]=split;
+	call_swi(swi::Wimp_TextOp,&regs);
+	if (_index) *_index=(const char*)regs.r[0];
+}
+
 void Wimp_ResizeIcon(int whandle,int ihandle,const box& bbox)
 {
 	_kernel_swi_regs regs;
