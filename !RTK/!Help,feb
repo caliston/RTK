@@ -3,5 +3,6 @@
 | Distribution and use are subject to the GNU Lesser General Public License,
 | a copy of which may be found in the file !RTK.Copyright.
 
-Set RTK_Help$Path <Obey$Dir>.html.,<Obey$Dir>.
-If "<Alias$@RunType_FAF>" <> "" Then Run RTK_Help:!RunHelp Else Filer_Run <Obey$Dir>.README
+If "<RTK$Dir>"="" Then Set RTK$Dir <Obey$Dir>
+IfThere <RTK$Dir>.html.index/html Then Set RTK$Help <RTK$Dir>.html.index/html
+If ("<Alias$@RunType_FAF>"="") OR ("<RTK$Help>"="") Then Filer_Run <RTK$Dir>.README Else Filer_Run <RTK$Help>

@@ -5,4 +5,5 @@
 
 If "<RTK$Dir>"="" Then Set RTK$Dir <Obey$Dir>
 If "<RTK$Path>"="" Then Set RTK$Path <Obey$Dir>.
+IfThere <RTK$Dir>.html.index/html Then Set RTK$Help <RTK$Dir>.html.index/html
 IconSprites <RTK$Dir>.!Sprites

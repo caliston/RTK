@@ -17,7 +17,6 @@ bin: always
 
 doc: always
 	doxygen
-	Copy html.!!RunHelp html.!RunHelp ~CF~P~V
 
 all: bin doc
 
