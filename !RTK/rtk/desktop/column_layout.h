@@ -20,8 +20,6 @@ namespace desktop {
  * will expand to fill any extra space made available to it. Note that
  * the algorithm used to do this is implementation-dependent, so may
  * change in future versions of this library.
- * @todo The redraw() function should only redraw cells that lie within
- *  the clip rectangle, whereas at present it redraws everthing.
  */
 class column_layout:
 	public sizeable_component
