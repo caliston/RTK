@@ -193,10 +193,10 @@ void icon::reformat(const point& origin,const box &bbox)
 	// Update origin and bounding box of this component, force
 	// redraw if necessary.
 	bool moved=(origin!=this->origin())||(bbox!=this->bbox());
-	if (moved&&_created) force_redraw();
+	if (moved&&_created) force_redraw(true);
 	_bbox=bbox;
 	inherited::reformat(origin,bbox);
-	if (moved||!_created) force_redraw();
+	if (moved||!_created) force_redraw(_created);
 
 	// Calculate offset from origin of work area to origin of this
 	// component.

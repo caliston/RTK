@@ -69,10 +69,10 @@ void virtual_row_layout::reformat(const point& origin,const box &bbox)
 	// if necessary.  (This must happen before reformat() is called for
 	// any children.)
 	bool moved=(origin!=this->origin())||(bbox!=this->bbox());
-	if (moved) force_redraw();
+	if (moved) force_redraw(true);
 	_bbox=bbox;
 	inherited::reformat(origin,bbox);
-	if (moved) force_redraw();
+	if (moved) force_redraw(true);
 
 	// Remove margin.
 	box ibox(_bbox-_margin);
