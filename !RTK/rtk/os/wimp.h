@@ -432,6 +432,11 @@ inline void Wimp_CreateMenu(os::menu* m,const point& p)
  */
 void Wimp_SetExtent(int handle,const box& workarea);
 
+/** Create or pass on keypress.
+ * @param code the character code
+ */
+void Wimp_ProcessKey(int code);
+
 /** Start child task.
  * @param command the command to be executed (null terminated)
  * @param _handle buffer for returned task handle (0 if none)

@@ -195,6 +195,13 @@ void Wimp_SetExtent(int handle,const box& workarea)
 	call_swi(swi::Wimp_SetExtent,&regs);
 }
 
+void Wimp_ProcessKey(int code)
+{
+	_kernel_swi_regs regs;
+	regs.r[0]=code;
+	call_swi(swi::Wimp_ProcessKey,&regs);
+}
+
 void Wimp_StartTask(const char* command,int* _handle)
 {
 	_kernel_swi_regs regs;
