@@ -66,7 +66,8 @@ public:
 	 * for at least the lifetime of this object.
 	 * @return the message data
 	 */
-	const os::wimp_block& data();
+	const os::wimp_block& data()
+		{ return *_wimpblock; }
 protected:
 	virtual bool deliver(desktop::component& dest);
 };
