@@ -19,12 +19,248 @@
 namespace rtk {
 namespace desktop {
 
+namespace {
+
+/** Parse spaces in validation string.
+ * Skip any number of spaces in the validation string.
+ * @param i reference to validation string iterator
+ */
+void parse_spaces(char*& i);
+
+/** Parse semicolon in validation string.
+ * Search for a semicolon in the validation string then skip past it.
+ * Any preceeding characters are ignored.
+ * @param i reference to validation string iterator
+ */
+void parse_semicolon(char*& i);
+
+/** Parse unsigned integer in validation string.
+ * Parse unsigned integer.  Stop at first non-digit.
+ * If no digits are found then the result will be zero.
+ * @param i reference to validation string iterator
+ * @param value buffer for returned integer
+ */
+void parse_int(char*& i,unsigned int* value);
+
+/** Parse string in validation string.
+ * Parse string terminated by comma or semicolon.  Stop at but
+ * do not skip past terminator.  The result string is
+ * null-terminated.
+ * @param i reference to validation string iterator
+ * @param buffer buffer for returned string
+ * @param size size of result buffer, excluding terminator
+ */
+void parse_string(char*& i,char* buffer,unsigned int size);
+
+/** Parse validation string.
+ * The border type is extracted from the R command, if present.
+ * The sprite names are extracted from the S command, if present.
+ * If either or both of these commands are not present then the
+ * corresponding buffers are left unchanged.  The buffers should
+ * therefore be initialised with default values before this
+ * function is called.  The length of each sprite name is limited
+ * to 12 characters plus a null terminator, therefore the capacity
+ * of each buffer should be at least 13 bytes.
+ * If there is more than one instance of a
+ * given command then the last one takes precedence.
+ * @param i reference to validation string iterator
+ * @param border_type buffer for returned border type
+ * @param sprite0 buffer for first returned sprite name
+ * @param sprite1 buffer for second returned sprite name
+ */
+void parse_validation(char*& i,unsigned int* border_type,
+	char* sprite0,char* sprite1);
+
+/** Get size of sprite, given name.
+ * @param area the sprite area
+ * @param name the sprite name
+ * @param _xsize a buffer for the returned width
+ * @param _ysize a buffer for the returned height
+ */
+void sprite_size(os::sprite_area* area,const char* name,
+	int* _xsize,int* _ysize);
+
+/** Get size of sprite, given pointer.
+ * @param area the sprite area
+ * @param name the sprite
+ * @param _xsize a buffer for the returned width
+ * @param _ysize a buffer for the returned height
+ */
+void sprite_size(os::sprite_area* area,os::sprite* sprite,
+	int* _xsize,int* _ysize);
+
 /** Get border box for given icon border type.
  * @param border true if the icon has a border, otherwise false
  * @param border_type the icon border type (from its validation string)
  * @return the border box
  */
-static box make_border_box(bool border,unsigned int border_type);
+box make_border_box(bool border,unsigned int border_type);
+
+void parse_spaces(char*& i)
+{
+	while (*i==' ') ++i;
+}
+
+void parse_semicolon(char*& i)
+{
+	while ((*i!=0)&&(*i!=';'))
+	{
+		if (*i=='\\')
+		{
+			++i;
+			if (*i!=0) ++i;
+		}
+		else ++i;
+	}
+	if (*i==';') ++i;
+}
+
+void parse_int(char*& i,unsigned int* value)
+{
+	int result=0;
+	while ((*i>='0')&&(*i<='9'))
+	{
+		result=(result*10)+(*i-'0');
+		++i;
+	}
+	if (value) *value=result;
+}
+
+void parse_string(char*& i,char* buffer,unsigned int size)
+{
+	while ((*i!=0)&&(*i!=',')&&(*i!=';')&&size)
+	{
+		if (*i=='\\') ++i;
+		char ch=*i++;
+		if (buffer) *buffer++=ch;
+		--size;
+	}
+	while ((*i!=0)&&(*i!=',')&&(*i!=';')) ++i;
+	if (buffer) *buffer=0;
+}
+
+void parse_validation(char*& i,unsigned int* border_type,char* sprite0,
+	char* sprite1)
+{
+	while (*i!=0)
+	{
+		parse_spaces(i);
+		switch (*i)
+		{
+		case 'r':
+		case 'R':
+			++i;
+			parse_spaces(i);
+			parse_int(i,border_type);
+			parse_spaces(i);
+			parse_int(i,0);
+			parse_semicolon(i);
+			break;
+		case 's':
+		case 'S':
+			++i;
+			parse_string(i,sprite0,12);
+			if (*i==',')
+			{
+				++i;
+				parse_string(i,sprite1,12);
+			}
+			else
+			{
+				if (sprite1) sprite1[0]=0;
+			}
+			parse_semicolon(i);
+		default:
+			parse_semicolon(i);
+			break;
+		}
+	}
+}
+
+void sprite_size(os::sprite_area* area,const char* name,
+	int* _xsize,int* _ysize)
+{
+	int xsize=0;
+	int ysize=0;
+	if (name)
+	{
+		if (area) os::OS_SpriteOp40(area,name,&xsize,&ysize,0,0);
+		else os::Wimp_SpriteOp40(name,&xsize,&ysize,0,0);
+		unsigned scale[4]={1,1,1,1};
+		if (area) os::Wimp_ReadPixTrans(area,name,scale,0);
+		else os::Wimp_ReadPixTrans((os::sprite_area*)1,name,scale,0);
+		xsize*=scale[0];
+		ysize*=scale[1];
+		xsize/=scale[2];
+		ysize/=scale[3];
+	}
+	if (_xsize) *_xsize=xsize;
+	if (_ysize) *_ysize=ysize;
+}
+
+void sprite_size(os::sprite_area* area,os::sprite* sprite,
+	int* _xsize,int* _ysize)
+{
+	int xsize=0;
+	int ysize=0;
+	if (area&&sprite)
+	{
+		os::OS_SpriteOp40(area,sprite,&xsize,&ysize,0,0);
+		unsigned scale[4]={1,1,1,1};
+		os::Wimp_ReadPixTrans(area,sprite,scale,0);
+		xsize*=scale[0];
+		ysize*=scale[1];
+		xsize/=scale[2];
+		ysize/=scale[3];
+	}
+	if (_xsize) *_xsize=xsize;
+	if (_ysize) *_ysize=ysize;
+}
+
+box make_border_box(bool border,unsigned int border_type)
+{
+	box bdrbox;
+	if (border)
+	{
+		// Note: the following constants are based on
+		// the amount by which the Wimp moves the content
+		// of an icon when a given border is added.  If
+		// different behaviour is required (as it is to
+		// fully comply with the style guide) then it
+		// should be implemented in a subclass.
+		switch (border_type)
+		{
+		case 1:
+		case 2:
+		case 5:
+			bdrbox=box(-4,-4,4,4);
+			break;
+		case 3:
+		case 4:
+			bdrbox=box(-8,-8,8,8);
+			break;
+		case 6:
+			bdrbox=box(-12,-12,12,12);
+			break;
+		case 7:
+			bdrbox=box(-10,-10,10,10);
+			break;
+		default:
+			// Default is 2 pixels.
+			int xeigfactor=0;
+			int yeigfactor=0;
+			os::OS_ReadModeVariable(swi::XEigFactor,&xeigfactor);
+			os::OS_ReadModeVariable(swi::YEigFactor,&yeigfactor);
+			unsigned int xpix=1<<xeigfactor;
+			unsigned int ypix=1<<yeigfactor;
+			bdrbox=box(-xpix,-ypix,xpix,ypix);
+			break;
+		}
+	}
+	return bdrbox;
+}
+
+}; /* anonymous namespace */
 
 icon::icon():
 	_handle(0),
@@ -632,170 +868,6 @@ box icon::border_box() const
 		parse_validation(p,&border_type,0,0);
 	}
 	return make_border_box(_border,border_type);
-}
-
-void icon::parse_spaces(char*& i)
-{
-	while (*i==' ') ++i;
-}
-
-void icon::parse_semicolon(char*& i)
-{
-	while ((*i!=0)&&(*i!=';'))
-	{
-		if (*i=='\\')
-		{
-			++i;
-			if (*i!=0) ++i;
-		}
-		else ++i;
-	}
-	if (*i==';') ++i;
-}
-
-void icon::parse_int(char*& i,unsigned int* value)
-{
-	int result=0;
-	while ((*i>='0')&&(*i<='9'))
-	{
-		result=(result*10)+(*i-'0');
-		++i;
-	}
-	if (value) *value=result;
-}
-
-void icon::parse_string(char*& i,char* buffer,size_type size)
-{
-	while ((*i!=0)&&(*i!=',')&&(*i!=';')&&size)
-	{
-		if (*i=='\\') ++i;
-		char ch=*i++;
-		if (buffer) *buffer++=ch;
-		--size;
-	}
-	while ((*i!=0)&&(*i!=',')&&(*i!=';')) ++i;
-	if (buffer) *buffer=0;
-}
-
-void icon::parse_validation(char*& i,unsigned int* border_type,char* sprite0,
-	char* sprite1)
-{
-	while (*i!=0)
-	{
-		parse_spaces(i);
-		switch (*i)
-		{
-		case 'r':
-		case 'R':
-			++i;
-			parse_spaces(i);
-			parse_int(i,border_type);
-			parse_spaces(i);
-			parse_int(i,0);
-			parse_semicolon(i);
-			break;
-		case 's':
-		case 'S':
-			++i;
-			parse_string(i,sprite0,12);
-			if (*i==',')
-			{
-				++i;
-				parse_string(i,sprite1,12);
-			}
-			else
-			{
-				if (sprite1) sprite1[0]=0;
-			}
-			parse_semicolon(i);
-		default:
-			parse_semicolon(i);
-			break;
-		}
-	}
-}
-
-void icon::sprite_size(os::sprite_area* area,const char* name,
-	int* _xsize,int* _ysize)
-{
-	int xsize=0;
-	int ysize=0;
-	if (name)
-	{
-		if (area) os::OS_SpriteOp40(area,name,&xsize,&ysize,0,0);
-		else os::Wimp_SpriteOp40(name,&xsize,&ysize,0,0);
-		unsigned scale[4]={1,1,1,1};
-		if (area) os::Wimp_ReadPixTrans(area,name,scale,0);
-		else os::Wimp_ReadPixTrans((os::sprite_area*)1,name,scale,0);
-		xsize*=scale[0];
-		ysize*=scale[1];
-		xsize/=scale[2];
-		ysize/=scale[3];
-	}
-	if (_xsize) *_xsize=xsize;
-	if (_ysize) *_ysize=ysize;
-}
-
-void icon::sprite_size(os::sprite_area* area,os::sprite* sprite,
-	int* _xsize,int* _ysize)
-{
-	int xsize=0;
-	int ysize=0;
-	if (area&&sprite)
-	{
-		os::OS_SpriteOp40(area,sprite,&xsize,&ysize,0,0);
-		unsigned scale[4]={1,1,1,1};
-		os::Wimp_ReadPixTrans(area,sprite,scale,0);
-		xsize*=scale[0];
-		ysize*=scale[1];
-		xsize/=scale[2];
-		ysize/=scale[3];
-	}
-	if (_xsize) *_xsize=xsize;
-	if (_ysize) *_ysize=ysize;
-}
-
-box make_border_box(bool border,unsigned int border_type)
-{
-	box bdrbox;
-	if (border)
-	{
-		// Note: the following constants are based on
-		// the amount by which the Wimp moves the content
-		// of an icon when a given border is added.  If
-		// different behaviour is required (as it is to
-		// fully comply with the style guide) then it
-		// should be implemented in a subclass.
-		switch (border_type)
-		{
-		case 1:
-		case 2:
-		case 5:
-			bdrbox=box(-4,-4,4,4);
-			break;
-		case 3:
-		case 4:
-			bdrbox=box(-8,-8,8,8);
-			break;
-		case 6:
-			bdrbox=box(-12,-12,12,12);
-			break;
-		case 7:
-			bdrbox=box(-10,-10,10,10);
-			break;
-		default:
-			// Default is 2 pixels.
-			int xeigfactor=0;
-			int yeigfactor=0;
-			os::OS_ReadModeVariable(swi::XEigFactor,&xeigfactor);
-			os::OS_ReadModeVariable(swi::YEigFactor,&yeigfactor);
-			unsigned int xpix=1<<xeigfactor;
-			unsigned int ypix=1<<yeigfactor;
-			bdrbox=box(-xpix,-ypix,xpix,ypix);
-			break;
-		}
-	}
-	return bdrbox;
 }
 
 }; /* namespace desktop */
