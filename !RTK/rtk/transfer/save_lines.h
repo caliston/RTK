@@ -65,6 +65,7 @@ private:
 		 * @param last the last member of the sequence
 		 */
 		sequence_source(iterator first,iterator last);
+		virtual ~sequence_source();
 
 		virtual string operator()();
 		virtual bool eof() const;
@@ -142,6 +143,10 @@ save_lines::sequence_source<iterator>::sequence_source(
 	_first(first),
 	_last(last),
 	_pos(last)
+{}
+
+template<class iterator>
+save_lines::sequence_source<iterator>::~sequence_source()
 {}
 
 template<class iterator>
