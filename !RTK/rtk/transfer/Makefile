@@ -5,7 +5,8 @@
 
 include ../../Rules.make
 
-OBJ = load.o
+OBJ = load.o \
+ save.o
 
 all: $(OBJ)
 
