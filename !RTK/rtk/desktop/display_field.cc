@@ -12,6 +12,7 @@ display_field::display_field()
 {
 	validation("R2");
 	border(true);
+	fill(true);
 	hcentre(true).vcentre(true);
 	fcolour(7).bcolour(1);
 	yfit(false);

@@ -12,6 +12,7 @@ action_button::action_button()
 {
 	validation("R5,3");
 	border(true);
+	fill(true);
 	hcentre(true).vcentre(true);
 	fcolour(7).bcolour(1);
 	button(3);

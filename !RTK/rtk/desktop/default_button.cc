@@ -12,6 +12,7 @@ default_button::default_button()
 {
 	validation("R6,3");
 	border(true);
+	fill(true);
 	hcentre(true).vcentre(true);
 	fcolour(7).bcolour(1);
 	button(3);
