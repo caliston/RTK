@@ -17,6 +17,7 @@
 #include "rtk/events/mouse_click.h"
 #include "rtk/events/user_drag_box.h"
 #include "rtk/events/key_pressed.h"
+#include "rtk/events/redirection.h"
 
 namespace rtk {
 namespace transfer {
@@ -32,7 +33,8 @@ class save_dbox:
 	public window,
 	public events::mouse_click::handler,
 	public events::user_drag_box::handler,
-	public events::key_pressed::handler
+	public events::key_pressed::handler,
+	public events::redirection
 {
 private:
 	/** The class from which this one is derived. */
