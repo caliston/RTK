@@ -99,16 +99,16 @@ Use
 
 Building from Source
 
-  To build the RTK from souce code the following utilities must be
-  present on the Run$Path:
+  To build the RTK from souce code the following tools must be present
+  on the Run$Path:
 
   - gcc
   - make
   - libfile
-  - fix-deps
+  - fixdeps
 
   Suitable versions of make, gcc and libfile may be found within supported
-  distributions of GCC.  fix-deps may be obtained from the RTK web site.
+  distributions of GCC.  fixdeps may be obtained from the RTK web site.
 
   No configuration is necessary.  Change the current directory to !RTK
   then issue the command:
