@@ -330,6 +330,11 @@ box icon::auto_bbox() const
 			else if (_text) sprite_size(0,_text,&spxsize,&spysize);
 			spxsize<<=xeigfactor;
 			spysize<<=yeigfactor;
+			if (_half_size)
+			{
+				spxsize=(spxsize+1)>>1;
+				spysize=(spysize+1)>>1;
+			}
 			switch ((_hcentre<<2)+(_vcentre<<1)+_rjustify)
 			{
 			case 0:
@@ -358,6 +363,11 @@ box icon::auto_bbox() const
 			sprite_size(_area,_name,&spxsize,&spysize);
 			spxsize<<=xeigfactor;
 			spysize<<=yeigfactor;
+			if (_half_size)
+			{
+				spxsize=(spxsize+1)>>1;
+				spysize=(spysize+1)>>1;
+			}
 			prefxsize=spxsize;
 			prefysize=spysize;
 		}
@@ -369,6 +379,11 @@ box icon::auto_bbox() const
 			sprite_size(_area,_sprite,&spxsize,&spysize);
 			spxsize<<=xeigfactor;
 			spysize<<=yeigfactor;
+			if (_half_size)
+			{
+				spxsize=(spxsize+1)>>1;
+				spysize=(spysize+1)>>1;
+			}
 			prefxsize=spxsize;
 			prefysize=spysize;
 		}
