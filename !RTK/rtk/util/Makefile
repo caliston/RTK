@@ -5,7 +5,8 @@
 
 include ../../Rules.make
 
-OBJ = refcount.o \
+OBJ = version.o \
+ refcount.o \
  divider.o
 
 all: $(OBJ)
