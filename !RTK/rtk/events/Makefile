@@ -19,6 +19,7 @@ OBJ = event.o \
  quit.o \
  help_request.o \
  reopen_menu.o \
+ save_to_file.o \
  redirection.o
 
 all: $(OBJ)
