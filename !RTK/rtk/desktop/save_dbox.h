@@ -19,6 +19,12 @@
 #include "rtk/events/key_pressed.h"
 
 namespace rtk {
+namespace transfer {
+
+class save;
+
+}; /* namespace transfer */
+
 namespace desktop {
 
 /** A class to represent a save-as dialogue box. */
@@ -55,6 +61,9 @@ private:
 
 	/** The row containing the cancel and save buttons. */
 	row_layout _row;
+
+	/** The attached save operation. */
+	transfer::save* _saveop;
 public:
 	/** Construct save-as dialogue box.
 	 * By default, a save-as dialogue box:
@@ -104,6 +113,12 @@ public:
 	 */
 	bool selection_button_state() const;
 
+	/** Get save operation.
+	 * @return the attached save operation, or 0 if none
+	 */
+	transfer::save* save() const
+		{ return _saveop; }
+
 	/** Set filetype.
 	 * @param filetype the required filetype
 	 */
@@ -134,14 +149,24 @@ public:
 	 * @return a reference to this
 	 */
 	save_dbox& selection_button_state(bool value);
+
+	/** Attach save operation.
+	 * If a save operation is attached, it will be used to save the data
+	 * when requested by the user.
+	 * @param sa the required save action
+	 */
+	save_dbox& attach_save(transfer::save& saveop);
+
+	/** Detach save operaton. */
+	save_dbox& detach_save();
 private:
-	/** Handle save action.
+	/** Handle save request.
 	 * This results from the user clicking on the save button or
 	 * pressing the return key.
 	 */
 	void handle_save();
 
-	/** Handle cancel action.
+	/** Handle cancel request.
 	 * This results from the user clicking on the cancel button or
 	 * pressing the escape key.
 	 */

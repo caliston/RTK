@@ -13,12 +13,14 @@
 #include "rtk/desktop/application.h"
 #include "rtk/events/save_to_file.h"
 #include "rtk/events/save_to_app.h"
+#include "rtk/transfer/save.h"
 
 namespace rtk {
 namespace desktop {
 
 save_dbox::save_dbox():
-	_filetype(0xffd)
+	_filetype(0xffd),
+	_saveop(0)
 {
 	title("Save as");
 	back_icon(false);
@@ -87,7 +89,16 @@ void save_dbox::handle_event(events::mouse_click& ev)
 
 void save_dbox::handle_event(events::user_drag_box& ev)
 {
-	events::save_to_app ev2(*this,leafname());
+	component* target=this;
+	if (_saveop)
+	{
+		if (application* app=parent_application())
+		{
+			app->add(*_saveop);
+		}
+		target=_saveop;
+	}
+	events::save_to_app ev2(*target,leafname());
 	ev2.post();
 }
 
@@ -172,13 +183,27 @@ save_dbox& save_dbox::selection_button_state(bool value)
 	return *this;
 }
 
+save_dbox& save_dbox::attach_save(transfer::save& saveop)
+{
+	_saveop=&saveop;
+	return *this;
+}
+
+save_dbox& save_dbox::detach_save()
+{
+	_saveop=0;
+	return *this;
+}
+
 void save_dbox::handle_save()
 {
 	string pathname=_pathname_field.text();
 	string::size_type f=pathname.find_first_of(".:<");
 	if (f!=string::npos)
 	{
-		events::save_to_file ev(*this,_pathname_field.text(),
+		component* target=_saveop;
+		if (!target) target=this;
+		events::save_to_file ev(*target,_pathname_field.text(),
 			_selection_button.selected());
 		ev.post();
 	}
