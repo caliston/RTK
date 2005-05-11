@@ -1,5 +1,5 @@
 # This file is part of the RISC OS Toolkit (RTK).
-# Copyright © 2003-2004 Graham Shaw.
+# Copyright © 2003-2005 Graham Shaw.
 # Distribution and use are subject to the GNU Lesser General Public License,
 # a copy of which may be found in the file !RTK.Copyright.
 
@@ -11,13 +11,19 @@ DOXYFILES = \
  mainpage.h \
  namespace.h
 
-.PHONY: all always
-
+.PHONY: bin
 bin: rtk.a
 
+.PHONY: doc
 doc: html/index.html
 
+.PHONY: all
 all: bin doc
+
+.PHONY: clean
+clean:
+	rm rtk.a
+	make -C rtk clean
 
 rtk.a: rtk/timestamp
 	mkdir -p a
@@ -34,3 +40,5 @@ rtk/timestamp: always
 
 html/index.html: rtk/timestamp $(DOXYFILES)
 	doxygen
+
+.PHONY: always
