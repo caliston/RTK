@@ -24,6 +24,9 @@
 namespace rtk {
 namespace desktop {
 
+using std::min;
+using std::max;
+
 namespace {
 
 /** The character at which words are split. */
@@ -770,7 +773,7 @@ void text_area::handle_event(events::loaded& ev)
 		if (!_iclipboard.size()) _iclipboard.push_back(string());
 		replace(_caret_first,_caret_last,_iclipboard);
 	}
-	_iclipboard=rope<string>();
+	_iclipboard=__gnu_cxx::rope<string>();
 }
 
 text_area::text_type text_area::text() const
@@ -922,7 +925,7 @@ void text_area::handle_linefeed()
 
 	// Insert linefeed at caret
 	// (or in place of selection if there is no caret).
-	rope<string> new_text;
+	__gnu_cxx::rope<string> new_text;
 	new_text.push_back(string());
 	new_text.push_back(string());
 	replace(_caret_first,_caret_last,new_text);
@@ -973,7 +976,7 @@ void text_area::handle_paste()
 	{
 		if (basic_window* w=parent_work_area())
 		{
-			auto_ptr<os::wimp_block> block(new os::wimp_block);
+			std::auto_ptr<os::wimp_block> block(new os::wimp_block);
 			block->word[0]=48;
 			block->word[3]=0;
 			block->word[4]=swi::Message_DataRequest;
@@ -1138,11 +1141,11 @@ void text_area::render_line(gcontext& context,const string& ptext,
 			// If at least one printable character then render those
 			// characters (after inserting a temporary terminator).
 			char temp=0;
-			swap(*f,temp);
+			std::swap(*f,temp);
 			context.fcolour(_fcolour);
 			context.draw(_font,t,point(x,y));
 			x+=_font.width(t,f-t);
-			swap(*f,temp);
+			std::swap(*f,temp);
 			t=f;
 		}
 		else
@@ -1186,9 +1189,9 @@ int text_area::line_width(const string& ptext,unsigned int index,
 		if (f!=t)
 		{
 			char temp=0;
-			swap(*f,temp);
+			std::swap(*f,temp);
 			width+=_font.width(t,f-t);
-			swap(*f,temp);
+			std::swap(*f,temp);
 			t=f;
 		}
 		else
@@ -1230,13 +1233,13 @@ unsigned int text_area::find_index(const string& ptext,unsigned int index,
 			// the specified coordinate within those characters (after
 			// inserting a temporary terminator).
 			char temp=0;
-			swap(*f,temp);
+			std::swap(*f,temp);
 			point p_mp(x*400,0);
 			point bbox;
 			const char* q=t;
 			os::Font_ScanString(_font.handle(),t,0x20180,p_mp,
 				0,0,f-t,&q,&bbox,0);
-			swap(*f,temp);
+			std::swap(*f,temp);
 
 			if ((q==f)&&(x>bbox.x()/400))
 			{
@@ -1315,7 +1318,7 @@ unsigned int text_area::split_line(const string& ptext,unsigned int index,
 		{
 			// Insert temporary terminator.
 			char temp=0;
-			swap(*f,temp);
+			std::swap(*f,temp);
 
 			point p_mp(width*400,0);
 			const char* q=t;
@@ -1340,7 +1343,7 @@ unsigned int text_area::split_line(const string& ptext,unsigned int index,
 			}
 
 			// Remove temporary terminator.
-			swap(*f,temp);
+			std::swap(*f,temp);
 
 			if ((q==f)&&(width>bbox.x()/400))
 			{
@@ -1658,7 +1661,7 @@ void text_area::reflow(int width)
 void text_area::load_clipboard(mark first,mark last)
 {
 	// Ensure that last>=first.
-	if (last<first) swap(last,first);
+	if (last<first) std::swap(last,first);
 
 	// Extract minimal sequence of paragraphs that contains the sequence.
 	_oclipboard=_text.substr(first.para(),last.para()-first.para()+1);
@@ -1743,7 +1746,7 @@ void text_area::hide_caret()
 void text_area::show_selection(mark first,mark last)
 {
 	// Ensure that last>=first.
-	if (last<first) swap(last,first);
+	if (last<first) std::swap(last,first);
 
 	if (!_has_focus)
 	{
@@ -1781,7 +1784,7 @@ void text_area::show_selection(mark first,mark last)
 void text_area::force_redraw_between(mark first,mark last)
 {
 	// Ensure that last>=first.
-	if (last<first) swap(last,first);
+	if (last<first) std::swap(last,first);
 
 	fixed_mark first_pos(*this,first);
 	fixed_mark last_pos(*this,last);
@@ -1822,17 +1825,18 @@ void text_area::force_redraw_between(mark first,mark last)
 void text_area::replace(const mark& first,const mark& last,
 	const string& new_para)
 {
-	rope<string> new_text;
+	__gnu_cxx::rope<string> new_text;
 	new_text.push_back(new_para);
 	replace(first,last,new_text);
 }
 
-void text_area::replace(mark first,mark last,const rope<string>& new_text)
+void text_area::replace(mark first,mark last,
+	const __gnu_cxx::rope<string>& new_text)
 {
 	if (_read_only) return;
 
 	// Ensure that last>=first.
-	if (last<first) swap(last,first);
+	if (last<first) std::swap(last,first);
 
 	adjust_layout(first,last,new_text);
 	adjust_text(first,last,new_text);
@@ -1850,7 +1854,7 @@ void text_area::replace(mark first,mark last,const rope<string>& new_text)
 }
 
 void text_area::adjust_layout(const mark& first,const mark& last,
-	const rope<string>& new_text)
+	const __gnu_cxx::rope<string>& new_text)
 {
 	int width=bbox().xsize();
 
@@ -1997,7 +2001,7 @@ void text_area::adjust_layout(const mark& first,const mark& last,
 }
 
 void text_area::adjust_text(const mark& first,const mark& last,
-	rope<string> new_text)
+	__gnu_cxx::rope<string> new_text)
 {
 	// Ensure that new_text contains at least one paragraph.
 	if (!new_text.size()) new_text.push_back(string());
@@ -2020,7 +2024,7 @@ void text_area::adjust_text(const mark& first,const mark& last,
 }
 
 text_area::mark text_area::adjust_mark(mark mk,const mark& first,
-	const mark& last,const rope<string>& new_text) const
+	const mark& last,const __gnu_cxx::rope<string>& new_text) const
 {
 	if (mk>=last)
 	{

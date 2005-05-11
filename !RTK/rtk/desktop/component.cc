@@ -26,6 +26,9 @@
 namespace rtk {
 namespace desktop {
 
+using std::min;
+using std::max;
+
 component::component(const point& origin):
 	_parent(0),
 	_origin(origin),
@@ -287,7 +290,7 @@ void component::set_caret_position(point p,int height,int index)
 
 void component::claim_selection()
 {
-	auto_ptr<os::wimp_block> block(new os::wimp_block);
+	std::auto_ptr<os::wimp_block> block(new os::wimp_block);
 	block->word[0]=24;
 	block->word[3]=0;
 	block->word[4]=swi::Message_ClaimEntity;
@@ -309,14 +312,14 @@ void component::claim_selection()
 		{
 			app->send_message(swi::User_Message,*(block.release()),0,0);
 		}
-	}
 
-	app->register_selection(*this);
+		app->register_selection(*this);
+	}
 }
 
 void component::claim_clipboard()
 {
-	auto_ptr<os::wimp_block> block(new os::wimp_block);
+	std::auto_ptr<os::wimp_block> block(new os::wimp_block);
 	block->word[0]=24;
 	block->word[3]=0;
 	block->word[4]=swi::Message_ClaimEntity;
@@ -338,9 +341,9 @@ void component::claim_clipboard()
 		{
 			app->send_message(swi::User_Message,*(block.release()),0,0);
 		}
-	}
 
 	app->register_clipboard(*this);
+	}
 }
 
 void component::drag(const box& dbox,const box& bbox,int drag_type)

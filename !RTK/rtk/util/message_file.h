@@ -11,6 +11,8 @@
 namespace rtk {
 namespace util {
 
+using std::string;
+
 /** A class to represent a RISC OS message file.
  */
 class message_file

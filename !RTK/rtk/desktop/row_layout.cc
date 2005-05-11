@@ -13,6 +13,8 @@
 namespace rtk {
 namespace desktop {
 
+using std::min;
+using std::max;
 using rtk::util::divider;
 
 row_layout::row_layout(size_type xcells):
@@ -23,7 +25,7 @@ row_layout::row_layout(size_type xcells):
 
 row_layout::~row_layout()
 {
-	for (vector<component*>::iterator i=_components.begin();
+	for (std::vector<component*>::iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		if (component* c=*i) c->remove();
@@ -42,7 +44,7 @@ box row_layout::auto_bbox() const
 	// Request min_bbox for each cell.  Incorporate into y-baseline set
 	// and total width.
 	int xsize=0;
-	vector<component*>::const_iterator i=_components.begin();
+	std::vector<component*>::const_iterator i=_components.begin();
 	for (size_type x=0;x!=xcells;++x)
 	{
 		if (component* c=*i++)
@@ -74,8 +76,8 @@ box row_layout::auto_bbox() const
 
 component* row_layout::find(const point& p) const
 {
-	vector<int>::const_iterator xf=
-		lower_bound(_xmin.begin(),_xmin.end(),p.x()+1,less<int>());
+	std::vector<int>::const_iterator xf=
+		lower_bound(_xmin.begin(),_xmin.end(),p.x()+1,std::less<int>());
 	if (xf==_xmin.begin()) return 0;
 	size_type x=(xf-_xmin.begin())-1;
 	component* c=_components[x];
@@ -92,7 +94,7 @@ box row_layout::bbox() const
 
 void row_layout::resize() const
 {
-	for (vector<component*>::const_iterator i=_components.begin();
+	for (std::vector<component*>::const_iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		if (component* c=*i) c->resize();
@@ -179,7 +181,7 @@ void row_layout::reformat(const point& origin,const box& pbbox)
 
 void row_layout::unformat()
 {
-	for (vector<component*>::iterator i=_components.begin();
+	for (std::vector<component*>::iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		if (component* c=*i) c->unformat();
@@ -190,15 +192,15 @@ void row_layout::redraw(gcontext& context,const box& clip)
 {
 	// Look for the first column with a right edge which overlaps (or is to
 	// the right of) the clip box: _xmin[x0+1] -_xgap > clip.xmin().
-	vector<int>::iterator xf0=upper_bound(
-		_xmin.begin(),_xmin.end(),clip.xmin()+_xgap,less<int>());
+	std::vector<int>::iterator xf0=upper_bound(
+		_xmin.begin(),_xmin.end(),clip.xmin()+_xgap,std::less<int>());
 	size_type x0=xf0-_xmin.begin();
 	if (x0) --x0;
 
 	// Look for the first column with a left edge which is to the right of
 	// the clip box: _xmin[x1] >= clip.xmax().
-	vector<int>::iterator xf1=lower_bound(
-		_xmin.begin(),_xmin.end(),clip.xmax(),less<int>());
+	std::vector<int>::iterator xf1=lower_bound(
+		_xmin.begin(),_xmin.end(),clip.xmax(),std::less<int>());
 	size_type x1=xf1-_xmin.begin();
 	if (x1>_components.size()) x1=_components.size();
 
@@ -219,7 +221,7 @@ void row_layout::redraw(gcontext& context,const box& clip)
 
 void row_layout::remove_notify(component& c)
 {
-	vector<component*>::iterator f=
+	std::vector<component*>::iterator f=
 		std::find(_components.begin(),_components.end(),&c);
 	if (f!=_components.end())
 	{

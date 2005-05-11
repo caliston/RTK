@@ -6,11 +6,7 @@
 #ifndef _RTK_GRAPHICS_POINT
 #define _RTK_GRAPHICS_POINT
 
-namespace std {
-
-class ostream;
-
-}; /* namespace std */
+#include <iosfwd>
 
 namespace rtk {
 namespace graphics {
@@ -144,7 +140,7 @@ inline bool operator!=(const point& pa,const point& pb)
  * @param p the point to be written
  * @return a reference to the output stream
  */
-ostream& operator<<(ostream& out,const point& p);
+std::ostream& operator<<(std::ostream& out,const point& p);
 
 }; /* namespace graphics */
 }; /* namespace rtk */

@@ -14,6 +14,8 @@
 namespace rtk {
 namespace transfer {
 
+using std::string;
+
 /** A class for loading lines of text.
  * @deprecated Use transfer::load_lines in preference to this class. 
  */
@@ -24,10 +26,10 @@ private:
 	/** A pointer to the list of lines that have been loaded.
 	 * This always points to a list of string: it can never be null.
 	 */
-	list<string>* _linelist;
+	std::list<string>* _linelist;
 
 	/** The default value for _linelist. */
-	list<string> _default_linelist;
+	std::list<string> _default_linelist;
 
 	/** The buffer used to receive data before it is parsed into lines. */
 	char* _buffer;
@@ -57,7 +59,7 @@ public:
 	 * the list content into an external list.
 	 * @return a reference to the data that has been loaded
 	 */
-	list<string>& linelist()
+	std::list<string>& linelist()
 		{ return *_linelist; }
 
 	/** Set line list.
@@ -65,14 +67,14 @@ public:
 	 * as the argument to this function.
 	 * @param linelist the list into which the data is loaded
 	 */
-	load_linelist& linelist(list<string>& linelist);
+	load_linelist& linelist(std::list<string>& linelist);
 
 	/** Get default line list.
 	 * This is the list that is used if an external list has not been
 	 * specified.  It is the default value of linelist().
 	 * @return a reference to the default line list
 	 */
-	list<string>& default_linelist()
+	std::list<string>& default_linelist()
 		{ return _default_linelist; }
 };
 

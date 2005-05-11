@@ -23,6 +23,9 @@
 namespace rtk {
 namespace transfer {
 
+using std::min;
+using std::max;
+
 save::save():
 	_state(state_idle),
 	_thandle(0),

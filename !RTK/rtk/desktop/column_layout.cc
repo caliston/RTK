@@ -13,6 +13,8 @@
 namespace rtk {
 namespace desktop {
 
+using std::min;
+using std::max;
 using rtk::util::divider;
 
 column_layout::column_layout(size_type ycells):
@@ -23,7 +25,7 @@ column_layout::column_layout(size_type ycells):
 
 column_layout::~column_layout()
 {
-	for (vector<component*>::iterator i=_components.begin();
+	for (std::vector<component*>::iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		if (component* c=*i) c->remove();
@@ -42,7 +44,7 @@ box column_layout::auto_bbox() const
 	// Request min_bbox for each cell.  Incorporate into x-baseline set
 	// and total height.
 	int ysize=0;
-	vector<component*>::const_iterator i=_components.begin();
+	std::vector<component*>::const_iterator i=_components.begin();
 	for (size_type y=0;y!=ycells;++y)
 	{
 		if (component* c=*i++)
@@ -74,8 +76,8 @@ box column_layout::auto_bbox() const
 
 component* column_layout::find(const point& p) const
 {
-	vector<int>::const_iterator yf=
-		lower_bound(_ymax.begin(),_ymax.end(),p.y()-1,greater<int>());
+	std::vector<int>::const_iterator yf=
+		lower_bound(_ymax.begin(),_ymax.end(),p.y()-1,std::greater<int>());
 	if (yf==_ymax.begin()) return 0;
 	size_type y=(yf-_ymax.begin())-1;
 	component* c=_components[y];
@@ -92,7 +94,7 @@ box column_layout::bbox() const
 
 void column_layout::resize() const
 {
-	for (vector<component*>::const_iterator i=_components.begin();
+	for (std::vector<component*>::const_iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		if (component* c=*i) c->resize();
@@ -179,7 +181,7 @@ void column_layout::reformat(const point& origin,const box& pbbox)
 
 void column_layout::unformat()
 {
-	for (vector<component*>::iterator i=_components.begin();
+	for (std::vector<component*>::iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		if (component* c=*i) c->unformat();
@@ -190,15 +192,15 @@ void column_layout::redraw(gcontext& context,const box& clip)
 {
 	// Look for the first row with a lower edge which overlaps (or is
 	// below) the clip box: _ymax[y0+1] + _ygap < clip.ymax().
-	vector<int>::iterator yf0=upper_bound(
-		_ymax.begin(),_ymax.end(),clip.ymax()-_ygap,greater<int>());
+	std::vector<int>::iterator yf0=upper_bound(
+		_ymax.begin(),_ymax.end(),clip.ymax()-_ygap,std::greater<int>());
 	size_type y0=yf0-_ymax.begin();
 	if (y0) --y0;
 
 	// Look for the first row with an upper edge which is below the
 	// clip box: _ymax[y1] <= clip.ymin().
-	vector<int>::iterator yf1=lower_bound(
-		_ymax.begin(),_ymax.end(),clip.ymin(),greater<int>());
+	std::vector<int>::iterator yf1=lower_bound(
+		_ymax.begin(),_ymax.end(),clip.ymin(),std::greater<int>());
 	size_type y1=yf1-_ymax.begin();
 	if (y1>_components.size()) y1=_components.size();
 
@@ -219,7 +221,7 @@ void column_layout::redraw(gcontext& context,const box& clip)
 
 void column_layout::remove_notify(component& c)
 {
-	vector<component*>::iterator f=
+	std::vector<component*>::iterator f=
 		std::find(_components.begin(),_components.end(),&c);
 	if (f!=_components.end())
 	{

@@ -15,6 +15,8 @@ namespace graphics {
 
 class font;
 
+using std::string;
+
 /** An abstract class to represent an abstract graphics context.
  * Using this class it is possible to issue graphical output instructions
  * without knowing to where the output is being directed.

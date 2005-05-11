@@ -17,7 +17,7 @@ toolbar_layout::toolbar_layout():
 toolbar_layout::~toolbar_layout()
 {
 	// Remove toolbars.
-	for (vector<toolbar_type>::iterator i=_toolbars.begin();
+	for (std::vector<toolbar_type>::iterator i=_toolbars.begin();
 		i!=_toolbars.end();++i)
 	{
 		if (basic_window* w=i->w) w->remove();
@@ -56,7 +56,7 @@ component* toolbar_layout::find(const point& p) const
 	component* f=0;
 
 	// Check whether point is in a toolbar first.
-	vector<toolbar_type>::const_iterator i=_toolbars.begin();
+	std::vector<toolbar_type>::const_iterator i=_toolbars.begin();
 	while (!f&&i!=_toolbars.end())
 	{
 		basic_window* w=i->w;
@@ -87,8 +87,8 @@ box toolbar_layout::auto_bbox() const
 	}
 
 	// Add toolbars, starting from the inside and working outwards.
-	for (vector<toolbar_type>::const_reverse_iterator i=_toolbars.rbegin();
-		i!=_toolbars.rend();++i)
+	for (std::vector<toolbar_type>::const_reverse_iterator i=
+		_toolbars.rbegin();i!=_toolbars.rend();++i)
 	{
 		if (basic_window* w=i->w)
 		{
@@ -144,7 +144,7 @@ void toolbar_layout::reformat(const point& origin,const box& pbbox)
 	box cbox=_bbox;
 
 	// Reformat toolbars, starting from the outside and working in.
-	for (vector<toolbar_type>::iterator i=_toolbars.begin();
+	for (std::vector<toolbar_type>::iterator i=_toolbars.begin();
 		i!=_toolbars.end();++i)
 	{
 		if (basic_window* w=i->w)
@@ -240,7 +240,7 @@ void toolbar_layout::unformat()
 	if (component* c=_content) c->unformat();
 
 	// Unformat toolbars.
-	for (vector<toolbar_type>::iterator i=_toolbars.begin();
+	for (std::vector<toolbar_type>::iterator i=_toolbars.begin();
 		i!=_toolbars.end();++i)
 	{
 		if (basic_window* w=i->w) w->unformat();
@@ -259,7 +259,7 @@ void toolbar_layout::redraw(gcontext& context,const box& clip)
 	}
 
 	// Redraw toolbars.
-	for (vector<toolbar_type>::iterator i=_toolbars.begin();
+	for (std::vector<toolbar_type>::iterator i=_toolbars.begin();
 		i!=_toolbars.end();++i)
 	{
 		if (basic_window* w=i->w)
@@ -276,7 +276,7 @@ void toolbar_layout::redraw(gcontext& context,const box& clip)
 
 void toolbar_layout::remove_notify(component& c)
 {
-	vector<toolbar_type>::iterator f=_toolbars.begin();
+	std::vector<toolbar_type>::iterator f=_toolbars.begin();
 	while ((f!=_toolbars.end())&&(f->w!=&c)) ++f;
 	if (f!=_toolbars.end())
 	{

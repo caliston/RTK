@@ -64,7 +64,7 @@ private:
 	 * All descendant icons that currently have a RISC OS icon handle
 	 * are included.
 	 */
-	map<int,icon*> _ihandles;
+	std::map<int,icon*> _ihandles;
 
 	/** The current bounding box. */
 	box _bbox;

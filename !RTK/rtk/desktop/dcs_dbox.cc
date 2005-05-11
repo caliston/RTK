@@ -12,6 +12,9 @@
 namespace rtk {
 namespace desktop {
 
+using std::min;
+using std::max;
+
 dcs_dbox::dcs_dbox()
 {
 	close_icon(false);

@@ -39,7 +39,7 @@ private:
 	 * following cell.  A hypothetical value for _xmin[xcells()] is
 	 * included in the vector so that the position of the right edge
 	 * of the last cell can be determined. */
-	vector<int> _xmin;
+	std::vector<int> _xmin;
 
 	/** The cached y-baseline set for the layout. */
 	mutable ybaseline_set _ybs;

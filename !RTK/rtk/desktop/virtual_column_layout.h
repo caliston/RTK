@@ -39,7 +39,7 @@ private:
 	 * following cell.  A hypothetical value for _ymax[ycells()] is
 	 * included in the vector so that the position of the bottom edge
 	 * of the last cell can be determined. */
-	vector<int> _ymax;
+	std::vector<int> _ymax;
 
 	/** The cached x-baseline set for the layout. */
 	mutable xbaseline_set _xbs;

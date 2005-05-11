@@ -17,6 +17,8 @@
 
 namespace {
 
+using std::string;
+
 /** Choose sprite name for save dialogue.
  * If no preferred sprite name is supplied then one is chosen to match
  * the filetype.  If the preferred or chosen sprite name does not exist
@@ -40,8 +42,8 @@ string sprite_name(unsigned int filetype,const string& sprname)
 		}
 		else
 		{
-			ostringstream out;
-			out << "file_" << hex << setw(3) << filetype;
+			std::ostringstream out;
+			out << "file_" << std::hex << std::setw(3) << filetype;
 			name=out.str();
 		}
 	}

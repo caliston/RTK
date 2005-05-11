@@ -42,7 +42,7 @@ private:
 	 * the following cell.  A hypothetical value for _xmin[xcells()] is
 	 * included in the vector so that the position of the right edge
 	 * of the last cell can be determined. */
-	vector<int> _xmin;
+	std::vector<int> _xmin;
 
 	/** A vector containing the position of the top edge of each cell
 	 * with respect to the origin of the layout.  The position of the
@@ -50,13 +50,13 @@ private:
 	 * the following cell.  A hypothetical value for _ymax[ycells()] is
 	 * included in the vector so that the position of the bottom edge
 	 * of the last cell can be determined. */
-	vector<int> _ymax;
+	std::vector<int> _ymax;
 
 	/** A vector containing a cached x-baseline set for each column. */
-	mutable vector<xbaseline_set> _xbs;
+	mutable std::vector<xbaseline_set> _xbs;
 
 	/** A vector containing a cached y-baseline set for each row. */
-	mutable vector<ybaseline_set> _ybs;
+	mutable std::vector<ybaseline_set> _ybs;
 
 	/** The size of gap to be placed between columns. */
 	int _xgap;

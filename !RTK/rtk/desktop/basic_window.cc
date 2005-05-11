@@ -622,7 +622,7 @@ void basic_window::deregister_icon(icon& ic)
 
 icon* basic_window::find_icon(int handle) const
 {
-	map<int,icon*>::const_iterator f=_ihandles.find(handle);
+	std::map<int,icon*>::const_iterator f=_ihandles.find(handle);
 	return (f!=_ihandles.end())?(*f).second:0;
 }
 

@@ -4,11 +4,15 @@
 // a copy of which may be found in the file !RTK.Copyright.
 
 #include <algorithm>
+#include <iostream>
 
 #include "rtk/graphics/box.h"
 
 namespace rtk {
 namespace graphics {
+
+using std::min;
+using std::max;
 
 box& box::operator+=(const point& p)
 {
@@ -210,7 +214,7 @@ bool operator!=(const box &ba,const box& bb)
 		(ba.ymax()^bb.ymax()))!=0;
 }
 
-ostream& operator<<(ostream& out,const box& b)
+std::ostream& operator<<(std::ostream& out,const box& b)
 {
 	out << '(' << b.xmin() << ',' << b.ymin() << ','
 		<< b.xmax() << ',' << b.ymax() << ')';

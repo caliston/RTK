@@ -143,15 +143,15 @@ void virtual_column_layout::redraw(gcontext& context,const box& clip)
 
 	// Look for the first row with a lower edge which overlaps (or is
 	// below) the clip box: _ymax[y0+1] + _ygap < clip.ymax().
-	vector<int>::iterator yf0=upper_bound(
-		_ymax.begin(),_ymax.end(),clip.ymax()-_ygap,greater<int>());
+	std::vector<int>::iterator yf0=upper_bound(
+		_ymax.begin(),_ymax.end(),clip.ymax()-_ygap,std::greater<int>());
 	size_type y0=yf0-_ymax.begin();
 	if (y0) --y0;
 
 	// Look for the first row with an upper edge which is below the
 	// clip box: _ymax[y1] <= clip.ymin().
-	vector<int>::iterator yf1=lower_bound(
-		_ymax.begin(),_ymax.end(),clip.ymin(),greater<int>());
+	std::vector<int>::iterator yf1=lower_bound(
+		_ymax.begin(),_ymax.end(),clip.ymin(),std::greater<int>());
 	size_type y1=yf1-_ymax.begin();
 	if (y1>_ycells) y1=_ycells;
 
@@ -235,8 +235,8 @@ virtual_column_layout::size_type virtual_column_layout::find_y(const point& p)
 {
 	// Look for the first cell with a top edge which is below the point:
 	// _ymax[x] <= p.x().
-	vector<int>::const_iterator yf=
-		lower_bound(_ymax.begin(),_ymax.end(),p.y(),greater<int>());
+	std::vector<int>::const_iterator yf=
+		lower_bound(_ymax.begin(),_ymax.end(),p.y(),std::greater<int>());
 	if (yf==_ymax.begin()) return npos;
 	size_type y=(yf-_ymax.begin())-1;
 

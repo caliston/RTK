@@ -6,13 +6,9 @@
 #ifndef _RTK_GRAPHICS_BOX
 #define _RTK_GRAPHICS_BOX
 
+#include <iosfwd>
+
 #include "rtk/graphics/point.h"
-
-namespace std {
-
-class ostream;
-
-}; /* namespace std */
 
 namespace rtk {
 namespace graphics {
@@ -425,7 +421,7 @@ bool operator!=(const box& ba,const box& bb);
  * @param b the box to be written
  * @return a reference to the output stream
  */
-ostream& operator<<(ostream& out,const box& b);
+std::ostream& operator<<(std::ostream& out,const box& b);
 
 }; /* namespace graphics */
 }; /* namespace rtk */

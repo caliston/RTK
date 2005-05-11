@@ -26,7 +26,7 @@ private:
 	typedef sizeable_component inherited;
 
 	/** A vector containing a pointer to each child. */
-	vector<component*> _components;
+	std::vector<component*> _components;
 
 	/** The margin to be placed around the whole layout. */
 	box _margin;

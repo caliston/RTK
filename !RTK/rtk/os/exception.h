@@ -32,7 +32,7 @@ public:
 
 	/** Destroy exception.
 	 */
-	virtual ~exception() {}
+	virtual ~exception() throw() {}
 
 	/** Get message.
 	 * The value returned is a pointer into the original error block used
@@ -40,7 +40,7 @@ public:
 	 * for at least the lifetime of this object.
 	 * @return the message from the error block
 	 */
-	virtual const char* what() const;
+	virtual const char* what() const throw();
 };
 
 }; /* namespace os */

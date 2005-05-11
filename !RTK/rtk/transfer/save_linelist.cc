@@ -66,7 +66,7 @@ void save_linelist::finish()
 save_linelist::size_type save_linelist::estsize()
 {
 	size_type size=0;
-	for (list<string>::const_iterator i=_linelist->begin();
+	for (std::list<string>::const_iterator i=_linelist->begin();
 		i!=_linelist->end();++i)
 	{
 		const string& s=*i;
@@ -75,7 +75,7 @@ save_linelist::size_type save_linelist::estsize()
 	return size;
 }
 
-save_linelist& save_linelist::linelist(list<string>& linelist)
+save_linelist& save_linelist::linelist(std::list<string>& linelist)
 {
 	_linelist=&linelist;
 	return *this;

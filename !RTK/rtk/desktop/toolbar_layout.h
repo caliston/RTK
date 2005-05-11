@@ -7,7 +7,6 @@
 #define _RTK_DESKTOP_TOOLBAR_LAYOUT
 
 #include <vector>
-#include <map>
 #include <string>
 
 #include "rtk/desktop/sizeable_component.h"
@@ -62,7 +61,7 @@ private:
 	component* _content;
 
 	/** A vector of toolbars indexed from the outside in. */
-	vector<toolbar_type> _toolbars;
+	std::vector<toolbar_type> _toolbars;
 
 	/** The current bounding box. */
 	box _bbox;

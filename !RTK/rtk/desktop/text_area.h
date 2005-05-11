@@ -7,7 +7,13 @@
 #define _RTK_DESKTOP_TEXT_AREA
 
 #include <string>
+
+#if defined(__GNUC__) && (__GNUC__<3)
 #include <rope>
+#define __gnu_cxx
+#else
+#include <ext/rope>
+#endif
 
 #include "rtk/util/cumulative_sum.h"
 
@@ -33,6 +39,8 @@
 
 namespace rtk {
 namespace desktop {
+
+using std::string;
 
 /** A class to represent a multi-line text field.
  * A text area will often be embedded within a dedicated subwindow
@@ -88,7 +96,7 @@ public:
 	 * At present it is implemented as a std::rope<std::string>,
 	 * but this is subject to change without notice.
 	 */
-	typedef std::rope<string> text_type;
+	typedef __gnu_cxx::rope<string> text_type;
 
 	/** A class to represent a location within the text. */
 	class basic_mark
@@ -165,7 +173,7 @@ public:
 		 */
 		mark prev_word() const;
 	};
-	friend mark;
+	friend class mark;
 
 	/** A class to represent a location within the text and
 	 * its position within the work area.
@@ -217,10 +225,10 @@ public:
 		const point& position() const
 			{ return _position; }
 	};
-	friend fixed_mark;
+	friend class fixed_mark;
 private:
 	/** The text broken into paragraphs. */
-	rope<string> _text;
+	__gnu_cxx::rope<string> _text;
 
 	/** The accumulated line counts for each paragraph. */
 	mutable util::cumulative_sum<unsigned int> _lines;
@@ -345,10 +353,10 @@ private:
 	transfer::load_lines _loadop;
 
 	/** The outbound clipboard. */
-	rope<string> _oclipboard;
+	__gnu_cxx::rope<string> _oclipboard;
 
 	/** The inbound clipboard. */
-	rope<string> _iclipboard;
+	__gnu_cxx::rope<string> _iclipboard;
 
 	/** A font coordinate block.
 	 * This is needed to specify the split character. */
@@ -746,7 +754,7 @@ private:
 	 * @param last the end of the region to be replaced
 	 * @param new_text the replacement paragraphs (at least one)
 	 */
-	void replace(mark first,mark last,const rope<string>& new_text);
+	void replace(mark first,mark last,const __gnu_cxx::rope<string>& new_text);
 
 	/** Adjust layout during call to replace().
 	 * This function adjusts the content of _lines, and invalidates
@@ -758,7 +766,7 @@ private:
 	 * @param new_text the replacement paragraphs (at least one)
 	 */
 	void adjust_layout(const mark& first,const mark& last,
-		const rope<string>& new_text);
+		const __gnu_cxx::rope<string>& new_text);
 
 	/** Adjust text during call to replace().
 	 * This function only alters the content of _text.  It does not
@@ -768,7 +776,7 @@ private:
 	 * @param new_text the replacement paragraphs (at least one)
 	 */
 	void adjust_text(const mark& first,const mark& last,
-		rope<string> new_text);
+		__gnu_cxx::rope<string> new_text);
 
 	/** Adjust mark during call to replace().
 	 * This function must not be called until after the layout and
@@ -780,7 +788,7 @@ private:
 	 * @return the adjusted mark
 	 */
 	mark adjust_mark(mark mk,const mark& first,const mark& last,
-		const rope<string>& new_text) const;
+		const __gnu_cxx::rope<string>& new_text) const;
 };
 
 inline bool operator==(const text_area::basic_mark& lhs,
@@ -808,6 +816,15 @@ inline bool operator<(const text_area::basic_mark& lhs,
 	// otherwise compare character indices.
 	if (lhs.para()!=rhs.para()) return lhs.para()<rhs.para();
 	return lhs.index_para()<rhs.index_para();
+}
+
+inline bool operator>=(const text_area::basic_mark& lhs,
+	const text_area::basic_mark& rhs)
+{
+	// If paragraph numbers differ then compare paragraph numbers,
+	// otherwise compare character indices.
+	if (lhs.para()!=rhs.para()) return lhs.para()>rhs.para();
+	return lhs.index_para()>=rhs.index_para();
 }
 
 int operator-(const text_area::basic_mark& lhs,

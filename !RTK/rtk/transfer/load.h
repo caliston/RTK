@@ -6,6 +6,8 @@
 #ifndef _RTK_TRANSFER_LOAD
 #define _RTK_TRANSFER_LOAD
 
+#include <string>
+
 #include "rtk/os/wimp.h"
 #include "rtk/desktop/component.h"
 #include "rtk/events/datasave.h"
@@ -17,6 +19,8 @@
 
 namespace rtk {
 namespace transfer {
+
+using std::string;
 
 /** A abstract class to represent a load operation using the
  * data transfer protocol.

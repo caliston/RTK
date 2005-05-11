@@ -25,7 +25,7 @@ private:
 	typedef sizeable_component inherited;
 
 	/** A map of child components indexed by tag. */
-	map<string,component*> _components;
+	std::map<string,component*> _components;
 
 	/** The cached x-baseline set for the layout. */
 	mutable xbaseline_set _xbs;

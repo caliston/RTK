@@ -83,19 +83,20 @@ box application::min_bbox() const
 void application::resize() const
 {
 	// Resize child windows.
-	for (vector<basic_window*>::const_iterator i=_windows.begin();
+	for (std::vector<basic_window*>::const_iterator i=_windows.begin();
 		i!=_windows.end();++i)
 	{
 		if (!(*i)->size_valid()) (*i)->resize();
 	}
 	// Resize child icons.
-	for (vector<icon*>::const_iterator i=_icons.begin();
+	for (std::vector<icon*>::const_iterator i=_icons.begin();
 		i!=_icons.end();++i)
 	{
 		if (!(*i)->size_valid()) (*i)->resize();
 	}
 	// Resize menus.
-	for (vector<menu*>::const_iterator i=_menus.begin();i!=_menus.end();++i)
+	for (std::vector<menu*>::const_iterator i=_menus.begin();
+		i!=_menus.end();++i)
 	{
 		if (!(*i)->size_valid()) (*i)->resize();
 	}
@@ -111,7 +112,8 @@ void application::reformat(const point& origin,const box& pbbox)
 {
 	inherited::reformat(origin,pbbox);
 	// Reformat child windows.
-	for (vector<basic_window*>::iterator i=_windows.begin();i!=_windows.end();++i)
+	for (std::vector<basic_window*>::iterator i=_windows.begin();
+		i!=_windows.end();++i)
 	{
 		// If a window has an adjust icon or a scroll bar, the application
 		// object does not exercise any influence over its position or
@@ -139,7 +141,7 @@ void application::reformat(const point& origin,const box& pbbox)
 		}
 	}
 	// Reformat child icons.
-	for (vector<icon*>::iterator i=_icons.begin();i!=_icons.end();++i)
+	for (std::vector<icon*>::iterator i=_icons.begin();i!=_icons.end();++i)
 	{
 		// Reformat so that bottom left-hand corner of each icon is at (0,0).
 		if (!(*i)->layout_valid())
@@ -151,7 +153,7 @@ void application::reformat(const point& origin,const box& pbbox)
 		}
 	}
 	// Reformat menus.
-	for (vector<menu*>::iterator i=_menus.begin();i!=_menus.end();++i)
+	for (std::vector<menu*>::iterator i=_menus.begin();i!=_menus.end();++i)
 	{
 		if (!(*i)->layout_valid())
 		{
@@ -179,7 +181,7 @@ void application::remove_notify(component& c)
 	if (basic_window* w=dynamic_cast<basic_window*>(&c))
 	{
 		// Remove if child window.
-		vector<basic_window*>::iterator f=
+		std::vector<basic_window*>::iterator f=
 			std::find(_windows.begin(),_windows.end(),w);
 		if (f!=_windows.end())
 		{
@@ -196,7 +198,7 @@ void application::remove_notify(component& c)
 	else if (icon* ic=dynamic_cast<icon*>(&c))
 	{
 		// Remove if child icon.
-		vector<icon*>::iterator f=
+		std::vector<icon*>::iterator f=
 			std::find(_icons.begin(),_icons.end(),ic);
 		if (f!=_icons.end())
 		{
@@ -206,7 +208,7 @@ void application::remove_notify(component& c)
 	else if (menu* m=dynamic_cast<menu*>(&c))
 	{
 		// Remove if menu.
-		vector<menu*>::iterator f=
+		std::vector<menu*>::iterator f=
 			std::find(_menus.begin(),_menus.end(),m);
 		if (f!=_menus.end())
 		{
@@ -378,7 +380,7 @@ void application::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 	case 0:
 		{
 			bool found=false;
-			for (vector<component*>::iterator i=_null.begin();
+			for (std::vector<component*>::iterator i=_null.begin();
 				i!=_null.end();++i)
 			{
 				events::null_reason ev(**i);
@@ -633,7 +635,7 @@ void application::handle_event(events::quit &ev)
 void application::handle_event(events::datasave &ev)
 {
 	if (std::find(_icons.begin(),_icons.end(),
-		dynamic_cast<icon*>(ev.target())))
+		dynamic_cast<icon*>(ev.target()))!=_icons.end())
 	{
 		if (transfer::load* loadop=auto_load(ev.filetype()))
 		{
@@ -676,7 +678,8 @@ void application::handle_event(events::reopen_menu &ev)
 	{
 		if (_menus[0]->auto_reopen()) 
 		{
-			for (vector<menu*>::iterator i=_menus.begin();i!=_menus.end();++i)
+			for (std::vector<menu*>::iterator i=_menus.begin();
+				i!=_menus.end();++i)
 			{
 				if (!(*i)->layout_valid())
 				{
@@ -711,7 +714,8 @@ void application::register_menu_data(util::refcount* mdata,unsigned int level)
 
 void application::register_null(component& c)
 {
-	vector<component*>::iterator f=std::find(_null.begin(),_null.end(),&c);
+	std::vector<component*>::iterator f=
+		std::find(_null.begin(),_null.end(),&c);
 	if (f==_null.end()) _null.push_back(&c);
 	_wimp_mask&=~1;
 }
@@ -748,7 +752,8 @@ void application::deregister_icon(icon& ic)
 
 void application::deregister_null(component& c)
 {
-	vector<component*>::iterator f=std::find(_null.begin(),_null.end(),&c);
+	std::vector<component*>::iterator f=
+		std::find(_null.begin(),_null.end(),&c);
 	if (f!=_null.end()) _null.erase(f);
 }
 
@@ -770,13 +775,13 @@ void application::deregister_clipboard(component& c)
 
 basic_window* application::find_window(int handle) const
 {
-	map<int,basic_window*>::const_iterator f=_whandles.find(handle);
+	std::map<int,basic_window*>::const_iterator f=_whandles.find(handle);
 	return (f!=_whandles.end())?(*f).second:0;
 }
 
 icon* application::find_icon(int handle) const
 {
-	map<int,icon*>::const_iterator f=_ihandles.find(handle);
+	std::map<int,icon*>::const_iterator f=_ihandles.find(handle);
 	return (f!=_ihandles.end())?(*f).second:0;
 }
 

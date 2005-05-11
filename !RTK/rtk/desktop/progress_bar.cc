@@ -12,6 +12,9 @@
 namespace rtk {
 namespace desktop {
 
+using std::min;
+using std::max;
+
 progress_bar::progress_bar():
 	_numerator(0),
 	_denominator(1)

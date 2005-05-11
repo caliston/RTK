@@ -14,6 +14,7 @@
 namespace rtk {
 namespace events {
 
+using std::string;
 using rtk::graphics::point;
 
 /** An event class for requesting that data be saved to a given application. */

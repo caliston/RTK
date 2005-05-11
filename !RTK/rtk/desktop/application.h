@@ -6,6 +6,7 @@
 #ifndef _RTK_DESKTOP_APPLICATION
 #define _RTK_DESKTOP_APPLICATION
 
+#include <vector>
 #include <queue>
 #include <map>
 #include <string>
@@ -84,25 +85,25 @@ private:
 	 * All descendant windows that currently have a RISC OS window handle
 	 * are included.
 	 */
-	map<int,basic_window*> _whandles;
+	std::map<int,basic_window*> _whandles;
 
 	/** A map from icon handles to icon components.
 	 * Descendant icons are included if they are not descended from a
 	 * window and they currently have a RISC OS window handle.
 	 */
-	map<int,icon*> _ihandles;
+	std::map<int,icon*> _ihandles;
 
 	/** A list of child windows.
 	 * Windows are listed if they are an immediate child of this
 	 * application, but not if they are open as a dialogue box.
 	 */
-	vector<basic_window*> _windows;
+	std::vector<basic_window*> _windows;
 
 	/** The list of child icons.
 	 * Icons are listed if they are an immediate child of this
 	 * application.
 	 */
-	vector<icon*> _icons;
+	std::vector<icon*> _icons;
 
 	/** The list of current child menus.
 	 * Menus are listed if they are an immediate child of this
@@ -112,7 +113,7 @@ private:
 	 * (Note that the parent of a menu should be either the
 	 * application component or null.)
 	 */
-	vector<menu*> _menus;
+	std::vector<menu*> _menus;
 
 	/** The list of current menu data blocks.
 	 * Menu data blocks are listed if there is a possibility that they
@@ -120,7 +121,7 @@ private:
 	 * corresponds to their depth with in the menu heirarchy (first=top).
 	 * It follows that there can be at most one child at each level.
 	 */
-	vector<util::refcount*> _mdata;
+	std::vector<util::refcount*> _mdata;
 
 	/** The current dialogue box.
 	 */
@@ -131,7 +132,7 @@ private:
 	size_type _dbox_level;
 
 	/** A list of components which need to receive null events. */
-	vector<component*> _null;
+	std::vector<component*> _null;
 
 	/** The owner of the current drag action. */
 	component* _current_drag;
@@ -159,7 +160,7 @@ private:
 	 * been put in the queue, but is limited to a maximum of one
 	 * message per polling interval
 	 */
-	queue<message> _message_queue;
+	std::queue<message> _message_queue;
 
 	/** The mask passed to Wimp_Poll. */
 	unsigned int _wimp_mask;

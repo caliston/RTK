@@ -39,7 +39,7 @@ private:
 	size_type _ycells;
 
 	/** Vector containing child pointer for each cell. */
-	vector<component*> _components;
+	std::vector<component*> _components;
 
 	/** Vector containing position of left edge of each cell with
 	 * respect to origin of layout.  The position of the right edge
@@ -47,7 +47,7 @@ private:
 	 * following cell.  A hypothetical value for _xmin[xcells()] is
 	 * included in the vector so that the position of the right edge
 	 * of the last cell can be determined. */
-	vector<int> _xmin;
+	std::vector<int> _xmin;
 
 	/** Vector containing position of top edge of each cell with
 	 * respect to origin of layout.  The position of the bottom edge
@@ -55,13 +55,13 @@ private:
 	 * following cell.  A hypothetical value for _ymax[ycells()] is
 	 * included in the vector so that the position of the bottom edge
 	 * of the last cell can be determined. */
-	vector<int> _ymax;
+	std::vector<int> _ymax;
 
 	/** Vector containing cached x-baseline set for each cell. */
-	mutable vector<xbaseline_set> _xbs;
+	mutable std::vector<xbaseline_set> _xbs;
 
 	/** Vector containing cached y-baseline set for each cell. */
-	mutable vector<ybaseline_set> _ybs;
+	mutable std::vector<ybaseline_set> _ybs;
 
 	/** The size of gap to be placed between columns. */
 	int _xgap;

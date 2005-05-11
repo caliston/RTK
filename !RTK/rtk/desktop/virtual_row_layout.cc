@@ -143,15 +143,15 @@ void virtual_row_layout::redraw(gcontext& context,const box& clip)
 
 	// Look for the first column with a right edge which overlaps (or is to
 	// the right of) the clip box: _xmin[x0+1] -_xgap > clip.xmin().
-	vector<int>::iterator xf0=upper_bound(
-		_xmin.begin(),_xmin.end(),clip.xmin()+_xgap,less<int>());
+	std::vector<int>::iterator xf0=upper_bound(
+		_xmin.begin(),_xmin.end(),clip.xmin()+_xgap,std::less<int>());
 	size_type x0=xf0-_xmin.begin();
 	if (x0) --x0;
 
 	// Look for the first column with a left edge which is to the right of
 	// the clip box: _xmin[x1] >= clip.xmax().
-	vector<int>::iterator xf1=lower_bound(
-		_xmin.begin(),_xmin.end(),clip.xmax(),less<int>());
+	std::vector<int>::iterator xf1=lower_bound(
+		_xmin.begin(),_xmin.end(),clip.xmax(),std::less<int>());
 	size_type x1=xf1-_xmin.begin();
 	if (x1>_xcells) x1=_xcells;
 
@@ -235,8 +235,8 @@ virtual_row_layout::size_type virtual_row_layout::find_x(const point& p)
 {
 	// Look for the first cell with a left edge which is to the right
 	// of the point: _xmin[x] > p.x().
-	vector<int>::const_iterator xf=
-		upper_bound(_xmin.begin(),_xmin.end(),p.x(),less<int>());
+	std::vector<int>::const_iterator xf=
+		upper_bound(_xmin.begin(),_xmin.end(),p.x(),std::less<int>());
 	if (xf==_xmin.begin()) return npos;
 	size_type x=(xf-_xmin.begin())-1;
 

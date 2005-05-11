@@ -54,12 +54,13 @@ bool datarequest::request_clipboard() const
 	return wimpblock().word[9]&4;
 }
 
-vector<unsigned int> datarequest::filetypes() const
+std::vector<unsigned int> datarequest::filetypes() const
 {
 	unsigned int size=wimpblock().word[0]>>3;
 	unsigned int n=0;
 	while ((n+10<size)&&(wimpblock().word[n+10]!=-1)) ++n;
-	return vector<unsigned int>(wimpblock().word+10,wimpblock().word+n+10);
+	return std::vector<unsigned int>(
+		wimpblock().word+10,wimpblock().word+n+10);
 }
 
 void datarequest::reply(unsigned int filetype,unsigned int estsize) const

@@ -28,7 +28,7 @@ private:
 	 * If a given index, written in binary, ends in m trailing ones,
 	 * then it is a sum of 2**m elements ending at the given index.
 	 */
-	vector<value_type> _values;
+	std::vector<value_type> _values;
 
 	class reference_type;
 public:
@@ -97,7 +97,7 @@ class cumulative_sum<value_type>::reference_type
 {
 private:
 	/** A reference to the vector of partial sums. */
-	vector<value_type>& _values;
+	std::vector<value_type>& _values;
 
 	/** The index of the element to which this object refers. */
 	index_type _index;
@@ -106,7 +106,7 @@ public:
 	 * @param values the vector of partial sums
 	 * @param idnex the index of the element to which this object refers
 	 */
-	reference_type(vector<value_type>& values,index_type index);
+	reference_type(std::vector<value_type>& values,index_type index);
 
 	/** Set value of element.
 	 * @param value the required value of the element
@@ -124,7 +124,7 @@ cumulative_sum<value_type>::cumulative_sum()
 {}
 
 template<class value_type>
-cumulative_sum<value_type>::reference_type
+class cumulative_sum<value_type>::reference_type
 cumulative_sum<value_type>::operator[](index_type index)
 {
 	if (index>=_values.size())
@@ -138,8 +138,8 @@ cumulative_sum<value_type>::operator[](index_type index)
 template<class value_type>
 value_type cumulative_sum<value_type>::sum(index_type index) const
 {
-	if (index>_values.size())
-		throw out_of_range("index out of range in rtk::util::cumulative_sum");
+	if (index>_values.size()) throw std::out_of_range(
+		"index out of range in rtk::util::cumulative_sum");
 	value_type value=0;
 	index_type i=index;
 	while (i)
@@ -153,8 +153,8 @@ value_type cumulative_sum<value_type>::sum(index_type index) const
 template<class value_type>
 void cumulative_sum<value_type>::erase(unsigned int first,unsigned int last)
 {
-	if ((first>last)||(last>_values.size()))
-		throw out_of_range("index out of range in rtk::util::cumulative_sum");
+	if ((first>last)||(last>_values.size())) throw std::out_of_range(
+		"index out of range in rtk::util::cumulative_sum");
 
 	for (unsigned int i=first,j=last;j!=_values.size();++i,++j)
 	{
@@ -182,7 +182,7 @@ void cumulative_sum<value_type>::insert(unsigned int pos,unsigned int count,
 }
 
 template<class value_type>
-cumulative_sum<value_type>::index_type
+class cumulative_sum<value_type>::index_type
 cumulative_sum<value_type>::find(value_type value) const
 {
 	index_type index=0;
@@ -219,13 +219,13 @@ void cumulative_sum<value_type>::resize(index_type size)
 
 template<class value_type>
 cumulative_sum<value_type>::reference_type::reference_type(
-	vector<value_type>& values,index_type index):
+	std::vector<value_type>& values,index_type index):
 	_values(values),
 	_index(index)
 {}
 
 template<class value_type>
-cumulative_sum<value_type>::reference_type&
+class cumulative_sum<value_type>::reference_type&
 cumulative_sum<value_type>::reference_type::operator=(const value_type& value)
 {
 	value_type diff=value;

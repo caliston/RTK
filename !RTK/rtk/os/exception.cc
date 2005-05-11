@@ -14,7 +14,7 @@ exception::exception(_kernel_oserror* err):
 	_err(err)
 {}
 
-const char* exception::what() const
+const char* exception::what() const throw()
 {
 	return _err->errmess;
 }

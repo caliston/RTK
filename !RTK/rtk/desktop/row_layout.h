@@ -35,7 +35,7 @@ public:
 	static const size_type npos=static_cast<size_type>(-1);
 private:
 	/** Vector containing child pointer for each cell. */
-	vector<component*> _components;
+	std::vector<component*> _components;
 
 	/** Vector containing position of left edge of each cell with
 	 * respect to origin of layout.  The position of the right edge
@@ -43,7 +43,7 @@ private:
 	 * following cell.  A hypothetical value for _xmin[xcells()] is
 	 * included in the vector so that the position of the right edge
 	 * of the last cell can be determined. */
-	vector<int> _xmin;
+	std::vector<int> _xmin;
 
 	/** The cached y-baseline set for the layout. */
 	mutable ybaseline_set _ybs;

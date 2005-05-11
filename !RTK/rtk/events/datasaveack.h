@@ -20,6 +20,7 @@ union wimp_block;
 
 namespace events {
 
+using std::string;
 using rtk::graphics::point;
 
 /** A class to represent a RISC OS Message_DataSaveAck user message. */

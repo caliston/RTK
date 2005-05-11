@@ -11,6 +11,9 @@
 namespace rtk {
 namespace desktop {
 
+using std::min;
+using std::max;
+
 absolute_layout::absolute_layout()
 {
 	xbaseline(xbaseline_left);
@@ -27,7 +30,7 @@ absolute_layout::~absolute_layout()
 box absolute_layout::auto_bbox() const
 {
 	box abbox;
-	vector<component*>::const_iterator i=_components.begin();
+	std::vector<component*>::const_iterator i=_components.begin();
 	if (i!=_components.end())
 	{
 		component* c=*i++;
@@ -87,7 +90,7 @@ box absolute_layout::auto_bbox() const
 
 component* absolute_layout::find(const point& p) const
 {
-	for (vector<component*>::const_iterator i=_components.begin();
+	for (std::vector<component*>::const_iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		component* c=*i;
@@ -103,7 +106,7 @@ box absolute_layout::bbox() const
 
 void absolute_layout::resize() const
 {
-	for (vector<component*>::const_iterator i=_components.begin();
+	for (std::vector<component*>::const_iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		component* c=*i;
@@ -127,7 +130,7 @@ void absolute_layout::reformat(const point& origin,const box& pbbox)
 	if (moved) force_redraw(true);
 
 	// Place children.
-	for (vector<component*>::const_iterator i=_components.begin();
+	for (std::vector<component*>::const_iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		component* c=*i;
@@ -137,7 +140,7 @@ void absolute_layout::reformat(const point& origin,const box& pbbox)
 
 void absolute_layout::unformat()
 {
-	for (vector<component*>::iterator i=_components.begin();
+	for (std::vector<component*>::iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		component* c=*i;
@@ -147,7 +150,7 @@ void absolute_layout::unformat()
 
 void absolute_layout::redraw(gcontext& context,const box& clip)
 {
-	for (vector<component*>::iterator i=_components.begin();
+	for (std::vector<component*>::iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		if (component* c=*i)
@@ -163,7 +166,7 @@ void absolute_layout::redraw(gcontext& context,const box& clip)
 
 void absolute_layout::remove_notify(component& c)
 {
-	vector<component*>::iterator f=
+	std::vector<component*>::iterator f=
 		std::find(_components.begin(),_components.end(),&c);
 	if (f!=_components.end())
 	{

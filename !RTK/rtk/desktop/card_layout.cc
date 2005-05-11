@@ -29,7 +29,7 @@ box card_layout::auto_bbox() const
 	_ybs=ybaseline_set();
 
 	// Add the minimum bounding box of each card to both baseline sets.
-	for (map<string,component*>::const_iterator i=_components.begin();
+	for (std::map<string,component*>::const_iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		component* c=(*i).second;
@@ -59,7 +59,7 @@ box card_layout::bbox() const
 
 void card_layout::resize() const
 {
-	for (map<string,component*>::const_iterator i=_components.begin();
+	for (std::map<string,component*>::const_iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		component* c=(*i).second;
@@ -104,7 +104,7 @@ void card_layout::reformat(const point& origin,const box& pbbox)
 
 void card_layout::unformat()
 {
-	for (map<string,component*>::iterator i=_components.begin();
+	for (std::map<string,component*>::iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		(*i).second->unformat();
@@ -139,7 +139,7 @@ void card_layout::remove_notify(component& c)
 	// If c is a child then remove it.
 	// (The layout is invalidated because its dimensions may change when
 	// the child is removed, even if the child was not previously selected.)
-	map<string,component*>::iterator f=_components.begin();
+	std::map<string,component*>::iterator f=_components.begin();
 	while ((f!=_components.end())&&((*f).second!=&c)) ++f;
 	if (f!=_components.end())
 	{
@@ -178,7 +178,7 @@ card_layout& card_layout::select(const string& tag)
 	_tag=tag;
 
 	// Search for card corresponding to new tag.
-	map<string,component*>::iterator f=_components.find(tag);
+	std::map<string,component*>::iterator f=_components.find(tag);
 	component* c=(f!=_components.end())?(*f).second:0;
 
 	// Do nothing unless selected component is to change.

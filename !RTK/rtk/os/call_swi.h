@@ -10,8 +10,6 @@
 
 #include "rtk/os/exception.h"
 
-class _kernel_swi_regs;
-
 namespace rtk {
 namespace os {
 

@@ -69,7 +69,7 @@ void load_linelist::put_block(size_type count)
 void load_linelist::finish()
 {}
 
-load_linelist& load_linelist::linelist(list<string>& linelist)
+load_linelist& load_linelist::linelist(std::list<string>& linelist)
 {
 	_linelist=&linelist;
 	return *this;

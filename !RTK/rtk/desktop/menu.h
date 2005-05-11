@@ -44,7 +44,7 @@ public:
 	class menu_data;
 private:
 	/** A vector containing child pointers. */
-	vector<menu_item*> _items;
+	std::vector<menu_item*> _items;
 
 	/** The menu data used by the Wimp.
 	 * This may be null, in which case no menu data has been created.

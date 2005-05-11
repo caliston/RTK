@@ -133,7 +133,7 @@ public:
 };
 
 template<class container>
-load_lines::push_back_sink::push_back_sink(container& lines):
+load_lines::push_back_sink<container>::push_back_sink(container& lines):
 	_lines(lines)
 {}
 

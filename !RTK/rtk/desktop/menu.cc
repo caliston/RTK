@@ -19,6 +19,9 @@
 namespace rtk {
 namespace desktop {
 
+using std::min;
+using std::max;
+
 menu::menu():
 	_mdata(0),
 	_opened(false),
@@ -35,7 +38,8 @@ menu::menu():
 
 menu::~menu()
 {
-	for (vector<menu_item*>::iterator i=_items.begin();i!=_items.end();++i)
+	for (std::vector<menu_item*>::iterator i=_items.begin();
+		i!=_items.end();++i)
 	{
 		if (menu_item* c=*i) c->remove();
 	}
@@ -59,7 +63,7 @@ void menu::resize() const
 		os::Wimp_TextOp1(_title,0,&width);
 		xsize+=width;
 	}
-	for (vector<menu_item*>::const_iterator i=_items.begin();
+	for (std::vector<menu_item*>::const_iterator i=_items.begin();
 		i!=_items.end();++i)
 	{
 		if (i!=_items.begin()) ysize+=_gap;
@@ -99,7 +103,7 @@ void menu::reformat(const point& origin,const box& pbbox,size_type level)
 
 void menu::unformat()
 {
-	for (vector<menu_item*>::const_iterator i=_items.begin();
+	for (std::vector<menu_item*>::const_iterator i=_items.begin();
 		i!=_items.end();++i)
 	{
 		if (menu_item* c=*i) c->unformat();
@@ -110,7 +114,7 @@ void menu::unformat()
 
 void menu::remove_notify(component& c)
 {
-	vector<menu_item*>::iterator f=
+	std::vector<menu_item*>::iterator f=
 		std::find(_items.begin(),_items.end(),&c);
 	if (f!=_items.end())
 	{
@@ -226,7 +230,7 @@ void menu::create()
 	(*_mdata)->height=_height;
 	(*_mdata)->gap=_gap;
 	int index=0;
-	vector<menu_item*>::iterator i=_items.begin();
+	std::vector<menu_item*>::iterator i=_items.begin();
 	while (i!=_items.end())
 	{
 		(*_mdata)->item[index].mflags=(*i)->menu_flags();

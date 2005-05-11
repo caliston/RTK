@@ -10,7 +10,7 @@
 namespace rtk {
 namespace graphics {
 
-ostream& operator<<(ostream& out,const point& p)
+std::ostream& operator<<(std::ostream& out,const point& p)
 {
 	out << '(' << p.x() << ',' << p.y() << ')';
 	return out;

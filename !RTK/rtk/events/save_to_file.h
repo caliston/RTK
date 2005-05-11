@@ -13,6 +13,8 @@
 namespace rtk {
 namespace events {
 
+using std::string;
+
 /** An event class for requesting that data be saved to a given pathname. */
 class save_to_file:
 	public event

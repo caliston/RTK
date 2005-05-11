@@ -170,29 +170,29 @@ void virtual_grid_layout::redraw(gcontext& context,const box& clip)
 {
 	// Look for the first column with a right edge which overlaps (or is to
 	// the right of) the clip box: _xmin[x0+1] -_xgap > clip.xmin().
-	vector<int>::iterator xf0=upper_bound(
-		_xmin.begin(),_xmin.end(),clip.xmin()+_xgap,less<int>());
+	std::vector<int>::iterator xf0=upper_bound(
+		_xmin.begin(),_xmin.end(),clip.xmin()+_xgap,std::less<int>());
 	size_type x0=xf0-_xmin.begin();
 	if (x0) --x0;
 
 	// Look for the first column with a left edge which is to the right of
 	// the clip box: _xmin[x1] >= clip.xmax().
-	vector<int>::iterator xf1=lower_bound(
-		_xmin.begin(),_xmin.end(),clip.xmax(),less<int>());
+	std::vector<int>::iterator xf1=lower_bound(
+		_xmin.begin(),_xmin.end(),clip.xmax(),std::less<int>());
 	size_type x1=xf1-_xmin.begin();
 	if (x1>_xcells) x1=_xcells;
 
 	// Look for the first row with a lower edge which overlaps (or is
 	// below) the clip box: _ymax[y0+1] + _ygap < clip.ymax().
-	vector<int>::iterator yf0=upper_bound(
-		_ymax.begin(),_ymax.end(),clip.ymax()-_ygap,greater<int>());
+	std::vector<int>::iterator yf0=upper_bound(
+		_ymax.begin(),_ymax.end(),clip.ymax()-_ygap,std::greater<int>());
 	size_type y0=yf0-_ymax.begin();
 	if (y0) --y0;
 
 	// Look for the first row with an upper edge which is below the
 	// clip box: _ymax[y1] <= clip.ymin().
-	vector<int>::iterator yf1=lower_bound(
-		_ymax.begin(),_ymax.end(),clip.ymin(),greater<int>());
+	std::vector<int>::iterator yf1=lower_bound(
+		_ymax.begin(),_ymax.end(),clip.ymin(),std::greater<int>());
 	size_type y1=yf1-_ymax.begin();
 	if (y1>_ycells) y1=_ycells;
 
@@ -288,8 +288,8 @@ virtual_grid_layout::size_type virtual_grid_layout::find_x(const point& p)
 {
 	// Look for the first cell with a left edge which is to the right
 	// of the point: _xmin[x] > p.x().
-	vector<int>::const_iterator xf=
-		upper_bound(_xmin.begin(),_xmin.end(),p.x(),less<int>());
+	std::vector<int>::const_iterator xf=
+		upper_bound(_xmin.begin(),_xmin.end(),p.x(),std::less<int>());
 	if (xf==_xmin.begin()) return npos;
 	size_type x=(xf-_xmin.begin())-1;
 
@@ -302,8 +302,8 @@ virtual_grid_layout::size_type virtual_grid_layout::find_y(const point& p)
 {
 	// Look for the first cell with a top edge which is below the point:
 	// _ymax[x] <= p.x().
-	vector<int>::const_iterator yf=
-		lower_bound(_ymax.begin(),_ymax.end(),p.y(),greater<int>());
+	std::vector<int>::const_iterator yf=
+		lower_bound(_ymax.begin(),_ymax.end(),p.y(),std::greater<int>());
 	if (yf==_ymax.begin()) return npos;
 	size_type y=(yf-_ymax.begin())-1;
 

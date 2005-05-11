@@ -15,7 +15,7 @@ namespace graphics {
 
 class font::basic_font
 {
-	friend font;
+	friend class font;
 private:
 	unsigned int _refcount;
 public:

@@ -12,7 +12,7 @@
 #include "rtk/graphics/box.h"
 
 namespace rtk {
-namespace graphics {                     
+namespace graphics {
 
 class gcontext;
 
@@ -36,6 +36,7 @@ class basic_window;
 class application;
 class menu;
 
+using std::string;
 using rtk::graphics::point;
 using rtk::graphics::box;
 using rtk::graphics::gcontext;
@@ -544,7 +545,8 @@ public:
 	 * @param area the sprite area, or 0 for the wimp sprite area
 	 * @param name the sprite name
 	 */
-	void drag_sprite(const box& dbox,os::sprite_area* area,const string& name);
+	void drag_sprite(const box& dbox,os::sprite_area* area,
+		const string& name);
 protected:
 	/** Link parent pointer of child to this component.
 	 * This function provides restricted access to the private function

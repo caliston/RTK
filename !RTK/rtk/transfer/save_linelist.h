@@ -24,13 +24,13 @@ private:
 	/** A pointer to the line list to be saved.
 	 * This always points to a list<string>: it can never be null.
 	 */
-	list<string>* _linelist;
+	std::list<string>* _linelist;
 
 	/** The current position within _linelist. */
-	list<string>::const_iterator _pos;
+	std::list<string>::const_iterator _pos;
 
 	/** The default value for _linelist. */
-	list<string> _default_linelist;
+	std::list<string> _default_linelist;
 
 	/** The end-of-line flag.
 	 * When true, a line of text has been saved but the associated newline
@@ -55,7 +55,7 @@ public:
 	 * an external list).
 	 * @return a reference to the data to be saved
 	 */
-	list<string>& linelist()
+	std::list<string>& linelist()
 		{ return *_linelist; }
 
 	/** Set line list to be saved.
@@ -63,14 +63,14 @@ public:
 	 * as the argument to this function.
 	 * @param linelist the data to be saved
 	 */
-	save_linelist& linelist(list<string>& linelist);
+	save_linelist& linelist(std::list<string>& linelist);
 
 	/** Get default line list.
 	 * This is the list that is used if an external list has not been
 	 * specified.  It is the default value of linelist().
 	 * @return a reference to the default line list
 	 */
-	list<string>& default_linelist()
+	std::list<string>& default_linelist()
 		{ return _default_linelist; }
 };
 

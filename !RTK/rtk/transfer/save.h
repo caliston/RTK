@@ -6,6 +6,8 @@
 #ifndef _RTK_TRANSFER_SAVE
 #define _RTK_TRANSFER_SAVE
 
+#include <string>
+
 #include "rtk/desktop/component.h"
 #include "rtk/events/datasaveack.h"
 #include "rtk/events/dataloadack.h"
@@ -23,6 +25,8 @@ union wimp_block;
 }; /* namespace os */
 
 namespace transfer {
+
+using std::string;
 
 /** An abstract class to represent a save operation using the
  * data transfer protocol.

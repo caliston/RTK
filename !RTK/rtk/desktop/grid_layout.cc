@@ -13,6 +13,8 @@
 namespace rtk {
 namespace desktop {
 
+using std::min;
+using std::max;
 using rtk::util::divider;
 
 grid_layout::grid_layout(size_type xcells,size_type ycells):
@@ -29,7 +31,7 @@ grid_layout::grid_layout(size_type xcells,size_type ycells):
 
 grid_layout::~grid_layout()
 {
-	for (vector<component*>::iterator i=_components.begin();
+	for (std::vector<component*>::iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		if (component* c=*i) c->remove();
@@ -45,7 +47,7 @@ box grid_layout::auto_bbox() const
 
 	// Request min_bbox for each cell.  Incorporate into appropriate
 	// x-baseline and y-baseline set.
-	vector<component*>::const_iterator i=_components.begin();
+	std::vector<component*>::const_iterator i=_components.begin();
 	for (size_type y=0;y!=_ycells;++y)
 	{
 		for (size_type x=0;x!=_xcells;++x)
@@ -86,10 +88,10 @@ box grid_layout::auto_bbox() const
 
 component* grid_layout::find(const point& p) const
 {
-	vector<int>::const_iterator xf=
-		lower_bound(_xmin.begin(),_xmin.end(),p.x()+1,less<int>());
-	vector<int>::const_iterator yf=
-		lower_bound(_ymax.begin(),_ymax.end(),p.y()-1,greater<int>());
+	std::vector<int>::const_iterator xf=
+		lower_bound(_xmin.begin(),_xmin.end(),p.x()+1,std::less<int>());
+	std::vector<int>::const_iterator yf=
+		lower_bound(_ymax.begin(),_ymax.end(),p.y()-1,std::greater<int>());
 	if (xf==_xmin.begin()) return 0;
 	if (yf==_ymax.begin()) return 0;
 	size_type x=(xf-_xmin.begin())-1;
@@ -108,7 +110,7 @@ box grid_layout::bbox() const
 
 void grid_layout::resize() const
 {
-	for (vector<component*>::const_iterator i=_components.begin();
+	for (std::vector<component*>::const_iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		if (component* c=*i) c->resize();
@@ -177,7 +179,7 @@ void grid_layout::reformat(const point& origin,const box& pbbox)
 	}
 
 	// Place children.
-	vector<component*>::iterator i=_components.begin();
+	std::vector<component*>::iterator i=_components.begin();
 	for (size_type y=0;y!=_ycells;++y)
 	{
 		for (size_type x=0;x!=_xcells;++x)
@@ -209,7 +211,7 @@ void grid_layout::reformat(const point& origin,const box& pbbox)
 
 void grid_layout::unformat()
 {
-	for (vector<component*>::iterator i=_components.begin();
+	for (std::vector<component*>::iterator i=_components.begin();
 		i!=_components.end();++i)
 	{
 		if (component* c=*i) c->unformat();
@@ -220,38 +222,38 @@ void grid_layout::redraw(gcontext& context,const box& clip)
 {
 	// Look for the first column with a right edge which overlaps (or is to
 	// the right of) the clip box: _xmin[x0+1] -_xgap > clip.xmin().
-	vector<int>::iterator xf0=upper_bound(
-		_xmin.begin(),_xmin.end(),clip.xmin()+_xgap,less<int>());
+	std::vector<int>::iterator xf0=upper_bound(
+		_xmin.begin(),_xmin.end(),clip.xmin()+_xgap,std::less<int>());
 	size_type x0=xf0-_xmin.begin();
 	if (x0) --x0;
 
 	// Look for the first column with a left edge which is to the right of
 	// the clip box: _xmin[x1] >= clip.xmax().
-	vector<int>::iterator xf1=lower_bound(
-		_xmin.begin(),_xmin.end(),clip.xmax(),less<int>());
+	std::vector<int>::iterator xf1=lower_bound(
+		_xmin.begin(),_xmin.end(),clip.xmax(),std::less<int>());
 	size_type x1=xf1-_xmin.begin();
 	if (x1>_xcells) x1=_xcells;
 
 	// Look for the first row with a lower edge which overlaps (or is
 	// below) the clip box: _ymax[y0+1] + _ygap < clip.ymax().
-	vector<int>::iterator yf0=upper_bound(
-		_ymax.begin(),_ymax.end(),clip.ymax()-_ygap,greater<int>());
+	std::vector<int>::iterator yf0=upper_bound(
+		_ymax.begin(),_ymax.end(),clip.ymax()-_ygap,std::greater<int>());
 	size_type y0=yf0-_ymax.begin();
 	if (y0) --y0;
 
 	// Look for the first row with an upper edge which is below the
 	// clip box: _ymax[y1] <= clip.ymin().
-	vector<int>::iterator yf1=lower_bound(
-		_ymax.begin(),_ymax.end(),clip.ymin(),greater<int>());
+	std::vector<int>::iterator yf1=lower_bound(
+		_ymax.begin(),_ymax.end(),clip.ymin(),std::greater<int>());
 	size_type y1=yf1-_ymax.begin();
 	if (y1>_ycells) y1=_ycells;
 
 	// Redraw children.
 	// For safety, use inequalities in the for-loops.
-	vector<component*>::iterator i=_components.begin()+y0*_xcells;
+	std::vector<component*>::iterator i=_components.begin()+y0*_xcells;
 	for (size_type y=y0;y<y1;++y)
 	{
-		vector<component*>::iterator j=i+x0;
+		std::vector<component*>::iterator j=i+x0;
 		for (size_type x=x0;x<x1;++x)
 		{
 			if (component* c=*j++)
@@ -269,7 +271,7 @@ void grid_layout::redraw(gcontext& context,const box& clip)
 
 void grid_layout::remove_notify(component& c)
 {
-	vector<component*>::iterator f=
+	std::vector<component*>::iterator f=
 		std::find(_components.begin(),_components.end(),&c);
 	if (f!=_components.end())
 	{
@@ -281,11 +283,11 @@ void grid_layout::remove_notify(component& c)
 grid_layout& grid_layout::cells(size_type xcells,size_type ycells)
 {
 	// Create new child array.
-	vector<component*> components(xcells*ycells);
+	std::vector<component*> components(xcells*ycells);
 
 	// Initialise source and destination iterators.
-	vector<component*>::iterator src=_components.begin();
-	vector<component*>::iterator dst=components.begin();
+	std::vector<component*>::iterator src=_components.begin();
+	std::vector<component*>::iterator dst=components.begin();
 
 	// Calculate number of columns and number of rows to be copied
 	// from source to destination.

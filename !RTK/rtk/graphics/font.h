@@ -13,6 +13,8 @@ namespace graphics {
 
 class point;
 
+using std::string;
+
 class font
 {
 public:

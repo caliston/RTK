@@ -84,7 +84,7 @@ public:
 	/** Get list of acceptable filetypes
 	 * @return the list of acceptable filetypes, in order of preference
 	 */
-	vector<unsigned int> filetypes() const;
+	std::vector<unsigned int> filetypes() const;
 
 	/** Send Message_DataSave in reply to this event.
 	 * @param filetype the filetype of the data
