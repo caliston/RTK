@@ -37,14 +37,17 @@ Requirements
 
   Supported operating systems include:
     * RISC OS 4.02
-    * RISC OS 5.03
+    * RISC OS 5.08
 
   The RTK may work with earlier versions of RISC OS provided that the
   nested window manager is present.
 
   Supported compilers include:
-    * GCC 2.95.4 (release 3)
-    * GCC 2.95.4 (experimental 32-bit, 05 May 2003)
+    * GCC 3.4
+    * GCC 2.95
+
+  Note that the RTK must have been compiled with the same or a compatible
+  version of GCC to the one with which it will be used.
 
   The Acorn C/C++ compiler (up to version 3.19 at least) is not
   supported because there are important parts of the C++ language that
