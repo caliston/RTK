@@ -1,6 +1,11 @@
 RiscPkg.*
 SysVars.RTK=24Dir
 SysVars.RTK=24Path
+SysVars.RTK=24Version
+SysVars.RTK=24Web
+SysVars.RTK=24Title
+SysVars.RTK=24Publisher
+SysVars.RTK=24Description
 Sprites.!rtk
 Apps.Library.!RTK.!Boot
 Apps.Library.!RTK.!Help
