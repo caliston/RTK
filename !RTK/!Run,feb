@@ -9,7 +9,7 @@ Set RTK$Temp <RTK$Dir>.README
 IfThere <RTK$Dir>.html.index/html Then Set RTK$Temp <RTK$Dir>.html.index/html
 Set RTK$Help <RTK$Temp>
 Unset RTK$Temp
-Set RTK$Version 0.7.0
+Set RTK$Version 0.7.1
 Set RTK$Web http://www.sagitta.demon.co.uk/rtk/
 Set RTK$Title The RISC OS Toolkit
 Set RTK$Publisher The RISC OS Packaging Project

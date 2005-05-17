@@ -1,12 +1,12 @@
 # This file is part of the RISC OS Toolkit (RTK).
-# Copyright © 2003-2004 Graham Shaw.
+# Copyright © 2003-2005 Graham Shaw.
 # Distribution and use are subject to the GNU Lesser General Public License,
 # a copy of which may be found in the file !RTK.Copyright.
 
 -----------------------------------------------------------------------
 The RISC OS Toolkit
 
-Version 0.7.0 (25 Dec 2004)
+Version 0.7.1 (17 May 2005)
 -----------------------------------------------------------------------
 
 Introduction
@@ -136,7 +136,6 @@ Support
 
 Todo
 
-   * support for GCC 3
    * a tree layout class
    * a template layout class
    * a drawfile viewer

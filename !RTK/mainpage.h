@@ -121,7 +121,6 @@
  *
  * with a subject of "subscribe".
  *
- * @todo support for GCC 3
  * @todo a tree layout class
  * @todo a template layout class
  * @todo a drawfile viewer

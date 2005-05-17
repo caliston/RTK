@@ -9,7 +9,7 @@ Set RTK$Temp <RTK$Dir>.README
 IfThere <RTK$Dir>.html.index/html Then Set RTK$Temp <RTK$Dir>.html.index/html
 If "<RTK$Dir>"="<Obey$Dir>" AND "<RTK$Help>"="" Then Set RTK$Help <RTK$Temp>
 Unset RTK$Temp
-If "<RTK$Dir>"="<Obey$Dir>" AND "<RTK$Version>"="" Then Set RTK$Version 0.7.0
+If "<RTK$Dir>"="<Obey$Dir>" AND "<RTK$Version>"="" Then Set RTK$Version 0.7.1
 If "<RTK$Dir>"="<Obey$Dir>" AND "<RTK$Web>"="" Then Set RTK$Web http://www.sagitta.demon.co.uk/rtk/
 If "<RTK$Dir>"="<Obey$Dir>" AND "<RTK$Title>"="" Then Set RTK$Title The RISC OS Toolkit
 If "<RTK$Dir>"="<Obey$Dir>" AND "<RTK$Publisher>"="" Then Set RTK$Publisher The RISC OS Packaging Project

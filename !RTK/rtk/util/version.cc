@@ -1,5 +1,5 @@
 // This file is part of the RISC OS Toolkit (RTK).
-// Copyright © 2003-2004 Graham Shaw.
+// Copyright © 2003-2005 Graham Shaw.
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
@@ -10,7 +10,7 @@ namespace util {
 
 const unsigned int* version()
 {
-	static const unsigned int version[]={0,7,0};
+	static const unsigned int version[]={0,7,1};
 	return version;
 }
 

@@ -1,7 +1,12 @@
 # This file is part of the RISC OS Toolkit (RTK).
-# Copyright © 2003-2004 Graham Shaw.
+# Copyright © 2003-2005 Graham Shaw.
 # Distribution and use are subject to the GNU Lesser General Public License,
 # a copy of which may be found in the file !RTK.Copyright.
+
+Version 0.7.1 (17 May 2005)
+
+  Rewrote !Boot, !Run and !Help to provide variables for help system.
+  Made corrections needed for compilation with GCC version 3.
 
 Version 0.7.0 (25 Dec 2004)
 
