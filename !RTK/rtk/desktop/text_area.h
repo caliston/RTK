@@ -199,9 +199,8 @@ public:
 	public:
 		/** Construct fixed mark.
 		 * @param area the text area to which the mark refers
-		 * @param para the paragraph number to which the mark refers
-		 * @param index_para the byte index into the paragraph
-		 *  to which the mark refers
+		 * @param mk a basic mark which specifies the required
+		 *  position within the text
 		 */
 		fixed_mark(const text_area& area,const basic_mark& mk);
 
@@ -582,7 +581,7 @@ public:
 	text_area& bcolour(int bcolour);
 
 	/** Set control character colour.
-	 * @param fcolour the required control character colour
+	 * @param ccolour the required control character colour
 	 */
 	text_area& ccolour(int ccolour);
 
@@ -600,7 +599,7 @@ public:
 	text_area& baseline_offset(int baseline_offset);
 
 	/** Set line wrap method.
-	 * @param the required line wrap method
+	 * @param wrap_method the required line wrap method
 	 * @return a reference to this
 	 */
 	text_area& wrap_method(wrap_method_type wrap_method);

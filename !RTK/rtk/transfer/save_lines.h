@@ -131,8 +131,8 @@ public:
 	bool final_newline() const;
 
 	/** Set final newline flag.
-	 * @param true if the final line is terminated by a newline character,
-	 *  otherwise false
+	 * @param value true if the final line is terminated by a newline
+	 *  character, otherwise false
 	 */
 	save_lines& final_newline(bool value);
 };

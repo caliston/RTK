@@ -34,7 +34,7 @@ public:
 
 public:
 	/** Look up token.
-	 * @token the token
+	 * @param token the token
 	 * @return the message
 	 */
 	string lookup(const string& token);
@@ -61,7 +61,7 @@ public:
 	/** Look up token with two arguments.
 	 * @param token the token
 	 * @param arg0 argument 0
-	 * @param arg0 argument 1
+	 * @param arg1 argument 1
 	 * @return the message
 	 */
 	string lookup(const string& token,const string& arg0,const string& arg1);
@@ -69,8 +69,8 @@ public:
 	/** Look up token with three arguments.
 	 * @param token the token
 	 * @param arg0 argument 0
-	 * @param arg0 argument 1
-	 * @param arg0 argument 2
+	 * @param arg1 argument 1
+	 * @param arg2 argument 2
 	 * @return the message
 	 */
 	string lookup(const string& token,const string& arg0,const string& arg1,
@@ -79,9 +79,9 @@ public:
 	/** Look up token with four arguments.
 	 * @param token the token
 	 * @param arg0 argument 0
-	 * @param arg0 argument 1
-	 * @param arg0 argument 2
-	 * @param arg0 argument 3
+	 * @param arg1 argument 1
+	 * @param arg2 argument 2
+	 * @param arg3 argument 3
 	 * @return the message
 	 */
 	string lookup(const string& token,const string& arg0,const string& arg1,

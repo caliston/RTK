@@ -1,5 +1,5 @@
 // This file is part of the RISC OS Toolkit (RTK).
-// Copyright © 2003 Graham Shaw.
+// Copyright © 2003-2005 Graham Shaw.
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
@@ -52,7 +52,7 @@ void Font_LoseFont(int handle);
 
 /** Read font definition (get buffer length)
  * @param handle the font handle
- * @param _length a buffer to hold the returned buffer size
+ * @param _buffer_size a buffer to hold the returned buffer size
  */
 void Font_ReadDefn(int handle,int* _buffer_size);
 
