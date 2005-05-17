@@ -1,9 +1,17 @@
 | This file is part of the RISC OS Toolkit (RTK).
-| Copyright © 2003 Graham Shaw.
+| Copyright © 2003-2005 Graham Shaw.
 | Distribution and use are subject to the GNU Lesser General Public License,
 | a copy of which may be found in the file !RTK.Copyright.
 
 Set RTK$Dir <Obey$Dir>
 Set RTK$Path <Obey$Dir>.
-IfThere <RTK$Dir>.html.index/html Then Set RTK$Help <RTK$Dir>.html.index/html
+Set RTK$Temp <RTK$Dir>.README
+IfThere <RTK$Dir>.html.index/html Then Set RTK$Temp <RTK$Dir>.html.index/html
+Set RTK$Help <RTK$Temp>
+Unset RTK$Temp
+Set RTK$Version 0.7.0
+Set RTK$Web http://www.sagitta.demon.co.uk/rtk/
+Set RTK$Title The RISC OS Toolkit
+Set RTK$Publisher The RISC OS Packaging Project
+Set RTK$Description A C++ application framework for RISC OS
 IconSprites <RTK$Dir>.!Sprites

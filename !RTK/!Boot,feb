@@ -1,9 +1,17 @@
 | This file is part of the RISC OS Toolkit (RTK).
-| Copyright © 2003 Graham Shaw.
+| Copyright © 2003-2005 Graham Shaw.
 | Distribution and use are subject to the GNU Lesser General Public License,
 | a copy of which may be found in the file !RTK.Copyright.
 
 If "<RTK$Dir>"="" Then Set RTK$Dir <Obey$Dir>
-If "<RTK$Path>"="" Then Set RTK$Path <Obey$Dir>.
-IfThere <RTK$Dir>.html.index/html Then Set RTK$Help <RTK$Dir>.html.index/html
-IconSprites <RTK$Dir>.!Sprites
+If "<RTK$Dir>"="<Obey$Dir>" AND "<RTK$Path>"="" Then Set RTK$Path <Obey$Dir>.
+Set RTK$Temp <RTK$Dir>.README
+IfThere <RTK$Dir>.html.index/html Then Set RTK$Temp <RTK$Dir>.html.index/html
+If "<RTK$Dir>"="<Obey$Dir>" AND "<RTK$Help>"="" Then Set RTK$Help <RTK$Temp>
+Unset RTK$Temp
+If "<RTK$Dir>"="<Obey$Dir>" AND "<RTK$Version>"="" Then Set RTK$Version 0.7.0
+If "<RTK$Dir>"="<Obey$Dir>" AND "<RTK$Web>"="" Then Set RTK$Web http://www.sagitta.demon.co.uk/rtk/
+If "<RTK$Dir>"="<Obey$Dir>" AND "<RTK$Title>"="" Then Set RTK$Title The RISC OS Toolkit
+If "<RTK$Dir>"="<Obey$Dir>" AND "<RTK$Publisher>"="" Then Set RTK$Publisher The RISC OS Packaging Project
+If "<RTK$Dir>"="<Obey$Dir>" AND "<RTK$Description>"="" Then Set RTK$Description A C++ application framework for RISC OS
+If "<RTK$Dir>"="<Obey$Dir>" Then IconSprites <RTK$Dir>.!Sprites
