@@ -1,32 +1,25 @@
-VERSION = 0/7/1-0
+VERSION = 0.7.1-0
+PACKAGES = \
+ RTK-Common_$(VERSION) \
+ RTK-Dev_$(VERSION) \
+ RTK-Doc_$(VERSION)
 
 all:
 	make -C !RTK bin doc
-	mkdir -p Temp
-	Wipe Temp ~CFR~V
+	rm -rf Temp
 	mkdir -p Temp/RiscPkg
 	mkdir -p Temp/Apps/Library
-	Copy RiscPkg.Copyright Temp.RiscPkg.Copyright ~CFR~V
-	Copy !RTK Temp.Apps.Library.!RTK ~CFR~V
-	Access Temp.Apps.Library.!RTK.* LR/R
-	Access Temp.Apps.Library.!RTK.a.* LR/R
-	Access Temp.Apps.Library.!RTK.html.* LR/R
-	Access Temp.Apps.Library.!RTK.rtk.desktop.h.* LR/R
-	Access Temp.Apps.Library.!RTK.rtk.events.h.* LR/R
-	Access Temp.Apps.Library.!RTK.rtk.graphics.h.* LR/R
-	Access Temp.Apps.Library.!RTK.rtk.os.h.* LR/R
-	Access Temp.Apps.Library.!RTK.rtk.swi.h.* LR/R
-	Access Temp.Apps.Library.!RTK.rtk.transfer.h.* LR/R
-	Access Temp.Apps.Library.!RTK.rtk.util.h.* LR/R
-	Copy SysVars Temp.SysVars ~CFR~V
-	Copy Sprites Temp.Sprites ~CFR~V
+	cp RiscPkg/Copyright Temp/RiscPkg
+	cp -R !RTK Temp/Apps/Library
 
-	Dir Temp
-	RiscPkg-GenControl RTK-Common < ../RiscPkg/Control > RiscPkg/Control
-	zip -r ^.RTK-Common_$(VERSION) * -i@^.RiscPkg.RTK-Common/inc
-	RiscPkg-GenControl RTK-Dev < ../RiscPkg/Control > RiscPkg/Control
-	zip -r ^.RTK-Dev_$(VERSION) * -i@^.RiscPkg.RTK-Dev/inc
-	RiscPkg-GenControl RTK-Doc < ../RiscPkg/Control > RiscPkg/Control
-	zip -r ^.RTK-Doc_$(VERSION) * -i@^.RiscPkg.RTK-Doc/inc
-	Dir ^
-	Wipe Temp ~CFR~V
+	chmod -R 444 Temp/Apps
+	cp -R SysVars Temp/SysVars
+	cp -R SpriteRefs Temp/Sprites
+	make -C Temp -f ../RiscPkg/Rules $(PACKAGES)
+	rm -rf Temp
+
+.PHONY: $(PACKAGES)
+$(PACKAGES): %:
+	riscpkg-gencontrol $(firstword $(subst _, ,$@)) < ../RiscPkg/Control > RiscPkg/Control
+	rm -f ../$@
+	zip -r ../RiscPkg/$@ * -i@../RiscPkg/$(firstword $(subst _, ,$@)).inc
