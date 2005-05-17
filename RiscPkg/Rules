@@ -14,7 +14,7 @@ all:
 
 	chmod -R 444 Temp/Apps
 	cp -R SysVars Temp/SysVars
-	cp -R SpriteRefs Temp/Sprites
+	cp -R Sprites Temp/Sprites
 	make -C Temp -f ../RiscPkg/Rules $(PACKAGES)
 	rm -rf Temp
 
