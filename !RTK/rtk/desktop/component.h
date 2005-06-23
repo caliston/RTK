@@ -488,6 +488,25 @@ public:
 	 */
 	void force_redraw(const box& clip);
 
+	/** Force update of component.
+	 * The effect of this function is similar to force_redraw, except
+	 * that:
+	 * - the redraw happens immediately; and
+	 * - the work area background is not cleared.
+	 */
+	void force_update();
+
+	/** Force update of given area.
+	 * The effect of this function is similar to force_redraw, except
+	 * that:
+	 * - the redraw happens immediately; and
+	 * - the work area background is not cleared.
+	 *
+	 * @param clip the bounding box of the region to be redrawn,
+	 *  with respect to the origin of this component
+	 */
+	void force_update(const box& clip);
+
 	/** Set caret position.
 	 * @param p the required position of the caret
 	 * @param height the required height of the caret

@@ -278,6 +278,22 @@ void component::force_redraw(const box& clip)
 	}
 }
 
+void component::force_update()
+{
+	force_update(bbox());
+}
+
+void component::force_update(const box& clip)
+{
+	if (!_forced_redraw)
+	{
+		point offset;
+		basic_window* w=as_window();
+		if (!w) w=parent_work_area(offset);
+		if (w) w->force_update(clip+offset);
+	}
+}
+
 void component::set_caret_position(point p,int height,int index)
 {
 	basic_window* w=as_window();

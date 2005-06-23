@@ -597,6 +597,32 @@ int basic_window::work_area_flags() const
 	return _button<<12;
 }
 
+void basic_window::force_update()
+{
+	force_update(bbox());
+}
+
+void basic_window::force_update(const box& clip)
+{
+	if (_child)
+	{
+		os::window_redraw block;
+		block.handle=handle();
+		block.bbox=clip-_child->origin();
+	
+		int more;
+		os::Wimp_UpdateWindow(block,&more);
+		while (more)
+		{
+			point origin=block.bbox.xminymax()-block.scroll;
+			box clip=block.clip-origin;
+			rtk::graphics::vdu_gcontext context(origin);
+			_child->redraw(context,clip);
+			os::Wimp_GetRectangle(block,&more);
+		}
+	}
+}
+
 int basic_window::behind() const
 {
 	int behind=-1;
