@@ -1,5 +1,5 @@
 // This file is part of the RISC OS Toolkit (RTK).
-// Copyright © 2003 Graham Shaw.
+// Copyright © 2003-2005 Graham Shaw.
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
@@ -11,28 +11,29 @@
 namespace rtk {
 namespace graphics {
 
-vdu_gcontext::vdu_gcontext(const point& _origin):
-	gcontext(_origin)
+vdu_gcontext::vdu_gcontext(const point& origin,bool update):
+	gcontext(origin,update)
 {}
 
 vdu_gcontext::~vdu_gcontext()
-{}
+{
+	if (_current==this) current(0);
+}
 
 vdu_gcontext* vdu_gcontext::_current=0;
+
+vdu_gcontext* vdu_gcontext::current()
+{
+	return _current;
+}
 
 void vdu_gcontext::current(vdu_gcontext* current)
 {
 	if (current!=_current)
 	{
+		if (_current) _current->deactivate();
 		_current=current;
-		if (_current)
-		{
-			os::Wimp_SetColour(_current->fcolour());
-			os::Wimp_SetColour(_current->bcolour()|0x80);
-			os::Wimp_TextColour(_current->fcolour());
-			os::Wimp_TextColour(_current->bcolour()|0x80);
-			os::Wimp_SetFontColours(_current->bcolour(),_current->fcolour());
-		}
+		if (_current) _current->activate();
 	}
 }
 
@@ -67,6 +68,18 @@ void vdu_gcontext::bcolour_notify(int bcolour)
 	os::Wimp_TextColour(bcolour|0x80);
 	os::Wimp_SetFontColours(bcolour,fcolour());
 }
+
+void vdu_gcontext::activate()
+{
+	os::Wimp_SetColour(fcolour());
+	os::Wimp_SetColour(bcolour()|0x80);
+	os::Wimp_TextColour(fcolour());
+	os::Wimp_TextColour(bcolour()|0x80);
+	os::Wimp_SetFontColours(bcolour(),fcolour());
+}
+
+void vdu_gcontext::deactivate()
+{}
 
 }; /* namespace graphics */
 }; /* namespace rtk */

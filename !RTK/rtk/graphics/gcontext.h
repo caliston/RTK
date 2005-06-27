@@ -34,11 +34,18 @@ private:
 	 * This is one of the 16 standard Wimp colours.
 	 */
 	int _bcolour;
+	/** The update flag.
+	 * True if this graphics context refers to an existing valid
+	 * area to be updated, false if it must be completely redrawn.
+	 */
+	bool _update;
 public:
 	/** Construct graphics context.
 	 * @param origin the initial origin
+	 * @param update true if this graphics context refers to an existing
+	 *  valid area to be updated, false if it must be completely redrawn
 	 */
-	gcontext(const point& origin);
+	explicit gcontext(const point& origin,bool update=false);
 
 	/** Destroy graphics context.
 	 */
@@ -125,6 +132,16 @@ public:
 	 * @param bcolour the required background colour
 	 */
 	void bcolour(int bcolour);
+
+	/** Get update flag.
+	 * The update flag is true for graphics contexts which derive
+	 * from Wimp_UpdateWindow, but false for Wimp_RedrawWindow or
+	 * PDriver_DrawPage.
+	 * @return true if this graphics context refers to an existing valid
+	 *  area to be updated, false if it must be completely redrawn
+	 */
+	bool update() const
+		{ return _update; }
 protected:
 	/** Notify subclass that foreground colour has changed.
 	 * @param fcolour the new foreground colour

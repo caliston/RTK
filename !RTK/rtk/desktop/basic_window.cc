@@ -616,7 +616,7 @@ void basic_window::force_update(const box& clip)
 		{
 			point origin=block.bbox.xminymax()-block.scroll;
 			box clip=block.clip-origin;
-			rtk::graphics::vdu_gcontext context(origin);
+			rtk::graphics::vdu_gcontext context(origin,true);
 			_child->redraw(context,clip);
 			os::Wimp_GetRectangle(block,&more);
 		}
