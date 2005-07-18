@@ -227,7 +227,7 @@ public:
 	friend class fixed_mark;
 private:
 	/** The text broken into paragraphs. */
-	__gnu_cxx::rope<string> _text;
+	text_type _text;
 
 	/** The accumulated line counts for each paragraph. */
 	mutable util::cumulative_sum<unsigned int> _lines;
@@ -352,10 +352,10 @@ private:
 	transfer::load_lines _loadop;
 
 	/** The outbound clipboard. */
-	__gnu_cxx::rope<string> _oclipboard;
+	text_type _oclipboard;
 
 	/** The inbound clipboard. */
-	__gnu_cxx::rope<string> _iclipboard;
+	text_type _iclipboard;
 
 	/** A font coordinate block.
 	 * This is needed to specify the split character. */
@@ -753,7 +753,7 @@ public:
 	 * @param last the end of the region to be replaced
 	 * @param new_text the replacement paragraphs (at least one)
 	 */
-	void replace(mark first,mark last,const __gnu_cxx::rope<string>& new_text);
+	void replace(mark first,mark last,const text_type& new_text);
 private:
 	/** Adjust layout during call to replace().
 	 * This function adjusts the content of _lines, and invalidates
@@ -765,7 +765,7 @@ private:
 	 * @param new_text the replacement paragraphs (at least one)
 	 */
 	void adjust_layout(const mark& first,const mark& last,
-		const __gnu_cxx::rope<string>& new_text);
+		const text_type& new_text);
 
 	/** Adjust text during call to replace().
 	 * This function only alters the content of _text.  It does not
@@ -774,8 +774,7 @@ private:
 	 * @param last the end of the region to be replaced
 	 * @param new_text the replacement paragraphs (at least one)
 	 */
-	void adjust_text(const mark& first,const mark& last,
-		__gnu_cxx::rope<string> new_text);
+	void adjust_text(const mark& first,const mark& last,text_type new_text);
 
 	/** Adjust mark during call to replace().
 	 * This function must not be called until after the layout and
@@ -787,7 +786,7 @@ private:
 	 * @return the adjusted mark
 	 */
 	mark adjust_mark(mark mk,const mark& first,const mark& last,
-		const __gnu_cxx::rope<string>& new_text) const;
+		const text_type& new_text) const;
 };
 
 inline bool operator==(const text_area::basic_mark& lhs,

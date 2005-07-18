@@ -773,7 +773,7 @@ void text_area::handle_event(events::loaded& ev)
 		if (!_iclipboard.size()) _iclipboard.push_back(string());
 		replace(_caret_first,_caret_last,_iclipboard);
 	}
-	_iclipboard=__gnu_cxx::rope<string>();
+	_iclipboard=text_type();
 }
 
 text_area::text_type text_area::text() const
@@ -930,7 +930,7 @@ void text_area::handle_linefeed()
 
 		// Insert linefeed at caret
 		// (or in place of selection if there is no caret).
-		__gnu_cxx::rope<string> new_text;
+		text_type new_text;
 		new_text.push_back(string());
 		new_text.push_back(string());
 		replace(_caret_first,_caret_last,new_text);
@@ -1837,13 +1837,12 @@ void text_area::force_redraw_between(mark first,mark last)
 void text_area::replace(const mark& first,const mark& last,
 	const string& new_para)
 {
-	__gnu_cxx::rope<string> new_text;
+	text_type new_text;
 	new_text.push_back(new_para);
 	replace(first,last,new_text);
 }
 
-void text_area::replace(mark first,mark last,
-	const __gnu_cxx::rope<string>& new_text)
+void text_area::replace(mark first,mark last,const text_type& new_text)
 {
 	// Ensure that last>=first.
 	if (last<first) std::swap(last,first);
@@ -1864,7 +1863,7 @@ void text_area::replace(mark first,mark last,
 }
 
 void text_area::adjust_layout(const mark& first,const mark& last,
-	const __gnu_cxx::rope<string>& new_text)
+	const text_type& new_text)
 {
 	int width=bbox().xsize();
 
@@ -2011,7 +2010,7 @@ void text_area::adjust_layout(const mark& first,const mark& last,
 }
 
 void text_area::adjust_text(const mark& first,const mark& last,
-	__gnu_cxx::rope<string> new_text)
+	text_type new_text)
 {
 	// Ensure that new_text contains at least one paragraph.
 	if (!new_text.size()) new_text.push_back(string());
@@ -2034,7 +2033,7 @@ void text_area::adjust_text(const mark& first,const mark& last,
 }
 
 text_area::mark text_area::adjust_mark(mark mk,const mark& first,
-	const mark& last,const __gnu_cxx::rope<string>& new_text) const
+	const mark& last,const text_type& new_text) const
 {
 	if (mk>=last)
 	{
