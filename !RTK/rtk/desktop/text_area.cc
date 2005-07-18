@@ -1845,8 +1845,6 @@ void text_area::replace(const mark& first,const mark& last,
 void text_area::replace(mark first,mark last,
 	const __gnu_cxx::rope<string>& new_text)
 {
-	if (_read_only) return;
-
 	// Ensure that last>=first.
 	if (last<first) std::swap(last,first);
 
