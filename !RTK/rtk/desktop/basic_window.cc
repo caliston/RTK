@@ -91,6 +91,21 @@ box basic_window::min_bbox() const
 	return mbbox;
 }
 
+box basic_window::min_wrap_bbox(const box& wbox) const
+{
+	int xsize=0;
+	int ysize=0;
+	if (_child)
+	{
+		box mcbbox=_child->min_wrap_bbox(wbox);
+		xsize=mcbbox.xsize();
+		ysize=mcbbox.ysize();
+	}
+	box mbbox(0,-ysize,xsize,0);
+	mbbox-=external_origin(mbbox,xbaseline_left,ybaseline_top);
+	return mbbox;
+}
+
 void basic_window::resize() const
 {
 	if (_child) _child->resize();

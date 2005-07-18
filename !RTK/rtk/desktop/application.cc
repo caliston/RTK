@@ -126,7 +126,7 @@ void application::reformat(const point& origin,const box& pbbox)
 		if (!(*i)->layout_valid())
 		{
 			box cbbox=(*i)->bbox();
-			box mcbbox=(*i)->min_bbox();
+			box mcbbox=(*i)->min_wrap_bbox(cbbox);
 			if (!(*i)->x_scroll_bar()&&!(*i)->adjust_icon())
 			{
 				cbbox.xmin(mcbbox.xmin());
@@ -169,7 +169,8 @@ void application::reformat(const point& origin,const box& pbbox)
 		if (!_dbox->layout_valid())
 		{
 			point cpos=_dbox->origin();
-			box mcbbox=_dbox->min_bbox();
+			box cbbox=_dbox->bbox();
+			box mcbbox=_dbox->min_wrap_bbox(cbbox);
 			_dbox->reformat(cpos,mcbbox,_dbox_level);
 		}
 	}
