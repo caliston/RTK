@@ -807,13 +807,13 @@ text_area::text_type text_area::selection() const
 
 text_area& text_area::text(const text_type& text)
 {
-	replace(begin(),end(),text);
+	if (!_read_only) replace(begin(),end(),text);
 	return *this;
 }
 
 text_area& text_area::selection(const text_type& text)
 {
-	replace(_select_first,_select_last,text);
+	if (!_read_only) replace(_select_first,_select_last,text);
 	return *this;
 }
 
@@ -908,43 +908,55 @@ void text_area::handle_end_of_text()
 
 void text_area::handle_insert(char code)
 {
-	// If inserted character replaces a selection
-	// then first copy that selection to the clipboard.
-	if (_caret_first!=_caret_last) load_clipboard(_caret_first,_caret_last);
+	if (!_read_only)
+	{
+		// If inserted character replaces a selection
+		// then first copy that selection to the clipboard.
+		if (_caret_first!=_caret_last) load_clipboard(_caret_first,_caret_last);
 
-	// Insert character at caret
-	// (or in place of selection if there is no caret).
-	replace(_caret_first,_caret_last,string(1,code));
+		// Insert character at caret
+		// (or in place of selection if there is no caret).
+		replace(_caret_first,_caret_last,string(1,code));
+	}
 }
 
 void text_area::handle_linefeed()
 {
-	// If inserted linefeed replaces a selection
-	// then first copy that selection to the clipboard.
-	if (_caret_first!=_caret_last) load_clipboard(_caret_first,_caret_last);
+	if (!_read_only)
+	{
+		// If inserted linefeed replaces a selection
+		// then first copy that selection to the clipboard.
+		if (_caret_first!=_caret_last) load_clipboard(_caret_first,_caret_last);
 
-	// Insert linefeed at caret
-	// (or in place of selection if there is no caret).
-	__gnu_cxx::rope<string> new_text;
-	new_text.push_back(string());
-	new_text.push_back(string());
-	replace(_caret_first,_caret_last,new_text);
+		// Insert linefeed at caret
+		// (or in place of selection if there is no caret).
+		__gnu_cxx::rope<string> new_text;
+		new_text.push_back(string());
+		new_text.push_back(string());
+		replace(_caret_first,_caret_last,new_text);
+	}
 }
 
 void text_area::handle_delete_left()
 {
-	// Delete from _caret_first to _caret_last if they differ,
-	// otherwise delete the character to the left of _caret_first.
-	if (_caret_first==_caret_last) --_caret_first;
-	replace(_caret_first,_caret_last,string());
+	if (!_read_only)
+	{
+		// Delete from _caret_first to _caret_last if they differ,
+		// otherwise delete the character to the left of _caret_first.
+		if (_caret_first==_caret_last) --_caret_first;
+		replace(_caret_first,_caret_last,string());
+	}
 }
 
 void text_area::handle_delete_right()
 {
-	// Delete from _caret_first to _caret_last if they differ,
-	// otherwise delete the character to the right of _caret_last.
-	if (_caret_last==_caret_first) ++_caret_last;
-	replace(_caret_first,_caret_last,string());
+	if (!_read_only)
+	{
+		// Delete from _caret_first to _caret_last if they differ,
+		// otherwise delete the character to the right of _caret_last.
+		if (_caret_last==_caret_first) ++_caret_last;
+		replace(_caret_first,_caret_last,string());
+	}
 }
 
 void text_area::handle_copy()
@@ -959,7 +971,7 @@ void text_area::handle_copy()
 void text_area::handle_cut()
 {
 	// Only load the clipboard if there is a non-empty selection.
-	if (_select_first!=_select_last)
+	if ((_select_first!=_select_last)&&!_read_only)
 	{
 		load_clipboard(_select_first,_select_last);
 		replace(_select_first,_select_last,string());

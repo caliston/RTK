@@ -740,7 +740,7 @@ private:
 	 * @param last the end of the region to be redrawn
 	 */
 	void force_redraw_between(mark first,mark last);
-
+public:
 	/** Replace text.
 	 * @param first the start of the region to be replaced
 	 * @param last the end of the region to be replaced
@@ -754,7 +754,7 @@ private:
 	 * @param new_text the replacement paragraphs (at least one)
 	 */
 	void replace(mark first,mark last,const __gnu_cxx::rope<string>& new_text);
-
+private:
 	/** Adjust layout during call to replace().
 	 * This function adjusts the content of _lines, and invalidates
 	 * or copies any affected parts of the work area.  It does not
