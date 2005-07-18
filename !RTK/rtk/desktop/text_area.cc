@@ -267,6 +267,11 @@ text_area::text_area():
 	// This is used to specify the split character.
 	// (The other fields do not need to be initialised.)
 	_font_coord_block.split_char=split_char;
+
+	// Initialise _lines.
+	// (The specified width is arbitrary:
+	// what matters is that _lines is non-empty.)
+	reflow(1024);
 }
 
 text_area::~text_area()
@@ -1304,8 +1309,9 @@ unsigned int text_area::find_index(const string& ptext,unsigned int index,
 unsigned int text_area::split_line(const string& ptext,unsigned int index,
 	int width,bool include_trailing) const
 {
-	// As a precaution, place limits on index and count.
+	// As a precaution, place limits on index, count and width.
 	if (index>ptext.size()) index=ptext.size();
+	if (width<1) width=1;
 
 	// Initialise pointers: beginning, end and iterator.
 	const char* b=ptext.c_str()+index;
