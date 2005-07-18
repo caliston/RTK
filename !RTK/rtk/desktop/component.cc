@@ -208,6 +208,11 @@ box component::min_wrap_bbox(const box& wbox) const
 	return min_bbox();
 }
 
+component::wrap_type component::wrap_direction() const
+{
+	return wrap_none;
+}
+
 void component::invalidate()
 {
 	component* p=this;

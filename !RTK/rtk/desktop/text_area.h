@@ -378,6 +378,7 @@ public:
 	virtual box bbox() const;
 	virtual box min_bbox() const;
 	virtual box min_wrap_bbox(const box& wbox) const;
+	virtual wrap_type wrap_direction() const;
 	virtual void resize() const;
 	virtual void reformat(const point& origin,const box& pbbox);
 	virtual void unformat();

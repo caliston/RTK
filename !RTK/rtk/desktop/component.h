@@ -113,6 +113,17 @@ public:
 	};
 	class xbaseline_set;
 	class ybaseline_set;
+	/** An enumeration type for specifying the direction in which
+	 * the content of a component may be wrapped. */
+	enum wrap_type
+	{
+		/** Content which may be wrapped horizontally. */
+		wrap_horizontal,
+		/** Content which may be wrapped vertically. */
+		wrap_vertical,
+		/** Content which cannot be wrapped. */
+		wrap_none
+	};
 private:
 	/** The parent pointer. */
 	component* _parent;
@@ -376,6 +387,11 @@ public:
 	 * @param wbox a box specifying the preferred width and/or height
 	 */
 	virtual box min_wrap_bbox(const box& wbox) const;
+
+	/** Get direction (if any) in which content may be wrapped.
+	 * @return the direction in which the content may be wrapped
+	 */
+	virtual wrap_type wrap_direction() const; 
 
 	/** Determine whether the size of this component is valid.
 	 * The size is valid if resize() has been called since the last

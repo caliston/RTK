@@ -106,6 +106,11 @@ box basic_window::min_wrap_bbox(const box& wbox) const
 	return mbbox;
 }
 
+component::wrap_type basic_window::wrap_direction() const
+{
+	return (_child)?_child->wrap_direction():wrap_none;
+}
+
 void basic_window::resize() const
 {
 	if (_child) _child->resize();

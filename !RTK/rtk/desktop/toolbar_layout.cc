@@ -120,6 +120,11 @@ box toolbar_layout::bbox() const
 	return _bbox;
 }
 
+component::wrap_type toolbar_layout::wrap_direction() const
+{
+	return (_content)?_content->wrap_direction():wrap_none;
+}
+
 void toolbar_layout::reformat(const point& origin,const box& pbbox)
 {
 	// Fit bounding box to parent.

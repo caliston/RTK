@@ -365,6 +365,11 @@ box text_area::min_wrap_bbox(const box& wbox) const
 	return _min_wrap_bbox;
 }
 
+component::wrap_type text_area::wrap_direction() const
+{
+	return wrap_horizontal;
+} 
+
 void text_area::resize() const
 {
 	if (!size_valid())
