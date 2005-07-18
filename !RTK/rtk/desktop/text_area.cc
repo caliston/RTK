@@ -1537,7 +1537,10 @@ void text_area::reflow(int old_width,int new_width)
 			point offset;
 			if (basic_window* w=parent_work_area(offset))
 			{
-				os::Wimp_BlockCopy(w->handle(),src+offset,dst+offset);
+				if (int handle=w->handle())
+				{
+					os::Wimp_BlockCopy(handle,src+offset,dst+offset);
+				}
 			}
 		}
 
@@ -2004,7 +2007,10 @@ void text_area::adjust_layout(const mark& first,const mark& last,
 		point offset;
 		if (basic_window* w=parent_work_area(offset))
 		{
-			os::Wimp_BlockCopy(w->handle(),src+offset,dst+offset);
+			if (int handle=w->handle())
+			{
+				os::Wimp_BlockCopy(handle,src+offset,dst+offset);
+			}
 		}
 	}
 }
