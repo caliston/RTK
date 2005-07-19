@@ -299,6 +299,20 @@ void component::force_update(const box& clip)
 	}
 }
 
+void component::block_copy(const box& src,const point& dst)
+{
+	point offset;
+	basic_window* w=as_window();
+	if (!w) w=parent_work_area(offset);
+	if (w)
+	{
+		if (int handle=w->handle())
+		{
+			os::Wimp_BlockCopy(handle,src+offset,dst+offset);
+		}
+	}
+}
+
 void component::set_caret_position(point p,int height,int index)
 {
 	basic_window* w=as_window();

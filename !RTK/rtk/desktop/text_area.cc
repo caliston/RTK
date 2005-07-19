@@ -1544,15 +1544,7 @@ void text_area::reflow(int old_width,int new_width)
 			{
 				hide_caret();
 			}
-
-			point offset;
-			if (basic_window* w=parent_work_area(offset))
-			{
-				if (int handle=w->handle())
-				{
-					os::Wimp_BlockCopy(handle,src+offset,dst+offset);
-				}
-			}
+			block_copy(src,dst);
 		}
 
 		// Move down (to start of next paragraph) if widening.
@@ -2014,15 +2006,7 @@ void text_area::adjust_layout(const mark& first,const mark& last,
 		box src(0,-(max_lines-diff)*line_height(),
 			width,-(line-diff)*line_height());
 		point dst=src.xminymin()+point(0,-diff*line_height());
-
-		point offset;
-		if (basic_window* w=parent_work_area(offset))
-		{
-			if (int handle=w->handle())
-			{
-				os::Wimp_BlockCopy(handle,src+offset,dst+offset);
-			}
-		}
+		block_copy(src,dst);
 	}
 }
 

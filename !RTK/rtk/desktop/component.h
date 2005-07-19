@@ -523,6 +523,15 @@ public:
 	 */
 	void force_update(const box& clip);
 
+	/** Copy area.
+	 * This function is equivalent to Wimp_BlockCopy.
+	 * @param src the area to be copied, with respect to the origin of
+	 *  this component
+	 * @param dst the point to which the bottom left-hand corner of the
+	 *  area is to be moved, with respect to the origin of this component
+	 */
+	void block_copy(const box& src,const point& dst);
+
 	/** Set caret position.
 	 * @param p the required position of the caret
 	 * @param height the required height of the caret
