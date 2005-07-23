@@ -24,7 +24,8 @@ menu_item::menu_item():
 	_has_submenu(false),
 	_has_dbox(false),
 	_tick(false),
-	_separator(false)
+	_separator(false),
+	_writable(false)
 {
 	bcolour(0);
 }
@@ -90,6 +91,13 @@ menu_item& menu_item::tick(bool value)
 menu_item& menu_item::separator(bool value)
 {
 	_separator=value;
+	invalidate();
+	return *this;
+}
+
+menu_item& menu_item::writable(bool value)
+{
+	_writable=value;
 	invalidate();
 	return *this;
 }
@@ -204,7 +212,8 @@ void menu_item::deliver_message(int wimpcode,os::wimp_block& wimpblock,
 
 int menu_item::menu_flags() const
 {
-	return (_tick<<0)|(_separator<<1)|((_has_submenu||_has_dbox)<<3);
+	return (_tick<<0)|(_separator<<1)|(_writable<<2)|
+		((_has_submenu||_has_dbox)<<3);
 }
 
 int menu_item::submenu_handle() const

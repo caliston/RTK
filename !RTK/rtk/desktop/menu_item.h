@@ -58,6 +58,11 @@ private:
 	 * True if this menu item is followed by a separator, otherwise false.
 	 */
 	bool _separator:1;
+
+	/** The writable flag.
+	 * True if this menu item is writable, otherwise false.
+	 */
+	bool _writable:1;
 public:
 	/** Construct menu item.
 	 * By default, a menu item:
@@ -130,6 +135,12 @@ public:
 	bool separator() const
 		{ return _separator; }
 
+	/** Get writable flag.
+	 * @return true if this menu item is writable, otherwise false
+	 */
+	bool writable() const
+		{ return _writable; }
+
 	/** Set tick flag.
 	 * @param value true if this item is to be ticked, otherwise false
 	 * @return a reference to this
@@ -141,6 +152,11 @@ public:
 	 *  otherwise false
 	 */
 	menu_item& separator(bool value);
+
+	/** Set writable flag.
+	 * @param value true if this menu item is writable, otherwise false
+	 */
+	menu_item& writable(bool value);
 
 	/** Get menu flags.
 	 * @return menu flags for use by the Wimp
