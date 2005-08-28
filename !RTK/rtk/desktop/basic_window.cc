@@ -551,8 +551,11 @@ void basic_window::create()
 {
 	if (!_created)
 	{
+		point offset;
+		parent_application(offset);
+
 		static os::window_create block;
-		block.bbox=box();
+		block.bbox=_bbox+offset;
 		block.scroll=point();
 		block.behind=-1;
 		block.wflags=window_flags();
