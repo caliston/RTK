@@ -1,5 +1,5 @@
 // This file is part of the RISC OS Toolkit (RTK).
-// Copyright © 2003 Graham Shaw.
+// Copyright © 2003-2005 Graham Shaw.
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
@@ -19,22 +19,13 @@ namespace transfer {
 
 load::load():
 	_state(state_idle),
-	_thandle(0),
-	_filetype(0xffd),
 	_allow_ram_transfer(true),
 	_ldata(0),
 	_lsize(0)
-{
-	os::Wimp_ReadSysInfo(5,&_thandle,0);
-}
+{}
 
 load::~load()
 {}
-
-graphics::box load::min_bbox() const
-{
-	return graphics::box();
-}
 
 void load::handle_event(events::datasave& ev)
 {
@@ -57,32 +48,21 @@ void load::handle_event(events::datasave& ev)
 	else
 	{
 		// If RAM transfers are disabled then reply with Message_DataSaveAck.
-		ev.reply("<Wimp$Scrap>");
+		inherited::handle_event(ev);
 		_state=state_idle;
 	}
 }
 
 void load::handle_event(events::dataload& ev)
 {
-	// A Message_DataLoad is acted upon at any time.
-	put_file(ev.pathname(),ev.estsize());
-	ev.reply();
+	inherited::handle_event(ev);
 	_state=state_idle;
-	events::loaded ev2(*this,*this);
-	ev2.post();
-	remove();
 }
 
 void load::handle_event(events::dataopen& ev)
 {
-	// A Message_DataOpen is acted upon at any time.
-	// Unlike Message_DataLoad, the reply is sent before the file is loaded.
-	ev.reply();
-	put_file(ev.pathname(),0);
+	inherited::handle_event(ev);
 	_state=state_idle;
-	events::loaded ev2(*this,*this);
-	ev2.post();
-	remove();
 }
 
 void load::handle_event(events::ramfetch& ev)
@@ -94,7 +74,7 @@ void load::handle_event(events::ramfetch& ev)
 	if (_state==state_ramfetch_first)
 	{
 		events::datasave ev2(*this,swi::User_Message,_datasave_block);
-		ev2.reply("<Wimp$Scrap>");
+		ev2.reply(temp_pathname());
 		_state=state_idle;
 	}
 }
@@ -116,10 +96,10 @@ void load::handle_event(events::ramtransmit& ev)
 		else
 		{
 			finish();
-			_state=state_idle;
 			events::loaded ev(*this,*this);
 			ev.post();
 			remove();
+			_state=state_idle;
 		}
 	}
 }
@@ -128,49 +108,6 @@ load& load::allow_ram_transfer(bool value)
 {
 	_allow_ram_transfer=value;
 	return *this;
-}
-
-void load::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
-{
-	switch (wimpcode)
-	{
-	case 17:
-	case 18:
-	case 19:
-		deliver_message(wimpcode,wimpblock);
-		break;
-	default:
-		{ 
-			events::wimp ev(*this,wimpcode,wimpblock);
-			ev.post();
-		}
-		break;
-	}
-}
-
-void load::deliver_message(int wimpcode,os::wimp_block& wimpblock)
-{
-	switch (wimpblock.word[4])
-	{
-	case swi::Message_RAMFetch:
-		{
-			events::ramfetch ev(*this,wimpcode,wimpblock);
-			ev.post();
-		}
-		break;
-	case swi::Message_RAMTransmit:
-		{
-			events::ramtransmit ev(*this,wimpcode,wimpblock);
-			ev.post();
-		}
-		break;
-	default:
-		{
-			events::message ev(*this,wimpcode,wimpblock);
-			ev.post();
-		}
-		break;
-	}
 }
 
 void load::put_file(const string& pathname,size_type estsize)

@@ -29,7 +29,7 @@ union wimp_block;
 namespace transfer {
 
 class save;
-class load;
+class basic_load;
 
 }; /* namespace transfer */
 
@@ -149,7 +149,7 @@ private:
 	component* _current_clipboard;
 
 	/** The current load operation. */
-	transfer::load* _current_load;
+	transfer::basic_load* _current_load;
 
 	/** The current save operation. */
 	transfer::save* _current_save;
@@ -217,7 +217,7 @@ public:
 	/** Add load operation.
 	 * @param loadop the load operation to be added
 	 */
-	application& add(transfer::load& loadop);
+	application& add(transfer::basic_load& loadop);
 
 	/** Add save operation.
 	 * @param saveop the save operation to be added
@@ -327,7 +327,7 @@ public:
 	 * @param filetype the filetype
 	 * @return the load operation for that filetype, or 0 if none
 	 */
-	virtual transfer::load* auto_load(unsigned int filetype);
+	virtual transfer::basic_load* auto_load(unsigned int filetype);
 
 	/** Get current selection owner.
 	 * @return the current selection owner

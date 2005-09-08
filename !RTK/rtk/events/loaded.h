@@ -13,7 +13,7 @@
 namespace rtk {
 namespace transfer {
 
-class load;
+class basic_load;
 
 }; /* namespace transfer */
 
@@ -25,7 +25,7 @@ class loaded:
 {
 private:
 	/** The load operation that loaded the file. */
-	transfer::load* _loadop;
+	transfer::basic_load* _loadop;
 public:
 	/** A mixin class for handling loaded events.
 	 * If a class wishes to receive loaded events then it should
@@ -45,7 +45,7 @@ public:
 	 * @param target the target of the event
 	 * @param loadop the load operation that loaded the file
 	 */
-	loaded(desktop::component& target,transfer::load& loadop);
+	loaded(desktop::component& target,transfer::basic_load& loadop);
 
 	/** Destroy loaded event. */
 	virtual ~loaded();
@@ -53,7 +53,7 @@ public:
 	/** Get load operation.
 	 * @return the load operation that loaded the file
 	 */
-	transfer::load& loadop()
+	transfer::basic_load& loadop()
 		{ return *_loadop; }
 protected:
 	virtual bool deliver(desktop::component& dest);

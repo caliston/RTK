@@ -8,14 +8,9 @@
 
 #include <string>
 
-#include "rtk/os/wimp.h"
-#include "rtk/desktop/component.h"
-#include "rtk/events/datasave.h"
-#include "rtk/events/dataload.h"
-#include "rtk/events/dataopen.h"
 #include "rtk/events/ramfetch.h"
 #include "rtk/events/ramtransmit.h"
-#include "rtk/events/redirection.h"
+#include "rtk/transfer/basic_load.h"
 
 namespace rtk {
 namespace transfer {
@@ -23,26 +18,21 @@ namespace transfer {
 using std::string;
 
 /** A abstract class to represent a load operation using the
- * data transfer protocol.
- * Implementations must override start(), get(), put() and finish()
- * to define what is done with the data.
+ * data transfer protocol (file or RAM transfer).
+ * Implementations must override the functions start, get, put and
+ * finish to define what is done with the data.  They may additionally
+ * override put_file if it is advantageous to handle the data
+ * differently should it be transferred as a file.
  */
 class load:
-	public desktop::component,
-	public events::datasave::handler,
-	public events::dataload::handler,
-	public events::dataopen::handler,
-	public events::ramfetch::handler,
-	public events::ramtransmit::handler,
-	public events::redirection
+	public rtk::transfer::basic_load,
+	public rtk::events::ramfetch::handler,
+	public rtk::events::ramtransmit::handler
 {
-public:
-	/** A type for representing byte counts. */
-	typedef unsigned int size_type;
-
-	/** A null value for use in place of a byte count. */
-	static const size_type npos=static_cast<size_type>(-1);
 private:
+	/** The class from which this one is derived. */
+	typedef rtk::transfer::basic_load inherited;
+
 	/** An enumeration to represent the state of the load operation. */
 	enum state_type
 	{
@@ -61,12 +51,6 @@ private:
 	/** The current state of the load operation. */
 	state_type _state;
 
-	/** The local task handle. */
-	int _thandle;
-
-	/** The filetype of the data loaded. */
-	unsigned int _filetype;
-
 	/** The RAM transfer allowed flag. */
 	bool _allow_ram_transfer;
 
@@ -77,7 +61,7 @@ private:
 	size_type _lsize;
 
 	/** A copy of the Message_DataSave message block.
-	 * This is needed to produce the Message_DataSavAck that is sent if
+	 * This is needed to produce the Message_DataSaveAck that is sent if
 	 * the Message_RAMFetch is negatively acknowledged.
 	 */
 	os::wimp_block _datasave_block;
@@ -90,19 +74,11 @@ public:
 	/** Destroy load object. */
 	virtual ~load();
 
-	virtual graphics::box min_bbox() const;
-
 	virtual void handle_event(events::datasave& ev);
 	virtual void handle_event(events::dataload& ev);
 	virtual void handle_event(events::dataopen& ev);
 	virtual void handle_event(events::ramfetch& ev);
 	virtual void handle_event(events::ramtransmit& ev);
-
-	/** Get filetype of data loaded
-	 * @return the filetype of the data
-	 */
-	unsigned int filetype() const
-		{ return _filetype; }
 
 	/** Get RAM transfer allowed flag.
 	 * @return true if RAM transfers are allowed, otherwise false
@@ -113,44 +89,30 @@ public:
 	/** Set RAM transfer allowed flag.
 	 * Applications are not obliged to support RAM transfers, but nor is
 	 * any extra work needed to implement them when using this class.
-	 * They should be enabled unless there is a good reason not to. 
+	 * They should be left enabled unless there is a good reason not to.
 	 * @param value true if RAM transfers are allowed, otherwise false
 	 * @return a reference to this
 	 */
 	load& allow_ram_transfer(bool value);
-
-	/** Deliver Wimp event block.
-	 * @internal
-	 * @param wimpcode the Wimp event code
-	 * @param wimpblock the Wimp event block
-	 */
-	void deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock);
-
-	/** Deliver Wimp message.
-	 * @internal
-	 * @param wimpcode the Wimp event code
-	 * @param wimpblock the Wimp event block
-	 */
-	void deliver_message(int wimpcode,os::wimp_block& wimpblock);
 protected:
 	/** Start new load operation.
-	 * If start() is called before a previous operation has been completed
+	 * If start is called before a previous operation has been completed
 	 * then the previous operation should be aborted.
 	 * @param estsize the estimated file size in bytes
 	 */
 	virtual void start(size_type estsize)=0;
 
 	/** Get block.
-	 * The callee is free to offer any size of block, and may offer
-	 * a different size each time it is called.
+	 * The callee is free to offer any size of block (except zero),
+	 * and may offer a different size each time it is called.
 	 * @param data a buffer for the returned block pointer
 	 * @param size a buffer for the returned block size in bytes
 	 */
 	virtual void get_block(void** data,size_type* size)=0;
 
 	/** Put data from block.
-	 * The caller is not required to fill the buffer supplied by get(),
-	 * but should at least partially fill it.
+	 * The caller is not required to fill the buffer supplied by
+	 * get_block, but should at least partially fill it.
 	 * @param count the block length in bytes
 	 */
 	virtual void put_block(size_type count)=0;

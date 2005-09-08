@@ -304,7 +304,7 @@ application& application::add(menu& m,const point& p,size_type level)
 	return *this;
 }
 
-application& application::add(transfer::load& loadop)
+application& application::add(transfer::basic_load& loadop)
 {
 	loadop.remove();
 	_current_load=&loadop;
@@ -613,7 +613,7 @@ void application::send_message(int wimpcode,os::wimp_block& wimpblock,
 	_message_queue.push(msg);
 }
 
-transfer::load* application::auto_load(unsigned int filetype)
+transfer::basic_load* application::auto_load(unsigned int filetype)
 {
 	return 0;
 }
@@ -638,7 +638,7 @@ void application::handle_event(events::datasave &ev)
 	if (std::find(_icons.begin(),_icons.end(),
 		dynamic_cast<icon*>(ev.target()))!=_icons.end())
 	{
-		if (transfer::load* loadop=auto_load(ev.filetype()))
+		if (transfer::basic_load* loadop=auto_load(ev.filetype()))
 		{
 			add(*loadop);
 			ev.target(*loadop);
@@ -651,7 +651,7 @@ void application::handle_event(events::dataload &ev)
 {
 	if (ev.target()==this)
 	{
-		if (transfer::load* loadop=auto_load(ev.filetype()))
+		if (transfer::basic_load* loadop=auto_load(ev.filetype()))
 		{
 			add(*loadop);
 			ev.target(*loadop);
@@ -664,7 +664,7 @@ void application::handle_event(events::dataopen &ev)
 {
 	if (ev.target()==this)
 	{
-		if (transfer::load* loadop=auto_load(ev.filetype()))
+		if (transfer::basic_load* loadop=auto_load(ev.filetype()))
 		{
 			add(*loadop);
 			ev.target(*loadop);

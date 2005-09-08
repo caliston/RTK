@@ -12,7 +12,7 @@ namespace events {
 
 using rtk::desktop::component;
 
-loaded::loaded(component& target,transfer::load& loadop):
+loaded::loaded(component& target,transfer::basic_load& loadop):
 	event(target),
 	_loadop(&loadop)
 {};
