@@ -6,14 +6,20 @@
 #ifndef _RTK_OS_PDRIVER
 #define _RTK_OS_PDRIVER
 
-#include "rtk/graphics/point.h"
-#include "rtk/graphics/box.h"
-
 namespace rtk {
+namespace graphics {
+
+class point;
+class box;
+class linear_transformation;
+
+}; /* namespace graphics */
+
 namespace os {
 
 using rtk::graphics::point;
 using rtk::graphics::box;
+using rtk::graphics::linear_transformation;
 
 /** Get information about printer driver.
  * @param _type a buffer for the version number (bits 0-15) and
@@ -73,8 +79,8 @@ void PDriver_AbortJob(int handle);
  * @param pos the position of the bottom left-hand corner (millipoints)
  * @param bcolour the background colour (palette entry)
  */
-void PDriver_GiveRectangle(unsigned int id,const box& bbox,const int* trans,
-	const point& pos,int bcolour);
+void PDriver_GiveRectangle(unsigned int id,const box& bbox,
+	const linear_transformation& trans,const point& pos,int bcolour);
 
 /** Get first rectangle to print.
  * @param copies the number of copies to print

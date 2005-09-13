@@ -6,6 +6,8 @@
 #include "rtk/swi/pdriver.h"
 #include "rtk/os/call_swi.h"
 #include "rtk/os/pdriver.h"
+#include "rtk/graphics/point.h"
+#include "rtk/graphics/box.h"
 
 namespace rtk {
 namespace os {
@@ -71,13 +73,13 @@ void PDriver_AbortJob(int handle)
 	call_swi(swi::PDriver_AbortJob,&regs);
 }
 
-void PDriver_GiveRectangle(unsigned int id,const box& bbox,const int* trans,
-	const point& pos,int bcolour)
+void PDriver_GiveRectangle(unsigned int id,const box& bbox,
+	const linear_transformation& trans,const point& pos,int bcolour)
 {
 	_kernel_swi_regs regs;
 	regs.r[0]=id;
 	regs.r[1]=(int)&bbox;
-	regs.r[2]=(int)trans;
+	regs.r[2]=(int)&trans;
 	regs.r[3]=(int)&pos;
 	regs.r[4]=bcolour;
 	call_swi(swi::PDriver_GiveRectangle,&regs);
