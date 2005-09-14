@@ -24,10 +24,14 @@ void print_gcontext::activate()
 	{
 		os::PDriver_SelectJob(_handle,0,0);
 	}
+
+	inherited::activate();
 }
 
 void print_gcontext::deactivate()
 {
+	inherited::deactivate();
+
 	// As a precaution, check that the file handles (of this graphics
 	// context and the current print job) match before suspending the
 	// current print job.

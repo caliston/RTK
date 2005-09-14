@@ -24,6 +24,9 @@ class print_gcontext:
 	public vdu_gcontext
 {
 private:
+	/** The class from which this is derived. */
+	typedef vdu_gcontext inherited;
+
 	/** The file handle to which output is redirected. */
 	int _handle;
 public:
