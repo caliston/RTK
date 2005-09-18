@@ -193,8 +193,8 @@ public:
 		unsigned int _index_line;
 
 		/** The position of the mark within the text area.
-		 * This is given with respect to the top left-hand corner
-		 * of the bounding box. */
+		 * This is given with respect to the origin of the text area.
+		 */
 		point _position;
 	public:
 		/** Construct fixed mark.
@@ -217,8 +217,7 @@ public:
 			{ return _index_line; }
 
 		/** Get position of mark within text area.
-		 * This is given with respect to the top left-hand corner
-		 * of the bounding box.
+		 * This is given with respect to the origin of the text area.
 		 * @return the position of the mark within the text area
 		 */
 		const point& position() const
@@ -270,6 +269,9 @@ private:
 	/** The bounding box of this component. */
 	box _bbox;
 
+	/** The bounding box of the text. */
+	box _tbbox;
+
 	/** The cached non-line-wrapped minimum bounding box of this component.
 	 * This is valid iff _min_bbox_valid&&size_valid() is true.
 	 */
@@ -303,6 +305,7 @@ private:
 	 * In most cases it will not be able to achieve exactly that
 	 * position because it does not correspond to a character boundary,
 	 * in which case it will move to the nearest allowed position.
+	 * It is given with respect to the origin of the text area.
 	 */
 	int _caret_pref_x;
 
@@ -393,6 +396,14 @@ public:
 	virtual void handle_event(events::claim_entity& ev);
 	virtual void handle_event(events::datarequest& ev);
 	virtual void handle_event(events::loaded& ev);
+
+	/** Get bounding box of text.
+	 * This is not necessarily the same as the bounding box of the
+	 * component, because the component may have expanded to occupy
+	 * an area larger than the text is able to fill.
+	 */
+	box tbbox() const
+		{ return _tbbox; }
 
 	/** Get text.
 	 * The return value is guaranteed to be a const instance of
@@ -681,7 +692,8 @@ private:
 		bool include_trailing=true) const;
 
 	/** Find mark by snapping a point to character grid.
-	 * @param p the point to snap
+	 * @param p the point to snap, with respect to the origin of the
+	 *  text area
 	 * @return a mark corresponding to the point
 	 */
 	mark snap(const point& p) const;
@@ -689,7 +701,8 @@ private:
 	/** Find mark by snapping an x-position to the character grid
 	 * on a given line.
 	 * @param line the required line index
-	 * @param x the required x-position
+	 * @param x the required x-position, with respect to the origin
+	 *  of the text area
 	 * @return a mark corresponding to line and x
 	 */
 	mark snap(unsigned int line,int x) const;

@@ -54,6 +54,9 @@ public:
 	/** Get control character as a string formatted for display. */
 	operator const char*() const
 		{ return cs; }
+
+	unsigned int length() const
+		{ return 4; }
 };
 
 control_string::control_string(char code)
@@ -66,176 +69,6 @@ control_string::control_string(char code)
 }
 
 }; /* anonymous namespace */
-
-int operator-(const text_area::basic_mark& lhs,
-	const text_area::basic_mark& rhs)
-{
-	// Calculate difference assuming that the marks
-	// are in the same paragraph.
-	int diff=lhs.index_para()-lhs.index_para();
-
-	// Correct for the lengths of any intervening paragraphs.
-	unsigned int para=lhs.para();
-	while (para<rhs.para())
-	{
-		diff+=lhs.text()[para++].size()+1;
-	}
-	while (para>rhs.para())
-	{
-		diff-=lhs.text()[--para].size()+1;
-	}
-	return diff;
-}
-
-text_area::basic_mark::basic_mark(const text_type& text,unsigned int para,
-	unsigned int index_para):
-	_text(&text),
-	_para(para),
-	_index_para(index_para)
-{}
-
-char text_area::basic_mark::operator*() const
-{
-	const string ptext=(*_text)[_para];
-	return (_index_para<ptext.size())?ptext[_index_para]:'\n';
-}
-
-text_area::mark::mark(const text_type& text,unsigned int para,
-	unsigned int index_para):
-	basic_mark(text,para,index_para)
-{}
-
-text_area::mark text_area::mark::operator++()
-{
-	if (_index_para<(*_text)[_para].size())
-	{
-		++_index_para;
-	}
-	else if (_para<_text->size()-1)
-	{
-		++_para;
-		_index_para=0;
-	}
-	return *this;
-}
-
-text_area::mark text_area::mark::operator--()
-{
-	if (_index_para)
-	{
-		--_index_para;
-	}
-	else if (_para)
-	{
-		--_para;
-		_index_para=(*_text)[_para].size();
-	}
-	return *this;
-}
-
-text_area::mark text_area::mark::next_word() const
-{
-	unsigned int para=_para;
-	unsigned int index_para=_index_para;
-	string ptext=(*_text)[para];
-
-	// Search forwards for a space character in this paragraph.
-	// If the end of the paragraph is reached then stop there,
-	// because that counts as a space character.
-	{
-		const string cptext=ptext;
-		while ((index_para!=ptext.size())&&!isspace(cptext[index_para]))
-			++index_para;
-	}
-
-	// Search forwards for a non-space character in this paragraph.
-	{
-		const string cptext=ptext;
-		while ((index_para!=ptext.size())&&isspace(cptext[index_para]))
-			++index_para;
-	}
-
-	// If the end of the paragraph is reached without finding a
-	// non-space character then search subsequent paragraphs.
-	while ((para+1<_text->size())&&(index_para==ptext.size()))
-	{
-		++para;
-		ptext=(*_text)[para];
-		index_para=0;
-		const string cptext=ptext;
-		while ((index_para!=ptext.size())&&isspace(cptext[index_para]))
-			++index_para;
-	}
-
-	return mark(*_text,para,index_para);
-}
-
-text_area::mark text_area::mark::prev_word() const
-{
-	unsigned int para=_para;
-	unsigned int index_para=_index_para;
-
-	// Search backwards for a non-space character in this paragraph.
-	string ptext=(*_text)[para];
-	{
-		const string cptext=ptext;
-		while (index_para&&isspace(cptext[index_para-1]))
-			--index_para;
-	}
-
-	// If the start of the paragraph is reached without finding a
-	// non-space character then search previous paragraphs.
-	while (para&&!index_para)
-	{
-		--para;
-		ptext=(*_text)[para];
-		index_para=ptext.size();
-		const string cptext=ptext;
-		while (index_para&&isspace(cptext[index_para-1]))
-			--index_para;
-	}
-
-	// Search backwards for a space character in this paragraph.
-	// If the start of the paragraph is reached then stop there,
-	// because that counts as a space character.
-	{
-		const string cptext=ptext;
-		while (index_para&&!isspace(cptext[index_para-1]))
-			--index_para;
-	}
-
-	return mark(*_text,para,index_para);
-}
-
-text_area::fixed_mark::fixed_mark(const text_area& area,const basic_mark& mk):
-	basic_mark(mk)
-{
-	int width=area.bbox().xsize();
-	const string ptext=(*_text)[_para];
-
-	// Split paragraph into line, searching for index.
-	// Record line number and index into line when found.
-	_line=area._lines.sum(_para);
-	_index_line=_index_para;
-	bool found=false;
-	while (!found)
-	{
-		unsigned int offset=_index_para-_index_line;
-		unsigned int count=area.split_line(ptext,offset,width);
-		found=(_index_line<count)||
-			((_index_line==count)&&(offset+count==ptext.size()));
-		if (!found)
-		{
-			++_line;
-			_index_line-=count;
-		}
-	}
-
-	// Calculate coordinates of mark.
-	int x=area.line_width(ptext,_index_para-_index_line,_index_line);
-	int y=-(_line+1)*area.line_height();
-	_position=point(x,y);
-}
 
 text_area::text_area():
 	_font(graphics::font::font_desktop),
@@ -268,10 +101,10 @@ text_area::text_area():
 	// (The other fields do not need to be initialised.)
 	_font_coord_block.split_char=split_char;
 
-	// Initialise _lines.
-	// (The specified width is arbitrary:
-	// what matters is that _lines is non-empty.)
-	reflow(1024);
+	// Initialise _bbox, _tbbox and _lines.
+	// (The width used here should be large enough to avoid
+	// excessive line wrapping, but is otherwise arbitrary.)
+	reflow(512);
 }
 
 text_area::~text_area()
@@ -284,7 +117,7 @@ box text_area::bbox() const
 
 box text_area::min_bbox() const
 {
-	// Determine how many OS units are in a pixel (horizontally).
+	// Determine number of OS units per pixel (horizontally).
 	int xeigfactor=0;
 	os::OS_ReadModeVariable(swi::XEigFactor,&xeigfactor);
 	unsigned int xpix=1<<xeigfactor;
@@ -298,8 +131,8 @@ box text_area::min_bbox() const
 		int xsize=0;
 		for (unsigned int i=0;i!=_text.size();++i)
 		{
-			const string text=_text[i];
-			xsize=max(xsize,line_width(text,0,text.length()));
+			const string ptext=_text[i];
+			xsize=max(xsize,line_width(ptext,0,ptext.length()));
 		}
 		int ysize=_text.size()*line_height();
 
@@ -321,7 +154,7 @@ box text_area::min_bbox() const
 box text_area::min_wrap_bbox(const box& wbox) const
 {
 	// If line wrap is disabled then wbox is irrelevant
-	// and the result is the same as min_bbox(). 
+	// and the result is the same as min_bbox().
 	if (_wrap_method==wrap_none) return min_bbox();
 
 	// Update _min_wrap_bbox_valid.
@@ -340,11 +173,11 @@ box text_area::min_wrap_bbox(const box& wbox) const
 		{
 			// Count number of lines in paragraph.
 			unsigned int lines=1;
-			const string text=_text[i];
-			unsigned int j=split_line(text,0,xsize);
-			while (j<text.size())
+			const string ptext=_text[i];
+			unsigned int j=split_line(ptext,0,xsize);
+			while (j<ptext.size())
 			{
-				j+=split_line(text,j,xsize);
+				j+=split_line(ptext,j,xsize);
 				++lines;
 			}
 
@@ -368,7 +201,7 @@ box text_area::min_wrap_bbox(const box& wbox) const
 component::wrap_type text_area::wrap_direction() const
 {
 	return wrap_horizontal;
-} 
+}
 
 void text_area::resize() const
 {
@@ -384,6 +217,8 @@ void text_area::resize() const
 
 void text_area::reformat(const point& origin,const box& pbbox)
 {
+	bool moved=(origin!=this->origin());
+
 	// Fit bounding box to parent.
 	box bbox=fit(pbbox);
 
@@ -391,14 +226,20 @@ void text_area::reformat(const point& origin,const box& pbbox)
 	int old_width=_bbox.xsize();
 	int new_width=bbox.xsize();
 
-	// Update origin and bounding box of this component, force redraw
-	// or reflow if necessary.
-	bool moved=(origin!=this->origin());
+	// Force redraw of existing area if origin has moved.
 	if (moved) force_redraw(true);
+
+	// Reflow if necessary.
+	if (old_width!=new_width) reflow(old_width,new_width);
+
+	// Set new bounding box.
+	box ibbox(0,-_lines.sum(_lines.size())*line_height(),new_width,0);
+	box _tbbox=ibbox-external_origin(ibbox,xbaseline_left,ybaseline_top);
 	_bbox=bbox;
-	inherited::reformat(origin,bbox);
+	inherited::reformat(origin,_bbox);
+
+	// Redraw again if origin has moved.
 	if (moved) force_redraw(true);
-	else if (new_width!=old_width) reflow(old_width,new_width);
 }
 
 void text_area::unformat()
@@ -422,7 +263,7 @@ void text_area::redraw(gcontext& context,const box& clip)
 	context.bcolour(bcolour());
 
 	// Get clip box with respect to top left-hand corner of text area.
-	box lclip=clip-bbox().xminymax();
+	box lclip=clip-tbbox().xminymax();
 
 	// Identify first and 1+last line numbers to be displayed.
 	unsigned int lmin=max((-lclip.ymax())/line_height(),0);
@@ -435,7 +276,7 @@ void text_area::redraw(gcontext& context,const box& clip)
 
 	// Redraw paragraphs within clip box.
 	// Loop over paragraphs.
-	int width=bbox().xsize();
+	int width=tbbox().xsize();
 	for (unsigned int i=pmin;i!=pmax;++i)
 	{
 		// Extract paragraph text, determine line number.
@@ -446,15 +287,14 @@ void text_area::redraw(gcontext& context,const box& clip)
 		unsigned int j=0;
 		while (j<text.size())
 		{
-			// Calculate coordinates for top and bottom of line.
-			int ymin=bbox().ymax()-(line+1)*line_height();
-			int ymax=ymin+line_height();
+			// Calculate coordinate for bottom of line.
+			int ymin=tbbox().ymax()-(line+1)*line_height();
 
 			// Decide where to split line.
 			unsigned int k=split_line(text,j,width);
 
 			// Render line.
-			point p(bbox().xmin(),ymin+baseline_offset());
+			point p(tbbox().xmin(),ymin+baseline_offset());
 			render_line(context,text,j,k,p);
 
 			// Move forwards in paragraph
@@ -479,14 +319,15 @@ void text_area::redraw(gcontext& context,const box& clip)
 		unsigned int ypix=1<<yeigfactor;
 
 		// Loop over lines that are at least partially within the selection.
-		for (unsigned int i=select_first_pos.line();i<=select_last_pos.line();++i)
+		for (unsigned int i=select_first_pos.line();i<=select_last_pos.line();
+			++i)
 		{
 			// Extract paragraph text for line.
 			const string text=_text[_lines.find(i)];
 
 			// Initially, assume that the selection covers the whole line.
-			int xmin=bbox().xmin();
-			int xmax=bbox().xmax();
+			int xmin=tbbox().xmin();
+			int xmax=tbbox().xmax();
 
 			// If this is the first line of the selection then it may not
 			// extend to the left margin.
@@ -494,7 +335,7 @@ void text_area::redraw(gcontext& context,const box& clip)
 			{
 				unsigned int index=select_first_pos.index_para()-
 					select_first_pos.index_line();
-				xmin=bbox().xmin()+
+				xmin=tbbox().xmin()+
 					line_width(text,index,select_first_pos.index_line());
 			}
 
@@ -504,15 +345,15 @@ void text_area::redraw(gcontext& context,const box& clip)
 			{
 				unsigned int index=select_last_pos.index_para()-
 					select_last_pos.index_line();
-				xmax=bbox().xmin()+
+				xmax=tbbox().xmin()+
 					line_width(text,index,select_last_pos.index_line());
 			}
 
 			// Provided at least part of the line remains, invert it.
 			if (xmax!=xmin)
 			{
-				int ymin=bbox().ymax()-int(i+1)*line_height();
-				int ymax=bbox().ymax()-int(i)*line_height();
+				int ymax=tbbox().ymax()-i*line_height();
+				int ymin=ymax-line_height();
 				context.plot(68,point(xmin,ymin));
 				context.plot(102,point(xmax-xpix,ymax-ypix));
 			}
@@ -527,13 +368,13 @@ void text_area::handle_event(events::null_reason& ev)
 	// No action unless a drag is in progress.
 	if (_dragging)
 	{
-		// Get pointer location with respect to top left-hand corner
-		// of text area, and then as a mark within the text.
+		// Get pointer location with respect to origin of text area,
+		// and then as a mark within the text.
 		point offset;
 		parent_application(offset);
 		os::pointer_info_get block;
 		os::Wimp_GetPointerInfo(block);
-		point lpos=block.p-offset-bbox().xminymax();
+		point lpos=block.p-offset;
 		mark mk=snap(lpos);
 
 		// Update preferred caret x-coordinate,
@@ -548,12 +389,12 @@ void text_area::handle_event(events::null_reason& ev)
 
 void text_area::handle_event(events::mouse_click& ev)
 {
-	// Get pointer location with respect to top left-hand corner
-	// of text area, and then as a mark within the text.
-	point lpos=ev.position()-bbox().xminymax();
+	// Get pointer location with respect to the origin of the
+	// text area, and then as a mark within the text.
+	point lpos=ev.position();
 	mark mk(snap(lpos));
 
-	// Action depends on button stage.
+	// Action depends on button state.
 	switch (ev.buttons())
 	{
 	case 0x400: /* Click select. */
@@ -590,14 +431,14 @@ void text_area::handle_event(events::mouse_click& ev)
 			if (abs(mk-_select_first)<abs(mk-_select_last))
 			{
 				// If click nearer to start of selection than end
-				// then drag start, fix end.
+				// then drag start and fix end.
 				show_selection(mk,_select_last);
 				_dragref=_select_last;
 			}
 			else
 			{
-				// If click nearer to end of selection than start
-				// then drag end, fix start.
+				// If click nearer to end of selection than start,
+				// or equidistant, then drag end and fix start.
 				show_selection(_select_first,mk);
 				_dragref=_select_first;
 			}
@@ -690,8 +531,8 @@ void text_area::handle_event(events::datasave& ev)
 	// to a clipboard request or because the user has explicitly
 	// dragged data from another window.
 	// In either case the load object is made ready to receive
-	// a data transfer.
-	if (ev.target()==this)
+	// a data transfer, unless the text area is read-only.
+	if ((ev.target()==this)&&!_read_only)
 	{
 		if (application* app=parent_application())
 		{
@@ -759,9 +600,9 @@ void text_area::handle_event(events::datarequest& ev)
 		if (application* app=parent_application())
 		{
 			app->add(_saveop);
+			events::datarequest ev2(_saveop,swi::User_Message,ev.wimpblock());
+			ev2.post();
 		}
-		events::datarequest ev2(_saveop,swi::User_Message,ev.wimpblock());
-		ev2.post();
 	}
 }
 
@@ -774,7 +615,7 @@ void text_area::handle_event(events::loaded& ev)
 	// (or in place of the selection if there is no caret),
 	// unless the text area is read-only.
 	// The style guide says that the inserted data is automatically
-	// selected, but that has the unfortunately effect of preventing
+	// selected, but that has the unfortunate effect of preventing
 	// multiple paste commands from doing anything.  The behaviour
 	// at present is simply to move the caret to the end of the
 	// inserted text.
@@ -873,7 +714,7 @@ void text_area::handle_right_word()
 void text_area::handle_down_lines(int diff)
 {
 	// Determine the current line number.
-	int line=fixed_mark(*this,_caret_last).line();
+	int line=fixed_mark(*this,(diff<0)?_caret_first:_caret_last).line();
 
 	// Determine the number of lines in the text.
 	int lines=_lines.sum(_lines.size());
@@ -894,14 +735,14 @@ void text_area::handle_start_of_line()
 {
 	// Move the caret to the start of the current line.
 	fixed_mark caret_first_pos(*this,_caret_first);
-	show_caret(snap(caret_first_pos.line(),0),true,true);
+	show_caret(snap(caret_first_pos.line(),tbbox().xmin()),true,true);
 }
 
 void text_area::handle_end_of_line()
 {
 	// Move the caret to the end of the current line.
 	fixed_mark caret_last_pos(*this,_caret_last);
-	show_caret(snap(caret_last_pos.line(),bbox().xsize()),true,true);
+	show_caret(snap(caret_last_pos.line(),tbbox().xmax()),true,true);
 }
 
 void text_area::handle_start_of_text()
@@ -953,7 +794,11 @@ void text_area::handle_delete_left()
 	{
 		// Delete from _caret_first to _caret_last if they differ,
 		// otherwise delete the character to the left of _caret_first.
-		if (_caret_first==_caret_last) --_caret_first;
+		if (_caret_first==_caret_last)
+		{
+			hide_caret();
+			--_caret_first;
+		}
 		replace(_caret_first,_caret_last,string());
 	}
 }
@@ -964,7 +809,11 @@ void text_area::handle_delete_right()
 	{
 		// Delete from _caret_first to _caret_last if they differ,
 		// otherwise delete the character to the right of _caret_last.
-		if (_caret_last==_caret_first) ++_caret_last;
+		if (_caret_last==_caret_first)
+		{
+			hide_caret();
+			++_caret_last;
+		}
 		replace(_caret_first,_caret_last,string());
 	}
 }
@@ -993,7 +842,7 @@ void text_area::handle_paste()
 	// Broadcast Message_DataRequest to request that content of
 	// clipboard be sent using the data transfer protocol.
 	// Prepare the load operation to receive the data.
-	point p(bbox().xminymin());
+	point p(tbbox().xminymin());
 	if (desktop::application* app=parent_application(p))
 	{
 		if (basic_window* w=parent_work_area())
@@ -1018,7 +867,7 @@ void text_area::handle_paste()
 text_area& text_area::font(const graphics::font& font)
 {
 	_font=font;
-	reflow(bbox().xsize());
+	reflow(tbbox().xsize());
 	invalidate();
 	return *this;
 }
@@ -1074,7 +923,7 @@ text_area& text_area::wrap_method(wrap_method_type wrap_method)
 	if (_wrap_method!=wrap_method)
 	{
 		_wrap_method=wrap_method;
-		reflow(bbox().xsize());
+		reflow(tbbox().xsize());
 		invalidate();
 	}
 	return *this;
@@ -1082,6 +931,7 @@ text_area& text_area::wrap_method(wrap_method_type wrap_method)
 
 text_area& text_area::read_only(bool read_only)
 {
+	if (read_only) hide_caret();
 	_read_only=read_only;
 	return *this;
 }
@@ -1118,6 +968,13 @@ int text_area::auto_line_height() const
 	// font definition.  First determine how large that
 	// buffer need be, then read the font definition,
 	// then extract the required information.
+	// Font_ReadDefn returns 16 times the font size.
+	// The required conversion factors are:
+	// - divide by 16 (to convert to points)
+	// - divide by 72 (to convert to inches)
+	// - multiply by 180 (to convert to OS units)
+	// - multiply by 120% (to convert font height to line height)
+	// Together these are equivalent to a factor of 3/16.
 	int buffer_size=0;
 	os::Font_ReadDefn(_font.handle(),&buffer_size);
 	char id[buffer_size];
@@ -1164,6 +1021,7 @@ void text_area::render_line(gcontext& context,const string& ptext,
 			// characters (after inserting a temporary terminator).
 			char temp=0;
 			std::swap(*f,temp);
+			context.bcolour(_bcolour);
 			context.fcolour(_fcolour);
 			context.draw(_font,t,point(x,y));
 			x+=_font.width(t,f-t);
@@ -1175,9 +1033,10 @@ void text_area::render_line(gcontext& context,const string& ptext,
 			// If no printable characters then render the first
 			// non-printable character (after converting to hex).
 			control_string cs(*t++);
+			context.bcolour(_bcolour);
 			context.fcolour(_ccolour);
 			context.draw(_font,cs,point(x,y));
-			x+=_font.width(cs,4);
+			x+=_font.width(cs,cs.length());
 		}
 	}
 }
@@ -1221,7 +1080,7 @@ int text_area::line_width(const string& ptext,unsigned int index,
 			// If no printable characters then measure the first
 			// non-printable character (after converting to hex).
 			control_string cs(*t++);
-			width+=_font.width(cs,4);
+			width+=_font.width(cs,cs.length());
 		}
 	}
 	return width;
@@ -1230,7 +1089,7 @@ int text_area::line_width(const string& ptext,unsigned int index,
 unsigned int text_area::find_index(const string& ptext,unsigned int index,
 	int x) const
 {
-	// As a precaution, place limits on index and count.
+	// As a precaution, place limit on index.
 	if (index>ptext.size()) index=ptext.size();
 
 	// Initialise pointers: beginning, end and iterator.
@@ -1316,7 +1175,7 @@ unsigned int text_area::split_line(const string& ptext,unsigned int index,
 {
 	// As a precaution, place limits on index, count and width.
 	if (index>ptext.size()) index=ptext.size();
-	if (width<1) width=1;
+	if (width<0) width=0;
 
 	// Initialise pointers: beginning, end and iterator.
 	const char* b=ptext.c_str()+index;
@@ -1342,7 +1201,6 @@ unsigned int text_area::split_line(const string& ptext,unsigned int index,
 			// Insert temporary terminator.
 			char temp=0;
 			std::swap(*f,temp);
-
 			point p_mp(width*400,0);
 			const char* q=t;
 			point bbox;
@@ -1414,17 +1272,18 @@ unsigned int text_area::split_line(const string& ptext,unsigned int index,
 
 text_area::mark text_area::snap(const point& p) const
 {
-	unsigned int line=max(-p.y(),0)/line_height();
+	unsigned int line=max(tbbox().ymax()-p.y()-1,0)/line_height();
 	return snap(line,p.x());
 }
 
 text_area::mark text_area::snap(unsigned int line,int x) const
 {
-	int width=bbox().xsize();
+	int width=tbbox().xsize();
 
 	// Ensure that line does not exceed number of lines in text.
 	line=min(line,_lines.sum(_lines.size())-1);
 
+	// Find paragraph that contains line.
 	unsigned int para=_lines.find(line);
 	const string ptext=_text[para];
 
@@ -1438,7 +1297,7 @@ text_area::mark text_area::snap(unsigned int line,int x) const
 	}
 
 	// Find specified coordinate within line.
-	unsigned int index_line=find_index(ptext,j,x);
+	unsigned int index_line=find_index(ptext,j,x-tbbox().xmin());
 	unsigned int index_para=index_line+j;
 
 	// Ensure that index is not past split point.
@@ -1461,11 +1320,10 @@ void text_area::reflow(int old_width,int new_width)
 	// Ensure that size of location cache matches number of paragraphs.
 	_lines.resize(_text.size());
 
-	// First pass: go to end of text if bounding box is narrowing.
-	// (This is so that the second pass can run backwards in that case.)
-	unsigned int old_line=0;
-	unsigned int new_line=0;
-	if (new_width<old_width) for (unsigned int i=0;i!=_text.size();++i)
+	// First pass: count number of lines, determine size of bounding box.
+	unsigned int old_lines=0;
+	unsigned int new_lines=0;
+	for (unsigned int i=0;i!=_text.size();++i)
 	{
 		const string ptext=_text[i];
 
@@ -1480,25 +1338,33 @@ void text_area::reflow(int old_width,int new_width)
 			old_pos+=split_line(ptext,old_pos,old_width);
 			new_pos+=split_line(ptext,new_pos,new_width);
 
-			if (has_old_line) ++old_line;
-			if (has_new_line) ++new_line;
+			if (has_old_line) ++old_lines;
+			if (has_new_line) ++new_lines;
 
 			first_line=false;
 		}
 	}
 
-	// Second pass: search for paragraphs that can be copied.
-	// This pass runs forwards if widening, backwards if narrowing.
+	// Calculate old bounding box for text area as a whole.
+	box oibbox(0,-old_lines*line_height(),old_width,0);
+	box obbox=oibbox-external_origin(oibbox,xbaseline_left,ybaseline_top);
+
+	// Calculate new bounding box for text area as a whole.
+	box nibbox(0,-new_lines*line_height(),new_width,0);
+	box nbbox=nibbox-external_origin(nibbox,xbaseline_left,ybaseline_top);
+
+	// Second pass: search for paragraphs that can be copied upwards.
+	unsigned int old_line=0;
+	unsigned int new_line=0;
 	for (unsigned int i=0;i!=_text.size();++i)
 	{
-		unsigned int j=(new_width<old_width)?_text.size()-i-1:i;
-		const string ptext=_text[j];
+		const string ptext=_text[i];
 
 		bool can_copy=true;
 		unsigned int old_pos=0;
 		unsigned int new_pos=0;
-		unsigned int old_lines=0;
-		unsigned int new_lines=0;
+		unsigned int old_para_lines=0;
+		unsigned int new_para_lines=0;
 		bool first_line=true;
 		while (first_line||(old_pos<ptext.size())||(new_pos<ptext.size()))
 		{
@@ -1510,52 +1376,96 @@ void text_area::reflow(int old_width,int new_width)
 
 			if (new_pos!=old_pos) can_copy=false;
 
-			if (has_old_line) ++old_lines;
-			if (has_new_line) ++new_lines;
+			if (has_old_line) ++old_para_lines;
+			if (has_new_line) ++new_para_lines;
 
 			first_line=false;
 		}
 
-		// Move up (to start of paragraph) if narrowing.
-		if (new_width<old_width)
+		// If paragraph has identical line breaks, but has moved
+		// upwards, then copy.
+		int old_ymax=obbox.ymax()-old_line*line_height();
+		int new_ymax=nbbox.ymax()-new_line*line_height();
+		if (can_copy&&(new_ymax>old_ymax))
 		{
-			old_line-=old_lines;
-			new_line-=new_lines;
-		}
-
-		// If paragraphs have identical line breaks, but different
-		// positions, then copy.
-		if (can_copy&&(new_line!=old_line))
-		{
-			int xmin=bbox().xmin();
-			int xmax=bbox().xmax();
-			int old_ymax=-old_line*line_height();
-			int old_ymin=-(old_line+old_lines)*line_height();
-			int new_ymin=-(new_line+new_lines)*line_height();
-			box src(xmin,old_ymin,xmax,old_ymax);
-			point dst(xmin,new_ymin);
+			int old_ymin=old_ymax-old_para_lines*line_height();
+			int new_ymin=new_ymax-new_para_lines*line_height();
+			box src(obbox.xmin(),old_ymin,obbox.xmax(),old_ymax);
+			point dst(nbbox.xmin(),new_ymin);
 
 			// Hide the caret if it falls within the source or destination
 			// of the block copy operation.
 			if (((caret_last_pos.line()>=old_line)&&
-				(caret_first_pos.line()<old_line+old_lines))||
+				(caret_first_pos.line()<old_line+old_para_lines))||
 				((caret_last_pos.line()>=new_line)&&
-				(caret_first_pos.line()<new_line+new_lines)))
+				(caret_first_pos.line()<new_line+new_para_lines)))
 			{
 				hide_caret();
 			}
 			block_copy(src,dst);
 		}
 
-		// Move down (to start of next paragraph) if widening.
-		if (new_width>old_width)
-		{
-			old_line+=old_lines;
-			new_line+=new_lines;
-		}
+		// Move to start of next paragraph.
+		old_line+=old_para_lines;
+		new_line+=new_para_lines;
 	}
 
-	// Third pass: search for lines to be redrawn.
+	// Third pass: search for paragraphs that can be copied downwards.
+	for (unsigned int i=_text.size();i!=0;--i)
+	{
+		const string ptext=_text[i-1];
+
+		bool can_copy=true;
+		unsigned int old_pos=0;
+		unsigned int new_pos=0;
+		unsigned int old_para_lines=0;
+		unsigned int new_para_lines=0;
+		bool first_line=true;
+		while (first_line||(old_pos<ptext.size())||(new_pos<ptext.size()))
+		{
+			bool has_old_line=first_line||(old_pos<ptext.size());
+			bool has_new_line=first_line||(new_pos<ptext.size());
+
+			old_pos+=split_line(ptext,old_pos,old_width);
+			new_pos+=split_line(ptext,new_pos,new_width);
+
+			if (new_pos!=old_pos) can_copy=false;
+
+			if (has_old_line) ++old_para_lines;
+			if (has_new_line) ++new_para_lines;
+
+			first_line=false;
+		}
+
+		// If paragraphs have identical line breaks, but has moved
+		// downwards, then copy.
+		int old_ymin=obbox.ymax()-old_line*line_height();
+		int new_ymin=nbbox.ymax()-new_line*line_height();
+		if (can_copy&&(new_ymin<old_ymin))
+		{
+			int old_ymax=old_ymin+old_para_lines*line_height();
+			int new_ymax=new_ymin+new_para_lines*line_height();
+			box src(obbox.xmin(),old_ymin,obbox.xmax(),old_ymax);
+			point dst(nbbox.xmin(),new_ymin);
+
+			// Hide the caret if it falls within the source or destination
+			// of the block copy operation.
+			if (((caret_last_pos.line()>=old_line-old_para_lines)&&
+				(caret_first_pos.line()<old_line))||
+				((caret_last_pos.line()>=new_line-new_para_lines)&&
+				(caret_first_pos.line()<new_line)))
+			{
+				hide_caret();
+			}
+			block_copy(src,dst);
+		}
+
+		// Move to start of next paragraph.
+		old_line-=old_para_lines;
+		new_line-=new_para_lines;
+	}
+
+	// Fourth pass: search for lines to be redrawn.
 	old_line=0;
 	new_line=0;
 	for (unsigned int i=0;i!=_text.size();++i)
@@ -1563,8 +1473,9 @@ void text_area::reflow(int old_width,int new_width)
 		unsigned int new_line_start=new_line;
 		const string ptext=_text[i];
 
+		bool move_required=(nbbox.ymax()-new_line*line_height()!=
+			obbox.ymax()-old_line*line_height());
 		bool can_copy=true;
-		bool pending_copy=new_line!=old_line;
 		unsigned int old_pos=0;
 		unsigned int new_pos=0;
 		bool first_line=true;
@@ -1579,20 +1490,24 @@ void text_area::reflow(int old_width,int new_width)
 			old_pos+=split_line(ptext,old_pos,old_width);
 			new_pos+=split_line(ptext,new_pos,new_width);
 
-			// Test whether paragraph so far can be moved by copying.
+			// The can_copy flag indicates whether the paragraph seen
+			// so far can be moved by copying.  If it can then check
+			// whether that will still be true when the current line
+			// has been added.
 			// (The copying, if required and allowed, will already have
 			// happened.  The purpose of this test is to take alternative
-			// action if movement was required but copying not allowed.)
-			if (can_copy&&(new_pos!=old_pos))
+			// action if copying had been assumed but is no longer
+			// feasible.)
+			if (move_required&&can_copy&&(old_start!=new_start))
 			{
-				// Copying is not allowed.
-				if (pending_copy&&(new_line!=new_line_start))
+				// Movement is required but copying is not allowed.
+				// The area in question must be invalidated instead.
+				if (new_line!=new_line_start)
 				{
-					// Movement is required but copying not allowed.
-					// The area in question must be invalidated instead.
-					int ymax=-new_line_start*line_height();
-					int ymin=-new_line*line_height();
-					box rbox(bbox().xmin(),ymin,bbox().xmax(),ymax);
+					int old_ymin=obbox.ymax()-old_line*line_height();
+					int new_ymin=nbbox.ymax()-new_line*line_height();
+					int new_ymax=nbbox.ymax()-new_line_start*line_height();
+					box rbox(nbbox.xmin(),new_ymin,nbbox.xmax(),new_ymax);
 					force_redraw(rbox);
 				}
 				can_copy=false;
@@ -1600,15 +1515,14 @@ void text_area::reflow(int old_width,int new_width)
 
 			if (has_new_line)
 			{
-				int ymax=-new_line*line_height();
-				int ymin=-(new_line+1)*line_height();
-				if ((new_start!=old_start)||
-					((new_line!=old_line)&&!can_copy))
+				int new_ymax=nbbox.ymax()-new_line*line_height();
+				int new_ymin=nbbox.ymax()-(new_line+1)*line_height();
+				if ((new_start!=old_start)||(move_required&&!can_copy))
 				{
 					// If index at start of line has changed then must
 					// redraw whole line.  Likewise if line has moved
 					// upwards or downwards and has not been copied.
-					box rbox(bbox().xmin(),ymin,bbox().xmax(),ymax);
+					box rbox(nbbox.xmin(),new_ymin,nbbox.xmax(),new_ymax);
 					force_redraw(rbox);
 				}
 				else if (new_pos!=old_pos)
@@ -1618,7 +1532,7 @@ void text_area::reflow(int old_width,int new_width)
 					unsigned int count=min(new_pos,old_pos)-old_start;
 					int x=line_width(ptext,old_start,count);
 					if (!count) x=0;
-					box rbox(bbox().xmin()+x,ymin,bbox().xmax(),ymax);
+					box rbox(nbbox.xmin()+x,new_ymin,nbbox.xmax(),new_ymax);
 					force_redraw(rbox);
 				}
 			}
@@ -1632,14 +1546,33 @@ void text_area::reflow(int old_width,int new_width)
 		_lines[i]=new_line-new_line_start;
 	}
 
-	// If number of lines has fallen then force redraw of
-	// region to be vacated at the end of the text.
-	if (new_line<old_line)
+	// If bounding box has shrunk in any direction
+	// then force redraw of region vacated.
+	if (nbbox.xmin()>obbox.xmin())
 	{
-		int ymax=-new_line*line_height();
-		int ymin=-(old_line+1)*line_height();
-		force_redraw(box(bbox().xmin(),ymin,bbox().xmax(),ymax));
+		box rbox(obbox.xmin(),min(obbox.ymin(),nbbox.ymin()),
+			nbbox.xmin(),max(obbox.ymax(),nbbox.ymax()));
+		force_redraw(rbox);
 	}
+	if (nbbox.ymin()>obbox.ymin())
+	{
+		box rbox(nbbox.xmin(),obbox.ymin(),nbbox.xmax(),nbbox.ymin());
+		force_redraw(rbox);
+	}
+	if (nbbox.xmax()<obbox.xmax())
+	{
+		box rbox(nbbox.xmax(),min(obbox.ymin(),nbbox.ymin()),
+			obbox.xmax(),max(obbox.ymax(),nbbox.ymax()));
+		force_redraw(rbox);
+	}
+	if (nbbox.ymax()<obbox.ymax())
+	{
+		box rbox(nbbox.xmin(),nbbox.ymax(),nbbox.xmax(),obbox.ymax());
+		force_redraw(rbox);
+	}
+
+	// Update text bounding box.
+	_tbbox=nbbox;
 
 	// Reposition caret if necessary.
 	if (_has_focus&&(_caret_first==_caret_last))
@@ -1670,6 +1603,13 @@ void text_area::reflow(int width)
 
 	// Redraw everything.
 	force_redraw();
+
+	// Update text bounding box.
+	box ibbox(0,-_lines.sum(_lines.size())*line_height(),width,0);
+	_tbbox=ibbox-external_origin(ibbox,xbaseline_left,ybaseline_top);
+
+	// Redraw again, in case bounding box changed.
+	force_redraw(_tbbox);
 
 	// Reposition caret if necessary.
 	if (_has_focus&&(_caret_first==_caret_last))
@@ -1726,14 +1666,13 @@ void text_area::show_caret(const mark& mk,bool set_pref_x,bool follow)
 	_caret_first=mk;
 	_caret_last=mk;
 
-	fixed_mark mk_pos(*this,mk);
-	point ext_pos(bbox().xminymax()+mk_pos.position());
-	set_caret_position(ext_pos,line_height(),-1);
-	if (set_pref_x) _caret_pref_x=mk_pos.position().x();
+	point mk_pos(fixed_mark(*this,mk).position());
+	set_caret_position(mk_pos,line_height(),-1);
+	if (set_pref_x) _caret_pref_x=mk_pos.x();
 
 	if (follow)
 	{
-		events::auto_scroll ev(*this,box(0,0,0,line_height())+ext_pos);
+		events::auto_scroll ev(*this,box(0,0,0,line_height())+mk_pos);
 		ev.post();
 	}
 }
@@ -1792,10 +1731,9 @@ void text_area::show_selection(mark first,mark last)
 		_caret_first=_select_first;
 		_caret_last=_select_last;
 		
-		point ext_pos(bbox().xminymax()+
-			fixed_mark(*this,_caret_first).position());
+		point mk_pos(fixed_mark(*this,_caret_first).position());
 		int flags=(_caret_first==_caret_last)?0:caret_invisible;
-		set_caret_position(ext_pos,line_height()|flags,-1);
+		set_caret_position(mk_pos,line_height()|flags,-1);
 	}
 }
 
@@ -1813,28 +1751,28 @@ void text_area::force_redraw_between(mark first,mark last)
 		const string ptext=_text[_lines.find(i)];
 
 		// Assume initially that redraw covers whole region.
-		int xmin=bbox().xmin();
-		int xmax=bbox().xmax();
+		int xmin=tbbox().xmin();
+		int xmax=tbbox().xmax();
 
 		// If this is the first line then adjust the left bound.
 		if (i==first_pos.line())
 		{
 			unsigned int index=first_pos.index_para()-first_pos.index_line();
-			xmin=bbox().xmin()+line_width(ptext,index,first_pos.index_line());
+			xmin=tbbox().xmin()+line_width(ptext,index,first_pos.index_line());
 		}
 
 		// If this is the last line then adjust the right bound.
 		if (i==last_pos.line())
 		{
 			unsigned int index=last_pos.index_para()-last_pos.index_line();
-			xmax=bbox().xmin()+line_width(ptext,index,last_pos.index_line());
+			xmax=tbbox().xmin()+line_width(ptext,index,last_pos.index_line());
 		}
 
 		// If there is anything left then redraw between bounds.
 		if (xmax!=xmin)
 		{
-			int ymin=bbox().ymax()-int(i+1)*line_height();
-			int ymax=bbox().ymax()-int(i)*line_height();
+			int ymax=tbbox().ymax()-int(i)*line_height();
+			int ymin=ymax-line_height();
 			force_redraw(box(xmin,ymin,xmax,ymax));
 		}
 	}
@@ -1871,14 +1809,17 @@ void text_area::replace(mark first,mark last,const text_type& new_text)
 void text_area::adjust_layout(const mark& first,const mark& last,
 	const text_type& new_text)
 {
-	int width=bbox().xsize();
+	int width=tbbox().xsize();
+	hide_caret();
 
 	// Calculate the number of paragraphs to be replaced (in part
-	// or in full), the number of replacement paragraphs, and the
-	// existing number of lines.
+	// or in full), the number of replacement paragraphs, the
+	// existing number of lines, and the first line of the affected
+	// area.
 	unsigned int old_paras=last.para()-first.para()+1;
 	unsigned int new_paras=new_text.size();
 	unsigned int old_lines=_lines.sum(_lines.size());
+	unsigned int first_line=_lines.sum(first.para());
 
 	// Adjust size of _lines if necessary.
 	if (new_paras>old_paras)
@@ -1891,11 +1832,16 @@ void text_area::adjust_layout(const mark& first,const mark& last,
 	}
 
 	// Maintain a record of the current line number.
-	unsigned int line=_lines.sum(first.para());
+	unsigned int line=first_line;
 
-	// Maintain a record of the number of lines by which the remainder
-	// of the text has moved downwards (or upwards if negative).
-	int diff=0;
+	// Maintain a record of the first (inclusive) and last (exclusive)
+	// lines affected.
+	unsigned int min_aline=std::numeric_limits<unsigned int>::max();
+	unsigned int max_aline=0;
+
+	// Maintain a record of the number of lines inserted or deleted.
+	unsigned int ilines=0;
+	unsigned int dlines=0;
 
 	// Initialise iterators.
 	unsigned int old_para=first.para();
@@ -1905,6 +1851,10 @@ void text_area::adjust_layout(const mark& first,const mark& last,
 
 	// Process one line at a time, until either the old text or
 	// the new text is exhausted.
+	// Rectangles are redrawn here on the assumption that the text
+	// does not also need to move with respect to the origin.  If
+	// this is later found to be false then the whole of the
+	// affected area will be redrawn.
 	while ((old_para!=last.para()+1)&&(new_para!=new_text.size()))
 	{
 		const string old_ptext=_text[old_para];
@@ -1925,10 +1875,15 @@ void text_area::adjust_layout(const mark& first,const mark& last,
 		}
 
 		unsigned int common_width=line_width(old_ptext,old_index,common);
-		force_redraw(box(common_width,-(line+1)*line_height(),
-			width,-line*line_height()));
+		force_redraw(box(
+			tbbox().xmin()+common_width,
+			tbbox().ymax()-(line+1)*line_height(),
+			tbbox().xmin()+width,
+			tbbox().ymax()-line*line_height()));
 
 		++line;
+		++ilines;
+		++dlines;
 
 		old_index+=old_split;
 		if (old_index>=old_ptext.size())
@@ -1954,11 +1909,14 @@ void text_area::adjust_layout(const mark& first,const mark& last,
 		const string old_ptext=_text[old_para];
 		unsigned int old_split=split_line(old_ptext,old_index,width);
 
-		force_redraw(box(0,-(line+1)*line_height(),
-			width,-line*line_height()));
+		force_redraw(box(
+			tbbox().xmin(),
+			tbbox().ymax()-(line+1)*line_height(),
+			tbbox().xmin()+width,
+			tbbox().ymax()-line*line_height()));
 
 		++line;
-		--diff;
+		++dlines;
 
 		old_index+=old_split;
 		if (old_index>=old_ptext.size())
@@ -1980,11 +1938,14 @@ void text_area::adjust_layout(const mark& first,const mark& last,
 
 		unsigned int new_split=split_line(new_ptext,new_index,width);
 
-		force_redraw(box(0,-(line+1)*line_height(),
-			width,-line*line_height()));
+		force_redraw(box(
+			tbbox().xmin(),
+			tbbox().ymax()-(line+1)*line_height(),
+			tbbox().xmin()+width,
+			tbbox().ymax()-line*line_height()));
 
 		++line;
-		++diff;
+		++ilines;
 
 		new_index+=new_split;
 		if (new_index>=new_ptext.size())
@@ -1996,18 +1957,58 @@ void text_area::adjust_layout(const mark& first,const mark& last,
 		}
 	}
 
-	// If there has been a net movement upwards or downwards
-	// then perform a block copy of the remaining text.
-	if (diff)
-	{
-		unsigned int new_lines=_lines.sum(_lines.size());
-		unsigned int max_lines=max(old_lines,new_lines);
+	// Calculate old bounding box for text area as a whole.
+	box oibbox(0,-old_lines*line_height(),width,0);
+	box obbox=oibbox-external_origin(oibbox,xbaseline_left,ybaseline_top);
 
-		box src(0,-(max_lines-diff)*line_height(),
-			width,-(line-diff)*line_height());
-		point dst=src.xminymin()+point(0,-diff*line_height());
-		block_copy(src,dst);
+	// Calculate new bounding box for text area as a whole.
+	unsigned int new_lines=_lines.sum(_lines.size());
+	box nibbox(0,-new_lines*line_height(),width,0);
+	box nbbox=nibbox-external_origin(nibbox,xbaseline_left,ybaseline_top);
+
+	// If the upper edge of the bounding box has moved then perform a
+	// block copy of all text above the affected area.  Invalidate any
+	// space vacated by the block copy, and also the area affected by
+	// the replacement.
+	if (obbox.ymax()!=nbbox.ymax())
+	{
+		int dy=nbbox.ymax()-obbox.ymax();
+		if (dy)
+		{
+			box src(obbox.xmin(),obbox.ymax()-first_line*line_height(),
+				obbox.xmax(),obbox.ymax());
+			point dst(src.xmin(),src.ymin()+dy);
+			block_copy(src,dst);
+
+			force_redraw(box(
+				src.xmin(),(dy>0)?src.ymin():src.ymax()+dy,
+				src.xmax(),(dy<0)?src.ymax():src.ymin()+dy));
+
+			force_redraw(box(
+				src.xmin(),src.ymin()+dy-ilines*line_height(),
+				src.xmax(),src.ymin()+dy));
+		}
 	}
+
+	// If the lower edge of the bounding box has moved then perform a
+	// block copy of all text below the affected area.  Invalidate any
+	// space vacated by the block copy.
+	if (obbox.ymin()!=nbbox.ymin())
+	{
+		int dy=nbbox.ymin()-obbox.ymin();
+		box src(obbox.xmin(),obbox.ymin(),obbox.xmax(),
+			obbox.ymax()-(first_line+dlines)*line_height());
+		point dst(src.xmin(),src.ymin()+dy);
+		block_copy(src,dst);
+
+		box ebox(
+			src.xmin(),(dy>0)?src.ymin():src.ymax()+dy,
+			src.xmax(),(dy<0)?src.ymax():src.ymin()+dy);
+		force_redraw(ebox);
+	}
+
+	// Update text bounding box.
+	_tbbox=nbbox;
 }
 
 void text_area::adjust_text(const mark& first,const mark& last,
@@ -2069,6 +2070,176 @@ text_area::mark text_area::adjust_mark(mark mk,const mark& first,
 		mk=mark(_text,para,index_para);
 	}
 	return mk;
+}
+
+text_area::basic_mark::basic_mark(const text_type& text,unsigned int para,
+	unsigned int index_para):
+	_text(&text),
+	_para(para),
+	_index_para(index_para)
+{}
+
+char text_area::basic_mark::operator*() const
+{
+	const string ptext=(*_text)[_para];
+	return (_index_para<ptext.size())?ptext[_index_para]:'\n';
+}
+
+text_area::mark::mark(const text_type& text,unsigned int para,
+	unsigned int index_para):
+	basic_mark(text,para,index_para)
+{}
+
+text_area::mark text_area::mark::operator++()
+{
+	if (_index_para<(*_text)[_para].size())
+	{
+		++_index_para;
+	}
+	else if (_para<_text->size()-1)
+	{
+		++_para;
+		_index_para=0;
+	}
+	return *this;
+}
+
+text_area::mark text_area::mark::operator--()
+{
+	if (_index_para)
+	{
+		--_index_para;
+	}
+	else if (_para)
+	{
+		--_para;
+		_index_para=(*_text)[_para].size();
+	}
+	return *this;
+}
+
+text_area::mark text_area::mark::next_word() const
+{
+	unsigned int para=_para;
+	unsigned int index_para=_index_para;
+	string ptext=(*_text)[para];
+
+	// Search forwards for a space character in this paragraph.
+	// If the end of the paragraph is reached then stop there,
+	// because that counts as a space character.
+	{
+		const string cptext=ptext;
+		while ((index_para!=ptext.size())&&!isspace(cptext[index_para]))
+			++index_para;
+	}
+
+	// Search forwards for a non-space character in this paragraph.
+	{
+		const string cptext=ptext;
+		while ((index_para!=ptext.size())&&isspace(cptext[index_para]))
+			++index_para;
+	}
+
+	// If the end of the paragraph is reached without finding a
+	// non-space character then search subsequent paragraphs.
+	while ((para+1<_text->size())&&(index_para==ptext.size()))
+	{
+		++para;
+		ptext=(*_text)[para];
+		index_para=0;
+		const string cptext=ptext;
+		while ((index_para!=ptext.size())&&isspace(cptext[index_para]))
+			++index_para;
+	}
+
+	return mark(*_text,para,index_para);
+}
+
+text_area::mark text_area::mark::prev_word() const
+{
+	unsigned int para=_para;
+	unsigned int index_para=_index_para;
+	string ptext=(*_text)[para];
+
+	// Search backwards for a non-space character in this paragraph.
+	{
+		const string cptext=ptext;
+		while (index_para&&isspace(cptext[index_para-1]))
+			--index_para;
+	}
+
+	// If the start of the paragraph is reached without finding a
+	// non-space character then search previous paragraphs.
+	while (para&&!index_para)
+	{
+		--para;
+		ptext=(*_text)[para];
+		index_para=ptext.size();
+		const string cptext=ptext;
+		while (index_para&&isspace(cptext[index_para-1]))
+			--index_para;
+	}
+
+	// Search backwards for a space character in this paragraph.
+	// If the start of the paragraph is reached then stop there,
+	// because that counts as a space character.
+	{
+		const string cptext=ptext;
+		while (index_para&&!isspace(cptext[index_para-1]))
+			--index_para;
+	}
+
+	return mark(*_text,para,index_para);
+}
+
+text_area::fixed_mark::fixed_mark(const text_area& area,const basic_mark& mk):
+	basic_mark(mk)
+{
+	int width=area.tbbox().xsize();
+	const string ptext=(*_text)[_para];
+
+	// Split paragraph into lines, searching for index.
+	// Record line number and index into line when found.
+	_line=area._lines.sum(_para);
+	_index_line=_index_para;
+	bool found=false;
+	while (!found)
+	{
+		unsigned int offset=_index_para-_index_line;
+		unsigned int count=area.split_line(ptext,offset,width);
+		found=(_index_line<count)||
+			((_index_line==count)&&(offset+count==ptext.size()));
+		if (!found)
+		{
+			++_line;
+			_index_line-=count;
+		}
+	}
+
+	// Calculate coordinates of mark.
+	int x=area.line_width(ptext,_index_para-_index_line,_index_line);
+	int y=-(_line+1)*area.line_height();
+	_position=area.tbbox().xminymax()+point(x,y);
+}
+
+int operator-(const text_area::basic_mark& lhs,
+	const text_area::basic_mark& rhs)
+{
+	// Calculate difference assuming that the marks
+	// are in the same paragraph.
+	int diff=lhs.index_para()-lhs.index_para();
+
+	// Correct for the lengths of any intervening paragraphs.
+	unsigned int para=lhs.para();
+	while (para<rhs.para())
+	{
+		diff+=lhs.text()[para++].size()+1;
+	}
+	while (para>rhs.para())
+	{
+		diff-=lhs.text()[--para].size()+1;
+	}
+	return diff;
 }
 
 }; /* namespace desktop */
