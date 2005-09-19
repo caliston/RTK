@@ -9,7 +9,7 @@
 #include <vector>
 #include <string>
 
-#include "rtk/desktop/sizeable_component.h"
+#include "rtk/desktop/wrappable_component.h"
 
 namespace rtk {
 namespace desktop {
@@ -20,7 +20,7 @@ namespace desktop {
  * outside in.
  */
 class toolbar_layout:
-	public sizeable_component
+	public wrappable_component
 {
 private:
 	/** The class from which this one is derived. */
@@ -76,6 +76,7 @@ public:
 	virtual ~toolbar_layout();
 
 	virtual box auto_bbox() const;
+	virtual box auto_wrap_bbox(const box& wbox) const;
 	virtual component* find(const point& p) const;
 	virtual box bbox() const;
 	virtual wrap_type wrap_direction() const; 

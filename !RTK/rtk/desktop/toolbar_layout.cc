@@ -115,6 +115,98 @@ box toolbar_layout::auto_bbox() const
 	return abbox;
 }
 
+box toolbar_layout::auto_wrap_bbox(const box& wbox) const
+{
+	box abbox;
+
+	// Reduce preferred bounding box by size of unwrapped toolbars
+	// (starting from the inside and working outwards, but either
+	// direction would work).
+	box awbox(wbox);
+	for (std::vector<toolbar_type>::const_reverse_iterator i=
+		_toolbars.rbegin();i!=_toolbars.rend();++i)
+	{
+		if (basic_window* w=i->w)
+		{
+			box mcbbox=w->min_bbox();
+			switch (i->align)
+			{
+			case align_left:
+				awbox.xmin(awbox.xmin()+mcbbox.xsize());
+				break;
+			case align_right:
+				awbox.xmax(awbox.xmax()-mcbbox.xsize());
+				break;
+			case align_top:
+				awbox.ymax(awbox.ymax()-mcbbox.ysize());
+				break;
+			case align_bottom:
+				awbox.ymin(awbox.ymin()+mcbbox.ysize());
+				break;
+			}
+		}
+	}
+	if (awbox.xmax()<awbox.xmin()) awbox.xmax(awbox.xmin());
+	if (awbox.ymax()<awbox.ymin()) awbox.ymax(awbox.ymin());
+
+	if (_content)
+	{
+		// Add work area.
+		abbox=_content->min_wrap_bbox(awbox);
+	}
+
+	// Add toolbars, starting from the inside and working outwards.
+	// If the work area wraps horizontally then so do any toolbars
+	// above or below it, but not those to the left or right.
+	// If the work area wraps vertically then this arrangement is
+	// reversed.
+	for (std::vector<toolbar_type>::const_reverse_iterator i=
+		_toolbars.rbegin();i!=_toolbars.rend();++i)
+	{
+		if (basic_window* w=i->w)
+		{
+			switch (i->align)
+			{
+			case align_left:
+				{
+					box mcbbox=(wrap_direction()==wrap_vertical)?
+						w->min_wrap_bbox(abbox):
+						w->min_bbox();
+					abbox.extend_left(mcbbox);
+				}
+				break;
+			case align_right:
+				{
+					box mcbbox=(wrap_direction()==wrap_vertical)?
+						w->min_wrap_bbox(abbox):
+						w->min_bbox();
+					abbox.extend_right(mcbbox);
+				}
+				break;
+			case align_top:
+				{
+					box mcbbox=(wrap_direction()==wrap_horizontal)?
+						w->min_wrap_bbox(abbox):
+						w->min_bbox();
+					abbox.extend_up(mcbbox);
+				}
+				break;
+			case align_bottom:
+				{
+					box mcbbox=(wrap_direction()==wrap_horizontal)?
+						w->min_wrap_bbox(abbox):
+						w->min_bbox();
+					abbox.extend_down(mcbbox);
+				}
+				break;
+			}
+		}
+	}
+
+	abbox+=internal_origin(abbox,xbaseline_text,ybaseline_text);
+	return abbox;
+}
+
 box toolbar_layout::bbox() const
 {
 	return _bbox;
@@ -154,7 +246,7 @@ void toolbar_layout::reformat(const point& origin,const box& pbbox)
 	{
 		if (basic_window* w=i->w)
 		{
-			box mcbbox(w->min_bbox());
+			box mcbbox(w->min_wrap_bbox(cbox));
 
 			// Calculate cbbox, the bounding box wrt the layout origin
 			// that will contain the toolbar.
@@ -215,7 +307,7 @@ void toolbar_layout::reformat(const point& origin,const box& pbbox)
 	// Reformat work area.
 	if (component* c=_content)
 	{
-		box mcbbox(c->min_bbox());
+		box mcbbox(c->min_wrap_bbox(cbox));
 
 		// Construct baseline sets just for this child.
 		xbaseline_set xbs;
