@@ -392,6 +392,7 @@ icon& icon::text(const string& text,size_type capacity)
 	if (capacity>_textsize)
 	{
 		unformat();
+		invalidate();
 		delete[] _text;
 		_text=0;
 		_textsize=0;
