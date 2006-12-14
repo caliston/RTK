@@ -48,7 +48,7 @@ inline unsigned int divider::operator()(unsigned int weight)
 	return quoitant;
 }
 
-}; /* namespace util */
-}; /* namespace rtk */
+} /* namespace util */
+} /* namespace rtk */
 
 #endif

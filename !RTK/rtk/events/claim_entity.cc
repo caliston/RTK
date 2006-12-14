@@ -37,5 +37,5 @@ bool claim_entity::deliver(component& dest)
 	return h;
 }
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */

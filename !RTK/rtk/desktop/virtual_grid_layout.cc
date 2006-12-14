@@ -312,5 +312,5 @@ virtual_grid_layout::size_type virtual_grid_layout::find_y(const point& p)
 	return y;
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

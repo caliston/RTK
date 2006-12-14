@@ -246,5 +246,5 @@ int menu_item::dummy_submenu_handle() const
 	else return 0;
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

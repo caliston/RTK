@@ -230,7 +230,7 @@ public:
 		unsigned int level);
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

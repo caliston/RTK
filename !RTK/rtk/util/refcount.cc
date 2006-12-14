@@ -25,5 +25,5 @@ void refcount::dec_count()
 	if (!--_count) delete this;
 }
 
-}; /* namespace util */
-}; /* namespace rtk */
+} /* namespace util */
+} /* namespace rtk */

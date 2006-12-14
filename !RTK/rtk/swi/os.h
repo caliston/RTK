@@ -171,7 +171,7 @@ const int Log2BPC       =10;
 const int XWindLimit    =11;
 const int YWindLimit    =12;
 
-}; /* namespace swi */
-}; /* namespace rtk */
+} /* namespace swi */
+} /* namespace rtk */
 
 #endif

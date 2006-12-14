@@ -24,5 +24,5 @@ void ColourTrans_SetFontColours(int handle,int bcolour,int fcolour,int max,
 	if (_max) *_max=regs.r[3];
 }
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */

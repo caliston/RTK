@@ -18,5 +18,5 @@ window::window(point size):
 	border(true);
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

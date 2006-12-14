@@ -137,7 +137,7 @@ const int Message_Iconize       =0x400CA;
 const int Message_WindowClosed  =0x400CB;
 const int Message_WindowInfo    =0x400CC;
 
-}; /* namespace swi */
-}; /* namespace rtk */
+} /* namespace swi */
+} /* namespace rtk */
 
 #endif

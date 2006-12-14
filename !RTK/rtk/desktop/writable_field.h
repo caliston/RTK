@@ -34,7 +34,7 @@ public:
 	writable_field();
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

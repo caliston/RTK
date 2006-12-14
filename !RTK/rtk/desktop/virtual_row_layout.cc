@@ -245,5 +245,5 @@ virtual_row_layout::size_type virtual_row_layout::find_x(const point& p)
 	return x;
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

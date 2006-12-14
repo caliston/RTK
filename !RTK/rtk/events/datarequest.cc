@@ -73,5 +73,5 @@ void datarequest::reply(unsigned int filetype,unsigned int estsize) const
 	os::Wimp_SendMessage(swi::User_Message,block,thandle(),0,0);
 }
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */

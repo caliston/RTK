@@ -107,5 +107,5 @@ void dcs_dbox::handle_save()
 	ev.post();
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

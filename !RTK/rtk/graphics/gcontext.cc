@@ -43,5 +43,5 @@ void gcontext::fcolour_notify(int fcolour)
 void gcontext::bcolour_notify(int bcolour)
 {}
 
-}; /* namespace graphics */
-}; /* namespace rtk */
+} /* namespace graphics */
+} /* namespace rtk */

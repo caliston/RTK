@@ -131,5 +131,5 @@ void load::put_file(const string& pathname,size_type estsize)
 	finish();
 }
 
-}; /* namespace transfer */
-}; /* namespace rtk */
+} /* namespace transfer */
+} /* namespace rtk */

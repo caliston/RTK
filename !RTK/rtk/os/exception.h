@@ -43,7 +43,7 @@ public:
 	virtual const char* what() const throw();
 };
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */
 
 #endif

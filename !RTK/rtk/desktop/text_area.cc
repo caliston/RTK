@@ -68,7 +68,7 @@ control_string::control_string(char code)
 	cs[4]=0;
 }
 
-}; /* anonymous namespace */
+} /* anonymous namespace */
 
 text_area::text_area():
 	_font(graphics::font::font_desktop),
@@ -2242,5 +2242,5 @@ int operator-(const text_area::basic_mark& lhs,
 	return diff;
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

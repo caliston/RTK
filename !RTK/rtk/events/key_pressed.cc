@@ -41,5 +41,5 @@ void key_pressed::processed(bool value)
 	_processed=value;
 }
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */

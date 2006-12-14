@@ -57,5 +57,5 @@ void MessageTrans_CloseFile(int* descriptor)
 	call_swi(swi::MessageTrans_CloseFile,&regs);
 }
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */

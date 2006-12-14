@@ -17,5 +17,5 @@ option_button::option_button()
 	yfit(false);
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

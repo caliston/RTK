@@ -16,19 +16,19 @@ namespace graphics {
 
 class gcontext;
 
-}; /* namespace graphics */
+} /* namespace graphics */
 
 namespace os {
 
 struct sprite_area;
 
-}; /* namespace sprite_area */
+} /* namespace sprite_area */
 
 namespace events {
 
 class mouse_click;
 
-}; /* namespace events */
+} /* namespace events */
 
 namespace desktop {
 
@@ -750,7 +750,7 @@ public:
 	int ysize() const;
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

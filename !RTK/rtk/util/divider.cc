@@ -20,5 +20,5 @@ divider::divider(unsigned int dividend,unsigned int divisor):
 	}
 }
 
-}; /* namespace util */
-}; /* namespace rtk */
+} /* namespace util */
+} /* namespace rtk */

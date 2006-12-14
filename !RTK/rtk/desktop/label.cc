@@ -61,5 +61,5 @@ box label::internal_bbox() const
 	return box(0,-8,width,24);
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

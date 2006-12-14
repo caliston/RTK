@@ -16,7 +16,7 @@ namespace os {
 
 union wimp_block;
 
-}; /* namespace os */
+} /* namespace os */
 
 namespace events {
 
@@ -86,7 +86,7 @@ public:
 	string pathname() const;
 };
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */
 
 #endif

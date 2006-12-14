@@ -166,5 +166,5 @@ int font::handle() const
 	return _f->handle();
 }
 
-}; /* namespace graphics */
-}; /* namespace rtk */
+} /* namespace graphics */
+} /* namespace rtk */

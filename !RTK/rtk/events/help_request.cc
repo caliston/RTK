@@ -51,5 +51,5 @@ void help_request::reply(const string& text) const
 	os::Wimp_SendMessage(swi::User_Message,block,_help_task,0,0);
 }
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */

@@ -60,7 +60,7 @@ public:
 	virtual box auto_bbox() const=0;
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

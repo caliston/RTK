@@ -814,5 +814,5 @@ void application::remove_menu_data(size_type level)
 	}
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

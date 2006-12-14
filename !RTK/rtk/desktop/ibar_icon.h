@@ -95,7 +95,7 @@ public:
 	ibar_icon& detach_menu();
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

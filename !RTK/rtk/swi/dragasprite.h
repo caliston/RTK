@@ -12,7 +12,7 @@ namespace swi {
 const int DragASprite_Start     =0x42400;
 const int DragASprite_Stop      =0x42401;
 
-}; /* namespace swi */
-}; /* namespace rtk */
+} /* namespace swi */
+} /* namespace rtk */
 
 #endif

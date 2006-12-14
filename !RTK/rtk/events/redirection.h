@@ -11,7 +11,7 @@ namespace desktop {
 
 class component;
 
-}; /* namespace desktop */
+} /* namespace desktop */
 
 namespace events {
 
@@ -47,7 +47,7 @@ public:
 	void redirect(desktop::component* redirect);
 };
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */
 
 #endif

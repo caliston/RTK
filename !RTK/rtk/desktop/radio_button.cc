@@ -17,5 +17,5 @@ radio_button::radio_button()
 	yfit(false);
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

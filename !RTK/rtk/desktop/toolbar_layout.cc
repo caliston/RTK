@@ -392,5 +392,5 @@ toolbar_layout::toolbar_type::toolbar_type():
 	align(align_top)
 {}
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

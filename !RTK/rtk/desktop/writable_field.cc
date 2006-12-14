@@ -22,5 +22,5 @@ writable_field::writable_field()
 	min_bbox(box(0,0,16,0));
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

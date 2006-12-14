@@ -20,7 +20,7 @@ const int MessageTrans_GSLookup         =0x41507;
 const int MessageTrans_CopyError        =0x41508;
 const int MessageTrans_Dictionary       =0x41509;
 
-}; /* namespace swi */
-}; /* namespace rtk */
+} /* namespace swi */
+} /* namespace rtk */
 
 #endif

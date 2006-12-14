@@ -45,7 +45,7 @@ const unsigned int* version();
  */
 void version(const unsigned int* version);
 
-}; /* namespace util */
-}; /* namespace rtk */
+} /* namespace util */
+} /* namespace rtk */
 
 #endif

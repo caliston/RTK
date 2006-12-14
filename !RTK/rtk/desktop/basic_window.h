@@ -18,7 +18,7 @@ namespace os {
 
 union wimp_block;
 
-}; /* namespace os */
+} /* namespace os */
 
 namespace desktop {
 
@@ -581,7 +581,7 @@ private:
 	box calculate_extent(const box& bbox);
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

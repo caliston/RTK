@@ -13,7 +13,7 @@ namespace os {
 
 union wimp_block;
 
-}; /* namespace os */
+} /* namespace os */
 
 namespace events {
 
@@ -67,7 +67,7 @@ public:
 	void reply(void* buffer,unsigned int buffer_size) const;
 };
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */
 
 #endif

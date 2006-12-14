@@ -276,7 +276,7 @@ cumulative_sum<value_type>::reference_type::operator value_type() const
 	return value;
 }
 
-}; /* namespace util */
-}; /* namespace rtk */
+} /* namespace util */
+} /* namespace rtk */
 
 #endif

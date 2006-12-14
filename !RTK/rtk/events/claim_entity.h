@@ -56,7 +56,7 @@ public:
 	bool claim_clipboard() const;
 };
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */
 
 #endif

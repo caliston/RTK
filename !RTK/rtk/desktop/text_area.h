@@ -842,7 +842,7 @@ inline bool operator>=(const text_area::basic_mark& lhs,
 int operator-(const text_area::basic_mark& lhs,
 	const text_area::basic_mark& rhs);
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

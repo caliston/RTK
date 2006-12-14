@@ -104,7 +104,7 @@ public:
 		size_type index=npos);
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

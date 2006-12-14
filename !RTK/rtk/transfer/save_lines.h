@@ -189,7 +189,7 @@ save_lines& save_lines::lines(iterator first,iterator last)
 	return *this;
 }
 
-}; /* namespace transfer */
-}; /* namespace rtk */
+} /* namespace transfer */
+} /* namespace rtk */
 
 #endif

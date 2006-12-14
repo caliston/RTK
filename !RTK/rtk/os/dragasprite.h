@@ -35,7 +35,7 @@ void DragASprite_Start(int flags,sprite_area* area,const char* name,
 /** Stop dragging sprite. */
 void DragASprite_Stop();
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */
 
 #endif

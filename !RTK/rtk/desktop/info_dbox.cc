@@ -14,5 +14,5 @@ info_dbox::info_dbox()
 info_dbox::~info_dbox()
 {}
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

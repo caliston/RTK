@@ -99,7 +99,7 @@ public:
 	int handle() const;
 };
 
-}; /* namespace graphics */
-}; /* namespace rtk */
+} /* namespace graphics */
+} /* namespace rtk */
 
 #endif

@@ -373,5 +373,5 @@ menu::menu_data::~menu_data()
 	delete[] _data;
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

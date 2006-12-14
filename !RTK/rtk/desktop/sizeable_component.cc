@@ -70,5 +70,5 @@ sizeable_component& sizeable_component::min_size(const point& min_size)
 	return *this;
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

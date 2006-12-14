@@ -154,7 +154,7 @@ protected:
 	virtual void bcolour_notify(int bcolour);
 };
 
-}; /* namespace graphics */
-}; /* namespace rtk */
+} /* namespace graphics */
+} /* namespace rtk */
 
 #endif

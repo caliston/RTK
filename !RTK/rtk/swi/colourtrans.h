@@ -46,7 +46,7 @@ const int ColourTrans_SetTextColour     =0x40761;
 const int ColourTrans_SetOppTextColour  =0x40762;
 const int ColourTrans_GenerateTable     =0x40763;
 
-}; /* namespace swi */
-}; /* namespace rtk */
+} /* namespace swi */
+} /* namespace rtk */
 
 #endif

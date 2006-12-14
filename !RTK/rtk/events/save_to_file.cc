@@ -28,5 +28,5 @@ bool save_to_file::deliver(component& dest)
 	return h;
 }
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */

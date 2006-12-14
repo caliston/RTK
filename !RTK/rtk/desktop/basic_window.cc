@@ -833,5 +833,5 @@ box basic_window::calculate_extent(const box& bbox)
 	return extent;
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

@@ -39,7 +39,7 @@ public:
 	window(point size=point(640,512));
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

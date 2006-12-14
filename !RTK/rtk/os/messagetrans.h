@@ -48,7 +48,7 @@ void MessageTrans_Lookup(int* descriptor,const char* token,char* buffer,
  */
 void MessageTrans_CloseFile(int* descriptor);
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */
 
 #endif

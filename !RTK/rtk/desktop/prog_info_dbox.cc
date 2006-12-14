@@ -40,5 +40,5 @@ prog_info_dbox& prog_info_dbox::add(const string& name,const string& value)
 	return *this;
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

@@ -37,5 +37,5 @@ bool menu_selection::deliver(component& dest)
 	return h;
 }
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */

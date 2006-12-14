@@ -171,7 +171,7 @@ load_lines& load_lines::lines(container& lines)
 	return *this;
 }
 
-}; /* namespace transfer */
-}; /* namespace rtk */
+} /* namespace transfer */
+} /* namespace rtk */
 
 #endif

@@ -24,7 +24,7 @@ inline void call_swi(unsigned int number,_kernel_swi_regs* regs)
 	if (err) throw exception(err);
 }
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */
 
 #endif

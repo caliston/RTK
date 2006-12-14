@@ -245,5 +245,5 @@ virtual_column_layout::size_type virtual_column_layout::find_y(const point& p)
 	return y;
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

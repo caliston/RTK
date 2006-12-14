@@ -218,7 +218,7 @@ void OS_ReadMonotonicTime(unsigned int* _time);
  */
 void OS_Plot(int code,const point& p);
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */
 
 #endif

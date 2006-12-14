@@ -199,5 +199,5 @@ absolute_layout& absolute_layout::margin(int margin)
 	return *this;
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

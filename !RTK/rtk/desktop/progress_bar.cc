@@ -153,5 +153,5 @@ progress_bar& progress_bar::bcolour(int bcolour)
 	return *this;
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

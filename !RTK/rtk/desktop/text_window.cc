@@ -15,7 +15,7 @@ namespace {
 /** The number of centiseconds between auto-scroll operations. */
 const unsigned int auto_scroll_period=10;
 
-}; /* anonymous namespace */
+} /* anonymous namespace */
 
 text_window::text_window():
 	_auto_scroll_time(0)
@@ -114,5 +114,5 @@ void text_window::handle_page_up()
 	_text_area.handle_up_lines(diff);
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

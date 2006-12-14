@@ -16,5 +16,5 @@ std::ostream& operator<<(std::ostream& out,const point& p)
 	return out;
 }
 
-}; /* namespace graphics */
-}; /* namespace rtk */
+} /* namespace graphics */
+} /* namespace rtk */

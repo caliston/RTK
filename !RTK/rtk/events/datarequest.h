@@ -17,7 +17,7 @@ namespace os {
 
 union wimp_block;
 
-}; /* namespace os */
+} /* namespace os */
 
 namespace events {
 
@@ -93,7 +93,7 @@ public:
 	void reply(unsigned int filetype,unsigned int estsize) const;
 };
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */
 
 #endif

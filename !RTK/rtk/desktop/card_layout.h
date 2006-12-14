@@ -74,7 +74,7 @@ public:
 	card_layout& select(const string& tag);
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

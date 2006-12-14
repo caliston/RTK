@@ -106,7 +106,7 @@ public:
 	progress_bar& bcolour(int bcolour);
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

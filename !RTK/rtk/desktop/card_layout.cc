@@ -192,5 +192,5 @@ card_layout& card_layout::select(const string& tag)
 	return *this;
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

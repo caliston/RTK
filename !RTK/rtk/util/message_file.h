@@ -88,7 +88,7 @@ public:
 		const string& arg2,const string& arg3);
 };
 
-}; /* namespace util */
-}; /* namespace rtk */
+} /* namespace util */
+} /* namespace rtk */
 
 #endif

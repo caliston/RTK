@@ -260,7 +260,7 @@ box make_border_box(bool border,unsigned int border_type)
 	return bdrbox;
 }
 
-}; /* anonymous namespace */
+} /* anonymous namespace */
 
 icon::icon():
 	_handle(0),
@@ -905,5 +905,5 @@ box icon::border_box() const
 	return make_border_box(_border,border_type);
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

@@ -58,7 +58,7 @@ protected:
 	virtual bool deliver(desktop::component& dest);
 };
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */
 
 #endif

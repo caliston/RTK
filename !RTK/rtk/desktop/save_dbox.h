@@ -24,7 +24,7 @@ namespace transfer {
 
 class save;
 
-}; /* namespace transfer */
+} /* namespace transfer */
 
 namespace desktop {
 
@@ -200,7 +200,7 @@ private:
 	void handle_cancel();
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

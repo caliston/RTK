@@ -51,7 +51,7 @@ const int Font_FindField        =0x400A6;
 const int Font_ApplyFields      =0x400A7;
 const int Font_LookupFont       =0x400A8;
 
-}; /* namespace swi */
-}; /* namespace rtk */
+} /* namespace swi */
+} /* namespace rtk */
 
 #endif

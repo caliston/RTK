@@ -122,5 +122,5 @@ save_lines& save_lines::final_newline(bool value)
 	return *this;
 }
 
-}; /* namespace transfer */
-}; /* namespace rtk */
+} /* namespace transfer */
+} /* namespace rtk */

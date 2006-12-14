@@ -129,7 +129,7 @@ public:
 	column_layout& margin(int margin);
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

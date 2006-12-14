@@ -103,5 +103,5 @@ void Font_ScanString(int handle,const char* s,int plot,const point& p,
 	if (_length) *_length=regs.r[7];
 }
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */

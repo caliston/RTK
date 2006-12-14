@@ -57,7 +57,7 @@ public:
 	void handle_page_up();
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

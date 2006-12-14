@@ -265,5 +265,5 @@ void OS_ReadMonotonicTime(unsigned int* _time)
 	if (_time) *_time=regs.r[0];
 }
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */

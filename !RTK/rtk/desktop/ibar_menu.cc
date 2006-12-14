@@ -85,5 +85,5 @@ void ibar_menu::rebuild()
 	add(_menu_quit);
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

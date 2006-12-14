@@ -19,5 +19,5 @@ const char* exception::what() const throw()
 	return _err->errmess;
 }
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */

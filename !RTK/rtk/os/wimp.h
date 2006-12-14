@@ -612,7 +612,7 @@ void Wimp_TextOp3(const char* s,int width,char split,const char** _index);
  */
 void Wimp_ResizeIcon(int whandle,int ihandle,const box& bbox);
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */
 
 #endif

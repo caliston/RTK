@@ -16,7 +16,7 @@ namespace os {
 
 union wimp_block;
 
-}; /* namespace os */
+} /* namespace os */
 
 namespace events {
 
@@ -79,7 +79,7 @@ public:
 	void reply() const;
 };
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */
 
 #endif

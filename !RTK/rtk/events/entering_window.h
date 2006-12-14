@@ -13,7 +13,7 @@ namespace desktop {
 
 class basic_window;
 
-}; /* namespace desktop */
+} /* namespace desktop */
 
 namespace events {
 
@@ -55,7 +55,7 @@ protected:
 	virtual bool deliver(desktop::component& dest);
 };
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */
 
 #endif

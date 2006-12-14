@@ -24,14 +24,14 @@ namespace os {
 
 union wimp_block;
 
-}; /* namespace os */
+} /* namespace os */
 
 namespace transfer {
 
 class save;
 class basic_load;
 
-}; /* namespace transfer */
+} /* namespace transfer */
 
 namespace desktop {
 
@@ -467,7 +467,7 @@ private:
 	void remove_menu_data(size_type level);
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

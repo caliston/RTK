@@ -69,7 +69,7 @@ string sprite_name(unsigned int filetype,const string& sprname)
 	return name;
 }
 
-}; /* anonymous namespace */
+} /* anonymous namespace */
 
 namespace rtk {
 namespace desktop {
@@ -287,5 +287,5 @@ void save_dbox::handle_cancel()
 	remove();
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

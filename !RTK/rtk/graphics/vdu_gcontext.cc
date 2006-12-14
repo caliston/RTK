@@ -81,5 +81,5 @@ void vdu_gcontext::activate()
 void vdu_gcontext::deactivate()
 {}
 
-}; /* namespace graphics */
-}; /* namespace rtk */
+} /* namespace graphics */
+} /* namespace rtk */

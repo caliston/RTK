@@ -216,7 +216,7 @@ public:
 	size_type find_y(const point& p);
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

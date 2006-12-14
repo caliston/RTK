@@ -18,7 +18,7 @@ struct sprite_area;
 union wimp_block;
 union icon_data;
 
-}; /* namespace os */
+} /* namespace os */
 
 namespace desktop {
 
@@ -553,7 +553,7 @@ private:
 	void set_state();
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

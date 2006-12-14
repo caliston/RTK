@@ -21,7 +21,7 @@ namespace os {
 void ColourTrans_SetFontColours(int handle,int bcolour,int fcolour,int max,
 	int* _bcolour,int* _fcolour,int* _max);
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */
 
 #endif

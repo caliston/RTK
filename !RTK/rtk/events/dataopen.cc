@@ -56,5 +56,5 @@ void dataopen::reply() const
 	os::Wimp_SendMessage(swi::User_Message,block,thandle(),0,0);
 }
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */

@@ -38,5 +38,5 @@ bool event::post()
 	return handled;
 }
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */

@@ -19,7 +19,7 @@ namespace os {
 class menu;
 union wimp_block;
 
-}; /* namespace os */
+} /* namespace os */
 
 namespace desktop {
 
@@ -373,7 +373,7 @@ public:
 		{ return _size; }
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

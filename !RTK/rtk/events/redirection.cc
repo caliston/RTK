@@ -22,5 +22,5 @@ void redirection::redirect(component* redirect)
 	_redirect=redirect;
 }
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */

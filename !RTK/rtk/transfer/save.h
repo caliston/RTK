@@ -22,7 +22,7 @@ namespace os {
 
 union wimp_block;
 
-}; /* namespace os */
+} /* namespace os */
 
 namespace transfer {
 
@@ -200,7 +200,7 @@ protected:
 	virtual void get_file(const string& pathname);
 };
 
-}; /* namespace transfer */
-}; /* namespace rtk */
+} /* namespace transfer */
+} /* namespace rtk */
 
 #endif

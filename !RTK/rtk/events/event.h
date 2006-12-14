@@ -7,13 +7,13 @@
 #define _RTK_EVENTS_EVENT
 
 namespace rtk {
-namespace graphics {};
+namespace graphics {}
 
 namespace desktop {
 
 class component;
 
-}; /* namespace desktop */
+} /* namespace desktop */
 
 namespace events {
 
@@ -63,7 +63,7 @@ protected:
 	virtual bool deliver(desktop::component& dest)=0;
 };
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */
 
 #endif

@@ -14,7 +14,7 @@ namespace os {
 
 union wimp_block;
 
-}; /* namespace os */
+} /* namespace os */
 
 namespace events {
 
@@ -95,7 +95,7 @@ protected:
 	virtual bool deliver(desktop::component& dest);
 };
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */
 
 #endif

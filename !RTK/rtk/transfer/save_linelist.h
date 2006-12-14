@@ -74,7 +74,7 @@ public:
 		{ return _default_linelist; }
 };
 
-}; /* namespace transfer */
-}; /* namespace rtk */
+} /* namespace transfer */
+} /* namespace rtk */
 
 #endif

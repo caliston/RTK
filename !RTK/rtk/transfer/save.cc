@@ -251,5 +251,5 @@ void save::get_file(const string& pathname)
 	finish();
 }
 
-}; /* namespace transfer */
-}; /* namespace rtk */
+} /* namespace transfer */
+} /* namespace rtk */

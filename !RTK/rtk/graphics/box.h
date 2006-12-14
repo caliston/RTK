@@ -423,7 +423,7 @@ bool operator!=(const box& ba,const box& bb);
  */
 std::ostream& operator<<(std::ostream& out,const box& b);
 
-}; /* namespace graphics */
-}; /* namespace rtk */
+} /* namespace graphics */
+} /* namespace rtk */
 
 #endif

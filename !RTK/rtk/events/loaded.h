@@ -15,7 +15,7 @@ namespace transfer {
 
 class basic_load;
 
-}; /* namespace transfer */
+} /* namespace transfer */
 
 namespace events {
 
@@ -59,7 +59,7 @@ protected:
 	virtual bool deliver(desktop::component& dest);
 };
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */
 
 #endif

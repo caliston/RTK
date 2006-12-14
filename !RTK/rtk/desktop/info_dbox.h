@@ -27,7 +27,7 @@ public:
 	virtual ~info_dbox();
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

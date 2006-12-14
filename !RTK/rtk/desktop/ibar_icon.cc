@@ -91,5 +91,5 @@ ibar_icon& ibar_icon::detach_menu()
 	return *this;
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

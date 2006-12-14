@@ -693,5 +693,5 @@ int component::ybaseline_set::ysize() const
 	return max(_ysize,_ymax-_ymin);
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

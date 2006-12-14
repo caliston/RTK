@@ -423,5 +423,5 @@ void Wimp_ResizeIcon(int whandle,int ihandle,const box& bbox)
 	call_swi(swi::Wimp_ResizeIcon,&regs);
 }
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */

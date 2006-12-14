@@ -28,5 +28,5 @@ void DragASprite_Stop()
 	call_swi(swi::DragASprite_Stop,&regs);
 }
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */

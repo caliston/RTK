@@ -142,7 +142,7 @@ inline bool operator!=(const point& pa,const point& pb)
  */
 std::ostream& operator<<(std::ostream& out,const point& p);
 
-}; /* namespace graphics */
-}; /* namespace rtk */
+} /* namespace graphics */
+} /* namespace rtk */
 
 #endif

@@ -56,7 +56,7 @@ private:
 	box internal_bbox() const;
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

@@ -19,5 +19,5 @@ default_button::default_button()
 	yfit(false);
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

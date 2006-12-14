@@ -18,5 +18,5 @@ display_field::display_field()
 	yfit(false);
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

@@ -75,5 +75,5 @@ load_linelist& load_linelist::linelist(std::list<string>& linelist)
 	return *this;
 }
 
-}; /* namespace transfer */
-}; /* namespace rtk */
+} /* namespace transfer */
+} /* namespace rtk */

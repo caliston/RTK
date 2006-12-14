@@ -43,7 +43,7 @@ public:
 	prog_info_dbox& add(const string& name,const string& value);
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

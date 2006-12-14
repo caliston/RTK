@@ -34,7 +34,7 @@ public:
 	void dec_count();
 };
 
-}; /* namespace util */
-}; /* namespace rtk */
+} /* namespace util */
+} /* namespace rtk */
 
 #endif

@@ -89,5 +89,5 @@ string message_file::lookup(const string& token,const string& arg0,
 	return lookup(token,arg0,arg1,arg2,arg3,4);
 }
 
-}; /* namespace util */
-}; /* namespace rtk */
+} /* namespace util */
+} /* namespace rtk */
