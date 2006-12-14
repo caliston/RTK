@@ -134,6 +134,11 @@ private:
 	/** A list of components which need to receive null events. */
 	std::vector<component*> _null;
 
+	/** A flag to indicate if the _null vector has been altered since
+	 *  the start of an iteration of the elements.
+	 */
+	bool _null_loopvalid;
+
 	/** The owner of the current drag action. */
 	component* _current_drag;
 

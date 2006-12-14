@@ -381,8 +381,15 @@ void application::deliver_wimp_block(int wimpcode,os::wimp_block& wimpblock)
 	case 0:
 		{
 			bool found=false;
+			// Break out of the loop if the vector is changed by
+			// the null handler. This allows a hander to
+			// deregister itself. It does mean other handlers on
+			// the list will not get called, but as there is no
+			// guarantee how often a null handler is called then
+			// it doesn't matter.
+			_null_loopvalid=true;
 			for (std::vector<component*>::iterator i=_null.begin();
-				i!=_null.end();++i)
+				_null_loopvalid && (i!=_null.end());++i)
 			{
 				events::null_reason ev(**i);
 				found|=ev.post();
@@ -719,6 +726,7 @@ void application::register_null(component& c)
 		std::find(_null.begin(),_null.end(),&c);
 	if (f==_null.end()) _null.push_back(&c);
 	_wimp_mask&=~1;
+	_null_loopvalid=false;
 }
 
 void application::register_drag(component& c,bool sprite)
@@ -756,6 +764,7 @@ void application::deregister_null(component& c)
 	std::vector<component*>::iterator f=
 		std::find(_null.begin(),_null.end(),&c);
 	if (f!=_null.end()) _null.erase(f);
+	_null_loopvalid=false;
 }
 
 void application::deregister_drag(component& c)
