@@ -13,6 +13,7 @@ prog_info_dbox::prog_info_dbox()
 {
 	title("About this program");
 	close_icon(false);
+	back_icon(false);
 
 	_grid.xgap(8).ygap(8);
 	_grid.margin(8);
