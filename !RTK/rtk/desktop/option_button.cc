@@ -10,6 +10,7 @@ namespace desktop {
 
 option_button::option_button()
 {
+	text_and_sprite(true);
 	validation("Soptoff,opton");
 	vcentre(true);
 	fcolour(7);

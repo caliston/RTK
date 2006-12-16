@@ -10,6 +10,7 @@ namespace desktop {
 
 radio_button::radio_button()
 {
+	text_and_sprite(true);
 	validation("Sradiooff,radioon");
 	vcentre(true);
 	fcolour(7);
