@@ -18,5 +18,13 @@ radio_button::radio_button()
 	yfit(false);
 }
 
+void radio_button::handle_event(events::mouse_click& ev)
+{
+	if (ev.buttons() == 1) {
+		// Only select if not already selected, to avoid flicker
+		if (!selected()) selected(true);
+	}
+}
+
 } /* namespace desktop */
 } /* namespace rtk */

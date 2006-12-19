@@ -7,16 +7,18 @@
 #define _RTK_DESKTOP_RADIO_BUTTON
 
 #include "rtk/desktop/icon.h"
+#include "rtk/events/mouse_click.h"
 
 namespace rtk {
 namespace desktop {
 
 /** A class to represent a RISC OS radio button.
- * The only difference between this class and a generic icon is the
- * default values set by the constructor.
+ * The only differences between this class and a generic icon are the
+ * default values set by the constructor, and the behaviour on an adjust click.
  */
 class radio_button:
-	public icon
+	public icon,
+	public events::mouse_click::handler
 {
 public:
 	/** Construct radio button.
@@ -28,6 +30,12 @@ public:
 	 * All other attributes are as for an icon.
 	 */
 	radio_button();
+
+	/** Handle mouse clicks.
+	 * This ensures that an adjust click cannot deselect the icon.
+	 * @param ev the mouse click event
+	 */
+	virtual void handle_event(events::mouse_click& ev);
 };
 
 } /* namespace desktop */
