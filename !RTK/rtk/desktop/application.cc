@@ -148,7 +148,21 @@ void application::reformat(const point& origin,const box& pbbox)
 		{
 			box mcbbox=(*i)->min_bbox();
 			point cpos(-mcbbox.xminymin());
-			if (mcbbox.ysize()>68) cpos-=point(0,(mcbbox.ysize()-68)/2);
+			if ((*i)->text_and_sprite())
+			{
+				cpos-=point(0,16);
+				// The icon class will allow a height of 44
+				// for the text of the icon. However the style
+				// guide states that the text should be 32
+				// high with a gap of 4, so adjust the bbox
+				// height to give the correct text height
+				// and gap.
+				mcbbox.ymax(mcbbox.ymax()-8);
+			}
+			else
+			{
+				if (mcbbox.ysize()>68) cpos-=point(0,(mcbbox.ysize()-68)/2);
+			}
 			(*i)->reformat(cpos,mcbbox);
 		}
 	}
