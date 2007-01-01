@@ -7,6 +7,7 @@
 #include "rtk/swi/wimp.h"
 #include "rtk/os/os.h"
 #include "rtk/os/wimp.h"
+#include "rtk/os/exception.h"
 #include "rtk/desktop/icon.h"
 #include "rtk/desktop/basic_window.h"
 #include "rtk/desktop/application.h"
@@ -184,15 +185,22 @@ void sprite_size(os::sprite_area* area,const char* name,
 	int ysize=0;
 	if (name)
 	{
-		if (area) os::OS_SpriteOp40(area,name,&xsize,&ysize,0,0);
-		else os::Wimp_SpriteOp40(name,&xsize,&ysize,0,0);
-		unsigned scale[4]={1,1,1,1};
-		if (area) os::Wimp_ReadPixTrans(area,name,scale,0);
-		else os::Wimp_ReadPixTrans((os::sprite_area*)1,name,scale,0);
-		xsize*=scale[0];
-		ysize*=scale[1];
-		xsize/=scale[2];
-		ysize/=scale[3];
+		try {
+			if (area) os::OS_SpriteOp40(area,name,&xsize,&ysize,0,0);
+			else os::Wimp_SpriteOp40(name,&xsize,&ysize,0,0);
+			unsigned scale[4]={1,1,1,1};
+			if (area) os::Wimp_ReadPixTrans(area,name,scale,0);
+			else os::Wimp_ReadPixTrans((os::sprite_area*)1,name,scale,0);
+			xsize*=scale[0];
+			ysize*=scale[1];
+			xsize/=scale[2];
+			ysize/=scale[3];
+		}
+		catch (os::exception) {
+			// Supress exceptions due to the sprite not existing
+			xsize=0;
+			ysize=0;
+		}
 	}
 	if (_xsize) *_xsize=xsize;
 	if (_ysize) *_ysize=ysize;
