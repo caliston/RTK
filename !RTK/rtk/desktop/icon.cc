@@ -849,8 +849,6 @@ box icon::content_box() const
 				if (spxsize>prefxsize) prefxsize=spxsize;
 				break;
 			case 2:
-				prefxsize+=12+spxsize;
-				break;
 			case 3:
 			case 7:
 				prefxsize+=spxsize;
