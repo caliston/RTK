@@ -54,14 +54,12 @@ sizeable_component& sizeable_component::min_size(const point& min_size)
 	if (min_size.x())
 	{
 		xbaseline_set xbs;
-		xbs.add(_min_bbox,xbaseline());
 		_min_bbox.xmin(xbs.offset(xbaseline(),xbaseline_left,min_size.x()));
 		_min_bbox.xmax(xbs.offset(xbaseline(),xbaseline_right,min_size.x()));
 	}
 	if (min_size.y())
 	{
 		ybaseline_set ybs;
-		ybs.add(_min_bbox,ybaseline());
 		_min_bbox.ymin(ybs.offset(ybaseline(),ybaseline_bottom,min_size.y()));
 		_min_bbox.ymax(ybs.offset(ybaseline(),ybaseline_top,min_size.y()));
 	}
