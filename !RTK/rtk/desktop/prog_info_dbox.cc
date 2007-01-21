@@ -5,6 +5,7 @@
 
 #include "rtk/desktop/display_field.h"
 #include "rtk/desktop/prog_info_dbox.h"
+#include "rtk/desktop/min_size.h"
 
 namespace rtk {
 namespace desktop {
@@ -34,10 +35,18 @@ prog_info_dbox& prog_info_dbox::add(const string& name,const string& value)
 	name_icon.rjustify(true);
 	name_icon.xbaseline(xbaseline_right);
 
+	min_size& name_size=*new min_size();
+	name_size.add(name_icon);
+	name_size.minimum_size(point(136,0));
+
 	display_field& value_icon=*new display_field();
 	value_icon.text(value);
 
-	_grid.add(name_icon,0,ycells).add(value_icon,1,ycells);
+	min_size& value_size=*new min_size();
+	value_size.add(value_icon);
+	value_size.minimum_size(point(504,0));
+
+	_grid.add(name_size,0,ycells).add(value_size,1,ycells);
 	return *this;
 }
 
