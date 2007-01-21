@@ -38,6 +38,7 @@ basic_window::basic_window(point size):
 	_y_scroll_bar(false),
 	_adjust_icon(false),
 	_border(false),
+	_ignore_extent(true),
 	_button(10),
 	_tf_colour(7),
 	_tb_colour(2),
@@ -45,7 +46,6 @@ basic_window::basic_window(point size):
 	_wb_colour(1),
 	_min_x_size(0),
 	_min_y_size(0),
-	_ignore_extent(1),
 	_title(0),
 	_titlesize(0)
 {
