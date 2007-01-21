@@ -137,6 +137,12 @@ private:
 	 */
 	unsigned int _border:1;
 
+	/** Ignore extent when resizing flag.
+	 * True if both rght and bottom extents are ignored when
+	 * resizing, otherwise false.
+	 */
+	unsigned int _ignore_extent:1;
+
 	/** The button type. */
 	unsigned int _button:4;
 
@@ -160,6 +166,12 @@ private:
 	 */
 	unsigned int _wb_colour:8;
 
+	/** The window minimum x size. */
+	unsigned int _min_x_size:16;
+
+	/** The window minimum y size. */
+	unsigned int _min_y_size:16;
+
 	/** The current title buffer.
 	 * This may be null, in which case no buffer has been allocated.
 	 */
@@ -182,6 +194,8 @@ public:
 	 * - does not have an adjust icon;
 	 * - does not have a border;
 	 * - has a button type of 10;
+	 * - has a minimum size of 0 (and so takes account of the title text width);
+	 * - will ignore the extent when dragging the adjust size icon;
 	 * - has a title foreground colour of 7;
 	 * - has a title background colour of 2;
 	 * - has a work area foreground colour of 7; and
@@ -319,6 +333,20 @@ public:
 	int wf_colour() const
 		{ return _wf_colour; }
 
+	/** Get window minimum size.
+	 * An x value of zero means use the titlebar text width.
+	 * @return the window minimun x and y sizes
+	 */
+	point min_win_size() const
+		{ return point(_min_x_size,_min_y_size); }
+
+	/** Get ignore extent flag.
+	 * @return true if both right and bottom extents are ignored when
+	    resizing, otherwise false.
+	 */
+	bool ignore_extent() const
+		{ return _ignore_extent; }
+
 	/** Set window title.
 	 * If the title is likely to change then its capacity should be set
 	 * to the maximum number of characters likely to be needed.
@@ -424,6 +452,21 @@ public:
 	 * @return a reference to this
 	 */
 	basic_window& wf_colour(int colour);
+
+	/** Set window minimum size.
+	 * Note that the x and y values are unsigned 16 bit quantities.
+	 * An x value of zero means use the titlebar text width.
+	 * @param size the minimum x and y size
+	 * @return a reference to this
+	 */
+	basic_window& min_win_size(const point& size);
+
+	/** Set ignore extent flag.
+	 * @param ignore true if both right and bottom extents should be
+	   ignored when resizing, otherwise false.
+	 * @return a reference to this
+	 */
+	basic_window& ignore_extent(bool ignore);
 
 	/** Default handler for close_window events.
 	 * If this handler remains active then the window will close itself

@@ -43,6 +43,9 @@ basic_window::basic_window(point size):
 	_tb_colour(2),
 	_wf_colour(7),
 	_wb_colour(1),
+	_min_x_size(0),
+	_min_y_size(0),
+	_ignore_extent(1),
 	_title(0),
 	_titlesize(0)
 {
@@ -320,6 +323,20 @@ basic_window& basic_window::wf_colour(int colour)
 	return *this;
 }
 
+basic_window& basic_window::min_win_size(const point& size)
+{
+	invalidate();
+	_min_x_size=size.x();
+	_min_y_size=size.y();
+	return *this;
+}
+
+basic_window& basic_window::ignore_extent(bool ignore)
+{
+	_ignore_extent=ignore;
+	return *this;
+}
+
 basic_window& basic_window::movable(bool value)
 {
 	_movable=value;
@@ -571,8 +588,8 @@ void basic_window::create()
 		block.tflags=(_title)?0x00000109:0x00000000;
 		block.waflags=work_area_flags();
 		block.spritearea=1;
-		block.minxsize=0;
-		block.minysize=0;
+		block.minxsize=_min_x_size;
+		block.minysize=_min_y_size;
 		block.title.pointer[0]=_title;
 		block.title.pointer[1]=0;
 		block.title.word[2]=_titlesize;
@@ -610,7 +627,8 @@ void basic_window::uncreate()
 
 int basic_window::window_flags() const
 {
-	return 0x8000c002|
+	return 0x80000002|
+		(_ignore_extent<<14)|(_ignore_extent<<15)|
 		(_back_icon<<24)|(_close_icon<<25)|(_title_bar<<26)|(_toggle_icon<<27)|
 		(_y_scroll_bar<<28)|(_adjust_icon<<29)|(_x_scroll_bar<<30);
 }
