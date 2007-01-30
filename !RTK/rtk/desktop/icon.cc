@@ -314,6 +314,11 @@ box icon::bbox() const
 
 void icon::reformat(const point& origin,const box& pbbox)
 {
+	_reformat(origin,pbbox,-1,0);
+}
+
+void icon::_reformat(const point& origin,const box& pbbox,int position,int priority)
+{
 	// Fit bounding box to parent.
 	box bbox=fit(pbbox);
 
@@ -329,7 +334,7 @@ void icon::reformat(const point& origin,const box& pbbox)
 	// component.
 	point offset;
 	basic_window* w=parent_work_area(offset);
-	int whandle=(w)?w->handle():-1;
+	int whandle=(w)?w->handle():position;
 
 	if (!_created)
 	{
@@ -340,7 +345,7 @@ void icon::reformat(const point& origin,const box& pbbox)
 		block.icon.flags=icon_flags();
 		block.icon.data=icon_data();
 
-		os::Wimp_CreateIcon(0,block,&_handle);
+		os::Wimp_CreateIcon(priority,block,&_handle);
 		if (w)
 		{
 			w->register_icon(*this);
@@ -389,6 +394,7 @@ void icon::unformat()
 		os::Wimp_DeleteIcon(block);
 		_handle=0;
 		_created=false;
+		invalidate();
 	}
 }
 

@@ -551,6 +551,17 @@ private:
 	 * icon_flags().
 	 */
 	void set_state();
+protected:
+	/** Reformat, allowing the position and priority to be
+	 * specified for iconbar icons
+	 * @param origin the new origin of this component, with respect to
+	 *  its parent
+	 * @param pbbox the proposed bounding box for this component, with
+	 *  respect to its own origin
+	 * @param position the position on the iconbar, if an iconbar icon
+	 * @param priority the icon priority, if an iconbar icon
+	 */
+	void _reformat(const point& origin,const box& pbbox,int position,int priority);
 };
 
 } /* namespace desktop */

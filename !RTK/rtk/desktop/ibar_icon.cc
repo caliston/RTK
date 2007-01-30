@@ -14,7 +14,9 @@ namespace desktop {
 ibar_icon::ibar_icon():
 	_select_window(0),
 	_adjust_window(0),
-	_menu(0)
+	_menu(0),
+	_position(-1),
+	_priority(0)
 {
 	button(3);
 }
@@ -22,7 +24,9 @@ ibar_icon::ibar_icon():
 ibar_icon::ibar_icon(rtk::desktop::menu& m):
 	_select_window(0),
 	_adjust_window(0),
-	_menu(&m)
+	_menu(&m),
+	_position(-1),
+	_priority(0)
 {
 	button(3);
 }
@@ -53,6 +57,11 @@ void ibar_icon::handle_event(rtk::events::mouse_click& ev)
 			}
 		}
 	}
+}
+
+void ibar_icon::reformat(const point& origin,const box& pbbox)
+{
+	inherited::_reformat(origin,pbbox,_position,_priority);
 }
 
 ibar_icon& ibar_icon::attach_select_window(basic_window& w)
@@ -88,6 +97,22 @@ ibar_icon& ibar_icon::detach_adjust_window()
 ibar_icon& ibar_icon::detach_menu()
 {
 	_menu=0;
+	return *this;
+}
+
+ibar_icon& ibar_icon::position(int position)
+{
+	_position=position;
+	unformat();
+	invalidate();
+	return *this;
+}
+
+ibar_icon& ibar_icon::priority(int priority)
+{
+	_priority=priority;
+	unformat();
+	invalidate();
 	return *this;
 }
 

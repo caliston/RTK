@@ -32,6 +32,12 @@ private:
 
 	/** The attached menu, or 0 if there is none. */
 	rtk::desktop::menu* _menu;
+
+	/** The iconbar position */
+	int _position;
+
+	/** The priority of the icon */
+	int _priority;
 public:
 	/** Construct icon for use on the icon bar.
 	 * By default there are no attached windows or menus.
@@ -42,6 +48,8 @@ public:
 	ibar_icon(rtk::desktop::menu& m);
 
 	virtual void handle_event(rtk::events::mouse_click& ev);
+
+	virtual void reformat(const point& origin,const box& pbbox);
 
 	/** Get window attached to this icon (select button).
 	 * @return the attached window, or 0 if there is none
@@ -93,6 +101,31 @@ public:
 	 * If there is no attached menu then no action is taken.
 	 */
 	ibar_icon& detach_menu();
+
+	/** Set position on the iconbar.
+	 * The default is -1, the right hand side.
+	 * @param position the position
+	 * @return a reference to this
+	 */
+	ibar_icon& position(int position);
+
+	/** Set the priority when creating the icon.
+	 * The default priority is 0.
+	 * @param priority the priority
+	 * @return a reference to this
+	 */
+	ibar_icon& priority(int priority);
+
+	/** Get the current position.
+	 * @return the position
+	 */
+	int position() { return _position; }
+
+	/** Get the current priority.
+	 * @return the priority
+	 */
+	int priority() { return _priority; }
+
 };
 
 } /* namespace desktop */
