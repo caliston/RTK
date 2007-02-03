@@ -36,5 +36,5 @@ std::ostream& operator<<(std::ostream& out,const linear_transformation& t)
 	return out;
 }
 
-}; /* namespace graphics */
-}; /* namespace rtk */
+} /* namespace graphics */
+} /* namespace rtk */

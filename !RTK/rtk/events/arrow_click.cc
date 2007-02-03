@@ -26,5 +26,5 @@ bool arrow_click::deliver(component& dest)
 	return h;
 }
 
-}; /* namespace events */
-}; /* namespace rtk */
+} /* namespace events */
+} /* namespace rtk */

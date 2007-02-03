@@ -43,7 +43,7 @@ protected:
 	virtual void deactivate();
 };
 
-}; /* namespace graphics */
-}; /* namespace rtk */
+} /* namespace graphics */
+} /* namespace rtk */
 
 #endif

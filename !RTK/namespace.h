@@ -7,24 +7,24 @@
 namespace rtk {
 
 /// The namespace used to hold RTK utility classes.
-namespace util {};
+namespace util {}
 
 /// The namespace used to hold the RTK graphics library.
-namespace graphics {};
+namespace graphics {}
 
 /// The namespace used to hold the RTK low-level RISC OS interface library.
-namespace swi {};
+namespace swi {}
 
 /// The namespace used to hold the RTK high-level RISC OS interface library.
-namespace os {};
+namespace os {}
 
 /// The namespace used to hold RTK desktop components.
-namespace desktop {};
+namespace desktop {}
 
 /// The namespace used to hold RTK event objects.
-namespace events {};
+namespace events {}
 
 /// The namespace used to hold RTK data transfer components.
-namespace transfer {};
+namespace transfer {}
 
-}; /* namespace rtk */
+} /* namespace rtk */

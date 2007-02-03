@@ -18,5 +18,5 @@ auto_filehandle::~auto_filehandle()
 	rtk::os::OS_Find0(_handle);
 }
 
-}; /* namespace util */
-}; /* namespace rtk */
+} /* namespace util */
+} /* namespace rtk */

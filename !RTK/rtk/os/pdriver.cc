@@ -107,5 +107,5 @@ void PDriver_GetRectangle(box* clip,int* _more,unsigned int* _id)
 	if (_id) *_id=regs.r[2];
 }
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */

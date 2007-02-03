@@ -50,7 +50,7 @@ public:
 	virtual box auto_wrap_bbox(const box& wbox) const=0;
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

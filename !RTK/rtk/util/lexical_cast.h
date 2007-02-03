@@ -29,7 +29,7 @@ output_type lexical_cast(const input_type& value)
 	return result;
 }
 
-}; /* namespace util */
-}; /* namespace rtk */
+} /* namespace util */
+} /* namespace rtk */
 
 #endif

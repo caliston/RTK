@@ -41,7 +41,7 @@ const int PDriver_SetDriver         =0x8015C;
 const int PDriver_JPEGSWI           =0x8015D;
 const int PDriver_Command           =0x8015E;
 
-}; /* namespace swi */
-}; /* namespace rtk */
+} /* namespace swi */
+} /* namespace rtk */
 
 #endif

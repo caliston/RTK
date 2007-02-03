@@ -42,5 +42,5 @@ void adjuster_arrow::handle_event(events::mouse_click& ev)
 	ev_arrow.post();
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

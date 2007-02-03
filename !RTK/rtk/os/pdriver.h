@@ -13,7 +13,7 @@ class point;
 class box;
 class linear_transformation;
 
-}; /* namespace graphics */
+} /* namespace graphics */
 
 namespace os {
 
@@ -102,7 +102,7 @@ void PDriver_DrawPage(int copies,box* clip,int page_num,
  */
 void PDriver_GetRectangle(box* clip,int* _more,unsigned int* _id);
 
-}; /* namespace os */
-}; /* namespace rtk */
+} /* namespace os */
+} /* namespace rtk */
 
 #endif

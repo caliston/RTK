@@ -43,5 +43,5 @@ void print_gcontext::deactivate()
 	}
 }
 
-}; /* namespace graphics */
-}; /* namespace rtk */
+} /* namespace graphics */
+} /* namespace rtk */

@@ -101,7 +101,7 @@ protected:
 	virtual void put_file(const string& pathname,size_type estsize)=0;
 };
 
-}; /* namespace transfer */
-}; /* namespace rtk */
+} /* namespace transfer */
+} /* namespace rtk */
 
 #endif

@@ -46,5 +46,5 @@ void wrappable_component::resize() const
 	_min_wrap_bbox=min_bbox();
 }
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */

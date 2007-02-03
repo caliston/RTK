@@ -46,7 +46,7 @@ public:
 	virtual void handle_event(events::mouse_click& ev);
 };
 
-}; /* namespace desktop */
-}; /* namespace rtk */
+} /* namespace desktop */
+} /* namespace rtk */
 
 #endif

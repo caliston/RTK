@@ -63,7 +63,7 @@ int open_print_file(const string& pathname)
 	return handle;
 }
 
-}; /* anonymous namespace */
+} /* anonymous namespace */
 
 class print_job::rectangle
 {
@@ -130,5 +130,5 @@ void print_job::rectangle::redraw(gcontext& context,const box& clip)
 	_content->redraw(context,clip);
 }
 
-}; /* namespace graphics */
-}; /* namespace rtk */
+} /* namespace graphics */
+} /* namespace rtk */

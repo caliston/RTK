@@ -151,7 +151,7 @@ bool operator!=(
 		lhs._overflow!=rhs._overflow;
 }
 
-}; /* namespace _linear_sequence */
+} /* namespace _linear_sequence */
 
 /** A class to represent a linear numeric sequence.
  * The sequence behaves as if it were a read-only standard container.
@@ -244,8 +244,8 @@ public:
 		{ return _step; }
 };
 
-}; /* namespace util */
-}; /* namespace rtk */
+} /* namespace util */
+} /* namespace rtk */
 
 namespace std {
 
@@ -268,6 +268,6 @@ rtk::util::_linear_sequence::const_iterator<_value_type>
 		_value,step);
 }
 
-}; /* namespace std */
+} /* namespace std */
 
 #endif

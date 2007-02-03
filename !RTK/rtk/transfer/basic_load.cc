@@ -108,5 +108,5 @@ string basic_load::temp_pathname() const
 	return pathname;
 }
 
-}; /* namespace transfer */
-}; /* namespace rtk */
+} /* namespace transfer */
+} /* namespace rtk */

@@ -16,7 +16,7 @@ namespace desktop {
 
 class component;
 
-}; /* namespace desktop */
+} /* namespace desktop */
 
 namespace graphics {
 
@@ -66,7 +66,7 @@ public:
 	void print_page();
 };
 
-}; /* namespace graphics */
-}; /* namespace rtk */
+} /* namespace graphics */
+} /* namespace rtk */
 
 #endif

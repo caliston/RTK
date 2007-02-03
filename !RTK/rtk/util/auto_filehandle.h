@@ -36,7 +36,7 @@ public:
 		{ return _handle; }
 };
 
-}; /* namespace util */
-}; /* namespace rtk */
+} /* namespace util */
+} /* namespace rtk */
 
 #endif
