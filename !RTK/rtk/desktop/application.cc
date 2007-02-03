@@ -38,7 +38,8 @@ application::application(const string& name):
 	_current_load(0),
 	_current_save(0),
 	_wimp_mask(0),
-	_quit(false)
+	_quit(false),
+	_defer_caret(0)
 {
 	static int messages[]={0};
 	os::Wimp_Initialise(380,_name.c_str(),messages,0,&_handle);
@@ -345,6 +346,13 @@ void application::run()
 			// Ensure layout valid before polling Wimp.
 			if (!size_valid()) resize();
 			if (!layout_valid()) reformat(point(0,0),box(0,0,0,0));
+			// Set the caret position if it has been defered from
+			// a time when the window or icon didn't exist.
+			if (_defer_caret)
+			{
+				_defer_caret->set_caret_position(_caret_pos,_caret_height,_caret_index);
+				_defer_caret=0;
+			}
 			// Poll Wimp.
 			rtk::graphics::vdu_gcontext::current(0);
 			static os::wimp_block wimpblock;
@@ -835,6 +843,14 @@ void application::remove_menu_data(size_type level)
 		if (_mdata[i-1]) _mdata[i-1]->dec_count();
 		_mdata[i-1]=0;
 	}
+}
+
+void application::defer_caret_position(component *c,point p,int height,int index)
+{
+	_defer_caret=c;
+	_caret_pos=p;
+	_caret_height=height;
+	_caret_index=index;
 }
 
 } /* namespace desktop */

@@ -12,6 +12,7 @@
 #include "rtk/os/dragasprite.h"
 #include "rtk/desktop/component.h"
 #include "rtk/desktop/basic_window.h"
+#include "rtk/desktop/icon.h"
 #include "rtk/desktop/application.h"
 #include "rtk/events/claim_entity.h"
 #include "rtk/events/redirection.h"
@@ -316,10 +317,33 @@ void component::block_copy(const box& src,const point& dst)
 void component::set_caret_position(point p,int height,int index)
 {
 	basic_window* w=as_window();
-	if (!w) w=parent_work_area(p);
+	int ihandle=-1;
+	bool defer=false;
+	if (!w)
+	{
+		icon* i=dynamic_cast<icon*>(this);
+		if (i)
+		{
+			ihandle=i->handle();
+			if (ihandle==-1) defer=true;
+		}
+		w=parent_work_area(p);
+	}
 	if (w)
 	{
-		os::Wimp_SetCaretPosition(w->handle(),-1,p,height,index);
+		// Set the position now if the window and icon exist,
+		// otherwise defer until the next wimp poll
+		if (w->handle()&&!defer)
+		{
+			os::Wimp_SetCaretPosition(w->handle(),ihandle,p,height,index);
+		}
+		else
+		{
+			if (application *app=parent_application())
+			{
+				app->defer_caret_position(this,p,height,index);
+			}
+		}
 	}
 }
 

@@ -534,10 +534,8 @@ public:
 
 	/** Set caret position.
 	 * @param p the required position of the caret
-	 * @param height the required height of the caret
-	 * @param index the required index into string
-	 * @todo the caret position is not set correctly if the component
-	 *  is an icon.
+	 * @param height the required height of the caret, or -1
+	 * @param index the required index into string, or -1
 	 */
 	void set_caret_position(point p,int height,int index);
 

@@ -543,7 +543,7 @@ public:
 	 * any RISC OS windows that it creates.  It may override, or fail to
 	 * take account of, changes that are made directly using the window
 	 * handle.
-	 * @return the window handle
+	 * @return the window handle, or 0 if the window hasn't been created yet
 	 */
 	int handle() const
 		{ return _handle; }

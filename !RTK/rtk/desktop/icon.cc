@@ -271,7 +271,7 @@ box make_border_box(bool border,unsigned int border_type)
 } /* anonymous namespace */
 
 icon::icon():
-	_handle(0),
+	_handle(-1),
 	_itype(empty_icon),
 	_created(false),
 	_text_and_sprite(false),
@@ -375,6 +375,22 @@ void icon::_reformat(const point& origin,const box& pbbox,int position,int prior
 	}
 }
 
+void icon::check_caret(basic_window* w)
+{
+	if (w)
+	{
+		os::caret_position_get blk;
+		os::Wimp_GetCaretPosition(blk);
+		if ((blk.whandle==w->handle()) && (blk.ihandle==_handle))
+		{
+			if (application *app=parent_application())
+			{
+				app->defer_caret_position(this,point(),-1,blk.index);
+			}
+		}
+	}
+}
+
 void icon::unformat()
 {
 	if (_created)
@@ -382,6 +398,7 @@ void icon::unformat()
 		basic_window* w=parent_work_area();
 		if (w)
 		{
+			check_caret(w);
 			w->deregister_icon(*this);
 		}
 		else if (application* app=parent_application())
@@ -392,7 +409,7 @@ void icon::unformat()
 		block.whandle=(w)?w->handle():-1;
 		block.ihandle=_handle;
 		os::Wimp_DeleteIcon(block);
-		_handle=0;
+		_handle=-1;
 		_created=false;
 		invalidate();
 	}
@@ -412,6 +429,12 @@ icon& icon::text(const string& text,size_type capacity)
 		_textsize=0;
 		_text=new char[capacity+1];
 		_textsize=capacity;
+	}
+	else
+	{
+		// If this icon contains the caret we must reset its position
+		// to ensure that it remains positioned at a character boundary.
+		check_caret(parent_work_area());
 	}
 	if (_text)
 	{

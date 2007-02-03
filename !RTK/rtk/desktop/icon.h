@@ -508,7 +508,7 @@ public:
 	 * any RISC OS icons that it creates.  It may override, or fail to
 	 * take account of, changes that are made directly using the icon
 	 * handle.
-	 * @return the icon handle
+	 * @return the icon handle. If the icon hasn't been created yet, -1 is returned
 	 */
 	int handle() const
 		{ return _handle; }
@@ -551,6 +551,14 @@ private:
 	 * icon_flags().
 	 */
 	void set_state();
+
+	/** Check if this icon contains the caret, and if so defer a
+	 * call to Wimp_SetCaretPosition. Required to prevent losing
+	 * the caret if an icon is deleted and recreated.
+	 * @param w the window containing this icon.
+	 */
+	void check_caret(basic_window* w);
+
 protected:
 	/** Reformat, allowing the position and priority to be
 	 * specified for iconbar icons

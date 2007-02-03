@@ -175,7 +175,20 @@ private:
 	 * returns to the main polling loop.
 	 */
 	bool _quit;
+
+	/** The component to give the caret before the next Wimp_Poll, or 0 for none. */
+	component *_defer_caret;
+
+	/** The position of the defered caret */
+	point _caret_pos;
+
+	/** The height of the defered caret */
+	int _caret_height;
+
+	/** The index of the defered caret */
+	int _caret_index;
 public:
+
 	/** Construct application.
 	 * @param name the name of this application
 	 */
@@ -470,6 +483,17 @@ private:
 	 *  add 1 for each level down)
 	 */
 	void remove_menu_data(size_type level);
+
+public:
+	/** Defer setting the caret position to just before the next Wimp_Poll.
+	 * @internal
+	 * c->set_caret_position will then be called with the specified parameters.
+	 * @param c the component to give the caret
+	 * @param p the position of the caret
+	 * @param height the height of the caret, or -1
+	 * @param index the index into the string, or -1
+	 */
+	void defer_caret_position(component *c,point p,int height,int index);
 };
 
 } /* namespace desktop */
