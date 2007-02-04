@@ -11,22 +11,23 @@ namespace desktop {
 adjuster_arrow::adjuster_arrow(arrow_type type,int delta):
 	_delta(delta)
 {
+	text_and_sprite(true);
 	switch (type)
 	{
 	case arrow_left:
-		sprite_name("left");
+		validation("R5;sleft,pleft");
 		if (!_delta) _delta=-1;
 		break;
 	case arrow_right:
-		sprite_name("right");
+		validation("R5;sright,pright");
 		if (!_delta) _delta=+1;
 		break;
 	case arrow_down:
-		sprite_name("down");
+		validation("R5;sdown,pdown");
 		if (!_delta) _delta=-1;
 		break;
 	case arrow_up:
-		sprite_name("up");
+		validation("R5;sup,pup");
 		if (!_delta) _delta=+1;
 		break;
 	}
@@ -38,8 +39,12 @@ adjuster_arrow::adjuster_arrow(arrow_type type,int delta):
 
 void adjuster_arrow::handle_event(events::mouse_click& ev)
 {
-	events::arrow_click ev_arrow(ev,_delta);
-	ev_arrow.post();
+	if (ev.buttons()!=2)
+	{
+		int delta=(ev.buttons()==1) ? -_delta : _delta;
+		events::arrow_click ev_arrow(ev,delta);
+		ev_arrow.post();
+	}
 }
 
 } /* namespace desktop */

@@ -37,6 +37,7 @@ public:
 	/** Construct adjuster arrow.
 	 * By default a left or down arrow decrements and a right or up arrow
 	 * increments.
+	 * If the button is clicked with adjust, the delta is negated.
 	 * @param type the arrow type (left, right, down or up)
 	 * @param delta the arrow direction (-1 or +1, the default of 0
 	 *  meaning to choose automatically)
