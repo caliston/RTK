@@ -117,7 +117,7 @@
  * There is also a mailing list.  To subscribe, send an empty message
  * to:
  *
- * mailto:rtk-request@sagitta.demon.co.uk
+ * mailto:rtk-request@lists.riscpkg.org
  *
  * with a subject of "subscribe".
  *
