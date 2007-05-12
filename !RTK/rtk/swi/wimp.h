@@ -117,6 +117,7 @@ const int Message_FilerAddSelection=0x404;
 const int Message_FilerAction   =0x405;
 const int Message_FilerControlAction=0x406;
 const int Message_FilerSelection=0x407;
+const int Message_FilerDeviceDir=0x408;
 
 const int Message_AlarmSet      =0x500;
 const int Message_AlarmGoneOff  =0x501;
