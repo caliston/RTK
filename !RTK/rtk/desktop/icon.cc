@@ -851,10 +851,13 @@ box icon::content_box() const
 			char* p=_val;
 			parse_validation(p,&border_type,sprite0,sprite1);
 		}
-		if (_text) os::Wimp_TextOp1(_text,0,&prefxsize);
-		prefxsize+=16;
-		prefysize=44;
-		descent=4;
+		if (_text)
+		{
+			os::Wimp_TextOp1(_text,0,&prefxsize);
+			prefxsize+=16;
+			prefysize=44;
+			descent=4;
+		}
 		if (_text_and_sprite==1)
 		{
 			int spxsize=0;
