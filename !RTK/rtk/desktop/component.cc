@@ -331,9 +331,22 @@ void component::set_caret_position(point p,int height,int index)
 	}
 	if (w)
 	{
+		if (w->handle()&&!defer)
+		{
+			// Defer if the window is not open
+			os::window_state_get blk;
+			blk.handle=w->handle();
+			os::Wimp_GetWindowState(blk);
+			if ((blk.wflags&0x10000)==0) defer=true;
+		}
+		else
+		{
+			defer=true;
+		}
+
 		// Set the position now if the window and icon exist,
 		// otherwise defer until the next wimp poll
-		if (w->handle()&&!defer)
+		if (!defer)
 		{
 			os::Wimp_SetCaretPosition(w->handle(),ihandle,p,height,index);
 		}
