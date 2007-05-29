@@ -129,8 +129,9 @@ selection_field<const_iterator>&
 selection_field<const_iterator>::snap()
 {
 	const_iterator i=std::lower_bound(_first,_last,value());
-	if ((i!=_first)&&(*i!=value)) --i;
+	if ((i!=_first)&&(*i!=value())) --i;
 	if (i==_last) --i;
+	value(*i);
 	return *this;
 }
 
