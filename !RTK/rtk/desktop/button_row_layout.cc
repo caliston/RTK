@@ -1,5 +1,5 @@
 // This file is part of the RISC OS Toolkit (RTK).
-// Copyright © 2003-2005 Graham Shaw.
+// Copyright © 2007 Alex Waugh.
 // Distribution and use are subject to the GNU Lesser General Public License,
 // a copy of which may be found in the file !RTK.Copyright.
 
@@ -8,7 +8,8 @@
 
 #include "rtk/util/divider.h"
 #include "rtk/graphics/gcontext.h"
-#include "rtk/desktop/row_layout.h"
+#include "rtk/desktop/icon.h"
+#include "rtk/desktop/button_row_layout.h"
 
 namespace rtk {
 namespace desktop {
@@ -17,11 +18,13 @@ using std::min;
 using std::max;
 using rtk::util::divider;
 
-row_layout::row_layout(size_type xcells):
-	basic_row_layout(xcells)
+button_row_layout::button_row_layout(size_type xcells):
+	basic_row_layout(xcells),
+	_bordersize(0),
+	_maxxsize(0)
 {}
 
-box row_layout::auto_bbox() const
+box button_row_layout::auto_bbox() const
 {
 	// Determine number of cells.
 	size_type xcells=_components.size();
@@ -29,9 +32,13 @@ box row_layout::auto_bbox() const
 	// Reset y-baseline set.
 	_ybs=ybaseline_set();
 
+	// The total width of all icon borders
+	_bordersize=0;
+	// The maximum icon width, excuding borders
+	_maxxsize=0;
+
 	// Request min_bbox for each cell.  Incorporate into y-baseline set
 	// and total width.
-	int xsize=0;
 	std::vector<component*>::const_iterator i=_components.begin();
 	for (size_type x=0;x!=xcells;++x)
 	{
@@ -39,12 +46,24 @@ box row_layout::auto_bbox() const
 		{
 			box mcbbox=c->min_bbox();
 			_ybs.add(mcbbox,c->ybaseline());
-			xsize+=mcbbox.xsize();
+			int xsize;
+			if (icon *i=dynamic_cast<icon*>(c))
+			{
+				xsize=i->content_box().xsize();
+				_bordersize+=i->border_box().xsize();
+			}
+			else
+			{
+				xsize=mcbbox.xsize();
+			}
+			if (xsize>_maxxsize) _maxxsize=xsize;
 		}
 	}
 
 	// Calculate combined height.
 	int ysize=_ybs.ysize();
+
+	int xsize=_maxxsize*xcells+_bordersize;
 
 	// Add gaps to total width.
 	if (xcells) xsize+=(xcells-1)*_xgap;
@@ -62,7 +81,7 @@ box row_layout::auto_bbox() const
 	return abbox;
 }
 
-void row_layout::reformat(const point& origin,const box& pbbox)
+void button_row_layout::reformat(const point& origin,const box& pbbox)
 {
 	// Fit bounding box to parent.
 	box bbox=fit(pbbox);
@@ -82,30 +101,22 @@ void row_layout::reformat(const point& origin,const box& pbbox)
 	// Remove margin.
 	box ibox(_bbox-_margin);
 
-	box abbox=auto_bbox();
-
-	// Calculate excess.
-	int xexcess=_bbox.xsize()-abbox.xsize();
-	if (xexcess<0) xexcess=0;
-	int xspread=abbox.xsize();
-	xspread-=_margin.xsize();
-	if (xcells) xspread-=(xcells-1)*_xgap;
-	if (xspread<0) xspread=0;
-	divider xdiv(xexcess,xspread);
+	divider xdiv(ibox.xsize()+_xgap-_bordersize, xcells);
 
 	// Set minimum x-coordinate for each cell.
 	int xpos=ibox.xmin();
 	_xmin[0]=xpos;
 	for (size_type x=0;x!=xcells;++x)
 	{
-		// Get minimum bounding box for cell, if it is occupied.
-		component* c=_components[x];
-		box mcbbox=(c)?c->min_bbox():box();
-
-		// Set minimum x-coordinate for next cell.
-		int xsize=mcbbox.xsize();
-		xpos+=xsize+xdiv(xsize);
-		xpos+=_xgap;
+		int border=0;
+		if (component* c=_components[x])
+		{
+			if (icon *i=dynamic_cast<icon*>(c))
+			{
+				border=i->border_box().xsize();
+			}
+		}
+		xpos+=xdiv(1)+border;
 		_xmin[x+1]=xpos;
 	}
 
