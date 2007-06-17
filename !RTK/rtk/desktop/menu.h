@@ -149,6 +149,12 @@ public:
 	 */
 	menu& add(menu_item& item,size_type y=npos);
 
+	/** Get reference to menu item at specified position.
+	 * @param pos the item position in the menu
+	 */
+	menu_item& operator[](size_type pos)
+		{ return *_items[pos]; }
+
 	/** Get menu title.
 	 * @return the menu title
 	 */
