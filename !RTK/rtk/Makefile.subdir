@@ -7,7 +7,19 @@ CPPFLAGS = -I../..
 CXXFLAGS = -mthrowback -munixlib -mpoke-function-name \
  -Wall -W -Wno-unused -Wno-uninitialized -O2
 
+FIXDEPS = $(wildcard /fixdeps:/Rules.make)
+
+ifeq ($(FIXDEPS),)
+
+%.dd: %.cc
+	$(CC) -M $(CPPFLAGS) $< > $@
+
+%.d: %.dd
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $< > $@
+
+else
 include fixdeps:Rules/make
+endif
 
 CCSRC = $(wildcard *.cc)
 
