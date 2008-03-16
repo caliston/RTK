@@ -12,7 +12,7 @@ all:
 	cp RiscPkg/Copyright Temp/RiscPkg
 	cp -R !RTK Temp/Apps/Library
 
-	chmod -R 444 Temp/Apps
+	chmod -R =rX Temp/Apps
 	cp -R SysVars Temp/SysVars
 	cp -R Sprites Temp/Sprites
 	make -C Temp -f ../RiscPkg/Rules $(PACKAGES)
