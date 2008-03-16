@@ -26,13 +26,12 @@ clean:
 	make -C rtk clean
 
 rtk.a: rtk/timestamp
-	mkdir -p a
-	$(AR) -c a.rtk $(wildcard rtk/util/*.o)
-	$(AR) -i a.rtk $(wildcard rtk/graphics/*.o)
-	$(AR) -i a.rtk $(wildcard rtk/os/*.o)
-	$(AR) -i a.rtk $(wildcard rtk/desktop/*.o)
-	$(AR) -i a.rtk $(wildcard rtk/events/*.o)
-	$(AR) -i a.rtk $(wildcard rtk/transfer/*.o)
+	$(AR) -c rtk.a $(wildcard rtk/util/*.o)
+	$(AR) -i rtk.a $(wildcard rtk/graphics/*.o)
+	$(AR) -i rtk.a $(wildcard rtk/os/*.o)
+	$(AR) -i rtk.a $(wildcard rtk/desktop/*.o)
+	$(AR) -i rtk.a $(wildcard rtk/events/*.o)
+	$(AR) -i rtk.a $(wildcard rtk/transfer/*.o)
 
 rtk/timestamp: always
 	make -C rtk
