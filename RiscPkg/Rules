@@ -16,6 +16,7 @@ all:
 	cp -R SysVars Temp/SysVars
 	cp -R Sprites Temp/Sprites
 	make -C Temp -f ../RiscPkg/Rules $(PACKAGES)
+	chmod -R =rwX Temp/Apps
 	rm -rf Temp
 
 .PHONY: $(PACKAGES)
