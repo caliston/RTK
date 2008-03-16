@@ -35,7 +35,6 @@ rtk.a: rtk/timestamp
 	$(AR) -i a.rtk rtk.transfer.o.*
 
 rtk/timestamp: always
-	Run SetPaths
 	make -C rtk
 
 html/index.html: rtk/timestamp $(DOXYFILES)
