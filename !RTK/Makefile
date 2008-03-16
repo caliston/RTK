@@ -22,7 +22,7 @@ all: bin doc
 
 .PHONY: clean
 clean:
-	rm rtk.a
+	rm -f rtk.a
 	make -C rtk clean
 
 rtk.a: rtk/timestamp
