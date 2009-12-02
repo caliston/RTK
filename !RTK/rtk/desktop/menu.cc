@@ -125,7 +125,7 @@ void menu::remove_notify(component& c)
 
 menu& menu::cells(size_type ycells)
 {
-	for (size_type i=min(ycells,_items.size());i!=_items.size();++i)
+	for (size_type i=min((size_t)ycells,_items.size());i!=_items.size();++i)
 		if (menu_item* mi=_items[i]) mi->remove();
 	_items.resize(ycells,0);
 	invalidate();

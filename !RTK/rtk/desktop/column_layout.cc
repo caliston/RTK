@@ -232,7 +232,7 @@ void column_layout::remove_notify(component& c)
 
 column_layout& column_layout::cells(size_type ycells)
 {
-	for (size_type i=min(ycells,_components.size());i!=_components.size();++i)
+	for (size_type i=min((size_t)ycells,_components.size());i!=_components.size();++i)
 		if (component* c=_components[i]) c->remove();
 	_components.resize(ycells,0);
 	_ymax.resize(ycells+1,0);

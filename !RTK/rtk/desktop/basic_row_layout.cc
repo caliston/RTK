@@ -114,7 +114,7 @@ void basic_row_layout::remove_notify(component& c)
 
 basic_row_layout& basic_row_layout::cells(size_type xcells)
 {
-	for (size_type i=min(xcells,_components.size());i!=_components.size();++i)
+	for (size_type i=min((size_t)xcells,_components.size());i!=_components.size();++i)
 		if (component* c=_components[i]) c->remove();
 	_components.resize(xcells,0);
 	_xmin.resize(xcells+1,0);
