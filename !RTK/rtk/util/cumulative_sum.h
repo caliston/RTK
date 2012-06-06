@@ -182,7 +182,7 @@ void cumulative_sum<value_type>::insert(unsigned int pos,unsigned int count,
 }
 
 template<class value_type>
-class cumulative_sum<value_type>::index_type
+typename cumulative_sum<value_type>::index_type
 cumulative_sum<value_type>::find(value_type value) const
 {
 	index_type index=0;
